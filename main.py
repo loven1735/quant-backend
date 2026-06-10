@@ -41,6 +41,7 @@ HIGHER_IS_BETTER: dict[str, bool] = {
     "roe": True,
     "ev_ebitda": False,
     "gpa": True,
+    "momentum_1m": True,
     "momentum_3m": True,
     "psr": False,
     "debt_ratio": False,
@@ -287,12 +288,13 @@ def _fetch_info_factors(ticker: str) -> dict[str, float | str]:
     return row
 
 
-def _load_momentum_3m(tickers: list[str]) -> pd.Series:
+def _load_momentum(tickers: list[str], period: str, name: str) -> pd.Series:
+    """period 기간의 모멘텀(총수익률)을 계산해 Series로 반환."""
     if not tickers:
         return pd.Series(dtype=float)
 
     hist = yf.download(
-        tickers, period="3mo", interval="1d",
+        tickers, period=period, interval="1d",
         auto_adjust=True, progress=False, threads=True,
     )
     if hist.empty:
@@ -311,7 +313,15 @@ def _load_momentum_3m(tickers: list[str]) -> pd.Series:
         if np.isfinite(ret):
             momentum[str(ticker)] = ret
 
-    return pd.Series(momentum, name="momentum_3m")
+    return pd.Series(momentum, name=name)
+
+
+def _load_momentum_1m(tickers: list[str]) -> pd.Series:
+    return _load_momentum(tickers, period="1mo", name="momentum_1m")
+
+
+def _load_momentum_3m(tickers: list[str]) -> pd.Series:
+    return _load_momentum(tickers, period="3mo", name="momentum_3m")
 
 
 def load_factor_universe(theme: str = "all") -> pd.DataFrame:
@@ -337,9 +347,12 @@ def load_factor_universe(theme: str = "all") -> pd.DataFrame:
         )
 
     df = pd.DataFrame(rows).set_index("ticker")
-    momentum = _load_momentum_3m(tickers)
-    if not momentum.empty:
-        df["momentum_3m"] = momentum
+    mom_1m = _load_momentum_1m(tickers)
+    if not mom_1m.empty:
+        df["momentum_1m"] = mom_1m
+    mom_3m = _load_momentum_3m(tickers)
+    if not mom_3m.empty:
+        df["momentum_3m"] = mom_3m
 
     _factor_cache[theme] = df
     logger.info("Loaded factor data for theme '%s': %d tickers", theme, len(df))
