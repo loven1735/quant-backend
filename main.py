@@ -658,8 +658,9 @@ def load_kr_factor_universe(theme: str = "all") -> pd.DataFrame:
         for col in dart_df.columns:
             df[col] = dart_df.reindex(df.index)[col]
 
-    df["longName"] = pd.Series(names, dtype=str)
-    df["market_cap"] = pd.Series(market_caps, dtype=float)
+    # index.map 으로 할당: names 미매칭 시 종목코드를 그대로 사용
+    df["longName"] = df.index.map(lambda t: names.get(str(t), str(t)))
+    df["market_cap"] = pd.Series(market_caps, dtype=float).reindex(df.index)
 
     # PSR = 시가총액 / 매출액
     if "revenue" in df.columns and "market_cap" in df.columns:
@@ -1073,15 +1074,11 @@ def backtest(request: BacktestRequest):
             top_tickers, start, end, request.interval
         )
 
-        if "longName" in universe.columns:
-            top_stocks = [
-                str(universe.at[t, "longName"])
-                if t in universe.index and pd.notna(universe.at[t, "longName"])
-                else t
-                for t in top_tickers
-            ]
-        else:
-            top_stocks = top_tickers
+        # longName 은 항상 값 있음 (fallback = 종목코드)
+        top_stocks = [
+            str(universe.at[t, "longName"]) if t in universe.index else t
+            for t in top_tickers
+        ]
 
         with ThreadPoolExecutor(max_workers=2) as executor:
             future_stress  = executor.submit(calc_kr_stress_tests, top_tickers)
