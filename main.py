@@ -1,10 +1,16 @@
 from __future__ import annotations
 
+import io
 import logging
 import os
+import random
+import xml.etree.ElementTree as ET
+import zipfile
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta
 from typing import Literal
+
+import requests
 
 import numpy as np
 import pandas as pd
@@ -12,6 +18,9 @@ import yfinance as yf
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
+
+random.seed(42)
+np.random.seed(42)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -196,8 +205,46 @@ KR_STRESS_PERIODS: list[dict[str, str]] = [
     {"name": "IT버블",        "start": "2000-03-10", "end": "2001-09-30"},
 ]
 
-# KR 팩터 캐시
+DART_API_KEY: str = os.environ.get(
+    "DART_API_KEY", "50b787d351a2bdb6e499293a663069be9047d462"
+)
+
+# KR 팩터 캐시 + DART 종목명 캐시
 _kr_factor_cache: dict[str, pd.DataFrame] = {}
+_kr_names_cache: dict[str, str] = {}  # "005930.KS" → "삼성전자"
+
+
+def _load_dart_kr_names() -> dict[str, str]:
+    """DART corpCode.xml에서 종목코드 → 한국어 종목명 매핑 로드 (최초 1회 캐시)"""
+    global _kr_names_cache
+    if _kr_names_cache:
+        return _kr_names_cache
+
+    url = f"https://opendart.fss.or.kr/api/corpCode.xml?crtfc_key={DART_API_KEY}"
+    try:
+        resp = requests.get(url, timeout=60)
+        if resp.status_code != 200:
+            logger.warning("DART corpCode API 오류: %d", resp.status_code)
+            _kr_names_cache = dict(KR_TICKER_NAMES)
+            return _kr_names_cache
+
+        with zipfile.ZipFile(io.BytesIO(resp.content)) as z:
+            xml_bytes = z.read("CORPCODE.xml")
+
+        root = ET.fromstring(xml_bytes)
+        for item in root.findall(".//list"):
+            sc = (item.findtext("stock_code") or "").strip()
+            name = (item.findtext("corp_name") or "").strip()
+            if sc and name:
+                _kr_names_cache[f"{sc}.KS"] = name  # .KS 형식
+                _kr_names_cache[sc] = name           # 6자리 형식 (호환)
+
+        logger.info("DART 종목명 로드 완료: %d개", len(_kr_names_cache) // 2)
+    except Exception as e:
+        logger.warning("DART 종목명 로드 실패 (%s), 하드코딩 목록으로 대체", e)
+        _kr_names_cache = dict(KR_TICKER_NAMES)
+
+    return _kr_names_cache
 
 
 # ── Pydantic 모델 ─────────────────────────────────────────────────
@@ -429,6 +476,7 @@ def load_factor_universe(theme: str = "all") -> pd.DataFrame:
             detail="팩터 데이터를 가져오지 못했습니다. 잠시 후 다시 시도해 주세요.",
         )
 
+    rows.sort(key=lambda r: r["ticker"])
     df = pd.DataFrame(rows).set_index("ticker")
     mom_1m = _load_momentum_1m(tickers)
     if not mom_1m.empty:
@@ -460,11 +508,13 @@ def load_kr_factor_universe(theme: str = "all") -> pd.DataFrame:
             if factors:
                 rows.append({"ticker": ticker, **factors})
 
+    rows.sort(key=lambda r: r["ticker"])
     idx = pd.Index(tickers, name="ticker")
     df = pd.DataFrame(rows).set_index("ticker") if rows else pd.DataFrame(index=idx)
 
-    # 하드코딩 한글 종목명 (yfinance 영문명 대신)
-    df["longName"] = df.index.map(lambda t: KR_TICKER_NAMES.get(t, t))
+    # DART 종목명 (실패 시 KR_TICKER_NAMES fallback → 티커 코드)
+    dart_names = _load_dart_kr_names()
+    df["longName"] = df.index.map(lambda t: dart_names.get(t) or KR_TICKER_NAMES.get(t, t))
 
     # 모멘텀 (yfinance .KS)
     mom_1m = _load_momentum(tickers, period="1mo", name="momentum_1m")
@@ -594,7 +644,7 @@ def compute_composite_scores(
         scores = percentile_score(eligible[fid], HIGHER_IS_BETTER[fid])
         composite = composite + w * scores
 
-    return composite.sort_values(ascending=False)
+    return composite.sort_values(ascending=False, kind="stable")
 
 
 # ── 백테스트 계산 ─────────────────────────────────────────────────
@@ -911,8 +961,13 @@ def _get_kr_stock_detail(ticker: str) -> StockDetailResponse:
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"yfinance 오류: {e}")
 
-    # 하드코딩 한글명 우선, 없으면 yfinance longName
-    name = KR_TICKER_NAMES.get(ks) or str(info.get("longName") or info.get("shortName") or ks)
+    # DART 종목명 → KR_TICKER_NAMES fallback → yfinance longName
+    dart_names = _load_dart_kr_names()
+    name = (
+        dart_names.get(ks)
+        or KR_TICKER_NAMES.get(ks)
+        or str(info.get("longName") or info.get("shortName") or ks)
+    )
 
     try:
         hist = t.history(period="1y")
