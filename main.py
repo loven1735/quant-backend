@@ -520,6 +520,47 @@ def _load_kr_company_names(tickers: list[str]) -> dict[str, str]:
     return result
 
 
+def _fetch_kr_prices(ticker: str, start_str: str, end_str: str) -> "pd.Series | None":
+    """pykrx로 단일 KR 종목 종가 시계열 반환"""
+    try:
+        from pykrx import stock as krx_stock  # type: ignore[import-not-found]
+        df = krx_stock.get_market_ohlcv_by_date(start_str, end_str, ticker)
+        if df is None or df.empty:
+            return None
+        close_col = "종가" if "종가" in df.columns else "Close"
+        prices = df[close_col].dropna()
+        return prices if len(prices) >= 2 else None
+    except Exception as e:
+        logger.debug("KR 가격 조회 실패 (%s): %s", ticker, e)
+        return None
+
+
+def _load_kr_momentum(tickers: list[str], days: int, name: str) -> pd.Series:
+    """pykrx로 KR 모멘텀 계산 (병렬)"""
+    end_dt = datetime.now()
+    start_dt = end_dt - timedelta(days=days + 10)
+    start_str = start_dt.strftime("%Y%m%d")
+    end_str = end_dt.strftime("%Y%m%d")
+
+    momentum: dict[str, float] = {}
+
+    def _calc(ticker: str) -> "tuple[str, float] | None":
+        prices = _fetch_kr_prices(ticker, start_str, end_str)
+        if prices is None:
+            return None
+        ret = float(prices.iloc[-1] / prices.iloc[0] - 1)
+        return (ticker, ret) if np.isfinite(ret) else None
+
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        futures = {executor.submit(_calc, t): t for t in tickers}
+        for future in as_completed(futures):
+            result = future.result()
+            if result:
+                momentum[result[0]] = result[1]
+
+    return pd.Series(momentum, name=name)
+
+
 def _load_dart_corp_codes() -> dict[str, str]:
     """DART에서 종목코드 → corp_code 매핑 로드 (최초 1회)"""
     global _kr_corp_codes
@@ -699,17 +740,14 @@ def load_kr_factor_universe(theme: str = "all") -> pd.DataFrame:
         ev_ebitda = ev / ebitda
         df["ev_ebitda"] = ev_ebitda.where(np.isfinite(ev_ebitda) & (ev_ebitda > 0))
 
-    # 모멘텀 (yfinance .KS suffix)
-    ks_tickers = [f"{t}.KS" for t in tickers]
-    ticker_map = {f"{t}.KS": t for t in tickers}
-
-    mom_1m = _load_momentum(ks_tickers, period="1mo", name="momentum_1m")
+    # 모멘텀 (pykrx)
+    mom_1m = _load_kr_momentum(tickers, days=30, name="momentum_1m")
     if not mom_1m.empty:
-        df["momentum_1m"] = mom_1m.rename(index=ticker_map)
+        df["momentum_1m"] = mom_1m
 
-    mom_3m = _load_momentum(ks_tickers, period="3mo", name="momentum_3m")
+    mom_3m = _load_kr_momentum(tickers, days=90, name="momentum_3m")
     if not mom_3m.empty:
-        df["momentum_3m"] = mom_3m.rename(index=ticker_map)
+        df["momentum_3m"] = mom_3m
 
     # 중간 계산용 컬럼 제거
     for col in ("revenue", "gross_profit", "net_income", "total_assets",
@@ -724,44 +762,85 @@ def load_kr_factor_universe(theme: str = "all") -> pd.DataFrame:
 def run_kr_equal_weight_backtest(
     tickers: list[str], start: datetime, end: datetime, interval: str = "1d"
 ) -> tuple[pd.Series, pd.Series]:
-    """KR 종목 백테스트 (yfinance .KS suffix)"""
-    ks_tickers = [f"{t}.KS" for t in tickers]
-    return run_equal_weight_backtest(ks_tickers, start, end, interval)
+    """KR 종목 백테스트 (pykrx 기반)"""
+    start_str = start.strftime("%Y%m%d")
+    end_str = end.strftime("%Y%m%d")
+
+    close_dict: dict[str, pd.Series] = {}
+
+    def _fetch(ticker: str) -> "tuple[str, pd.Series] | None":
+        prices = _fetch_kr_prices(ticker, start_str, end_str)
+        return (ticker, prices) if prices is not None else None
+
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        futures = {executor.submit(_fetch, t): t for t in tickers}
+        for future in as_completed(futures):
+            result = future.result()
+            if result:
+                close_dict[result[0]] = result[1]
+
+    if not close_dict:
+        raise HTTPException(status_code=503, detail="KR 주가 데이터를 가져오지 못했습니다.")
+
+    close = pd.DataFrame(close_dict)
+
+    if interval == "1wk":
+        close = close.resample("W-FRI").last()
+    elif interval == "1mo":
+        close = close.resample("ME").last()
+
+    close = close.dropna(axis=1, how="all").dropna(how="all")
+    if close.shape[1] == 0:
+        raise HTTPException(status_code=503, detail="유효한 KR 주가 시계열이 없습니다.")
+
+    daily_returns = close.pct_change().dropna(how="all")
+    portfolio_returns = daily_returns.mean(axis=1).dropna()
+    if portfolio_returns.empty:
+        raise HTTPException(status_code=503, detail="KR 포트폴리오 수익률을 계산할 수 없습니다.")
+
+    equity = (1 + portfolio_returns).cumprod()
+    return portfolio_returns, equity
 
 
 def _calc_kr_single_stress(
     tickers: list[str], period: dict[str, str]
 ) -> StressTestResult | None:
-    ks_tickers = [f"{t}.KS" for t in tickers]
+    start_str = period["start"].replace("-", "")
+    end_str = period["end"].replace("-", "")
     try:
-        all_tickers = list(set(ks_tickers + ["^KS11"]))
-        hist = yf.download(
-            all_tickers,
-            start=period["start"],
-            end=period["end"],
-            interval="1d",
-            auto_adjust=True, progress=False, threads=True,
-        )
-        if hist.empty:
-            return None
+        # 포트폴리오 수익률 (pykrx)
+        close_dict: dict[str, pd.Series] = {}
 
-        close = hist["Close"] if isinstance(hist.columns, pd.MultiIndex) else hist
-        if isinstance(close, pd.Series):
-            close = close.to_frame(all_tickers[0])
+        def _fetch(ticker: str) -> "tuple[str, pd.Series] | None":
+            prices = _fetch_kr_prices(ticker, start_str, end_str)
+            return (ticker, prices) if prices is not None else None
 
-        port_cols = [t for t in ks_tickers if t in close.columns]
+        with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+            futures = {executor.submit(_fetch, t): t for t in tickers}
+            for future in as_completed(futures):
+                result = future.result()
+                if result:
+                    close_dict[result[0]] = result[1]
+
         portfolio_return: float = 0.0
-        if port_cols:
-            port_close = close[port_cols].dropna(how="all")
+        if close_dict:
+            port_close = pd.DataFrame(close_dict).dropna(how="all")
             if len(port_close) >= 2:
                 ret_df = port_close.pct_change().dropna(how="all")
                 portfolio_return = float((1 + ret_df.mean(axis=1)).prod() - 1)
 
+        # KOSPI 벤치마크 (pykrx 인덱스 코드 1001)
         kospi_return: float = 0.0
-        if "^KS11" in close.columns:
-            kp = close["^KS11"].dropna()
-            if len(kp) >= 2:
-                kospi_return = float(kp.iloc[-1] / kp.iloc[0] - 1)
+        try:
+            from pykrx import stock as krx_stock  # type: ignore[import-not-found]
+            kospi_df = krx_stock.get_index_ohlcv_by_date(start_str, end_str, "1001")
+            if kospi_df is not None and not kospi_df.empty:
+                close_col = "종가" if "종가" in kospi_df.columns else "Close"
+                kp = kospi_df[close_col].dropna()
+                if len(kp) >= 2:
+                    kospi_return = float(kp.iloc[-1] / kp.iloc[0] - 1)
+        except Exception as e:
+            logger.debug("KOSPI 벤치마크 조회 실패 (%s): %s", period["name"], e)
 
         return StressTestResult(
             name=period["name"],
