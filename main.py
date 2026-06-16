@@ -1140,8 +1140,127 @@ def backtest(request: BacktestRequest):
 
 
 # ── 기업 상세 엔드포인트 ──────────────────────────────────────────
+def _is_kr_ticker(ticker: str) -> bool:
+    """6자리 숫자 → 한국 종목코드"""
+    return ticker.isdigit() and len(ticker) == 6
+
+
+def _get_kr_stock_detail(ticker: str) -> StockDetailResponse:
+    """pykrx로 한국 종목 상세 정보 조회"""
+    try:
+        from pykrx import stock as krx_stock  # type: ignore[import-not-found]
+    except ImportError:
+        raise HTTPException(status_code=500, detail="pykrx가 설치되어 있지 않습니다.")
+
+    # ── 종목명 ──────────────────────────────────────────────────
+    try:
+        name: str = krx_stock.get_market_ticker_name(ticker) or ticker
+    except Exception:
+        name = ticker
+
+    # ── 펀더멘털 (PER, PBR, EPS, BPS) ──────────────────────────
+    date_str = _get_recent_trading_date()
+    per: float | None = None
+    pbr: float | None = None
+    roe: float | None = None
+
+    try:
+        fund_df = krx_stock.get_market_fundamental_by_ticker(date_str, market="KOSPI")
+        if fund_df is not None and not fund_df.empty:
+            fund_df.index = fund_df.index.astype(str).str.zfill(6)
+            if ticker in fund_df.index:
+                row = fund_df.loc[ticker]
+                per_raw = _finite_float(row.get("PER"))
+                pbr_raw = _finite_float(row.get("PBR"))
+                eps_raw = _finite_float(row.get("EPS"))
+                bps_raw = _finite_float(row.get("BPS"))
+
+                per = per_raw if per_raw and per_raw != 0 else None
+                pbr = pbr_raw if pbr_raw and pbr_raw != 0 else None
+
+                # ROE ≈ EPS / BPS (소수, yfinance returnOnEquity 형식 통일)
+                if eps_raw is not None and bps_raw and bps_raw != 0:
+                    r = eps_raw / bps_raw
+                    roe = r if np.isfinite(r) else None
+    except Exception as e:
+        logger.warning("KR 펀더멘털 조회 실패 (%s): %s", ticker, e)
+
+    # ── 1년 가격 히스토리 ────────────────────────────────────────
+    end_dt   = datetime.now()
+    start_dt = end_dt - timedelta(days=365)
+    price_history: list[PricePoint] = []
+    current_price: float | None = None
+    week_52_high:  float | None = None
+    week_52_low:   float | None = None
+
+    try:
+        ohlcv = krx_stock.get_market_ohlcv_by_date(
+            start_dt.strftime("%Y%m%d"),
+            end_dt.strftime("%Y%m%d"),
+            ticker,
+        )
+        if ohlcv is not None and not ohlcv.empty:
+            # pykrx 는 컬럼명이 한글(종가) 또는 영문(Close) 일 수 있음
+            close_col = "종가" if "종가" in ohlcv.columns else "Close"
+            for idx, row in ohlcv.iterrows():
+                c = row.get(close_col)
+                if c is not None and np.isfinite(float(c)) and float(c) > 0:
+                    price_history.append(
+                        PricePoint(date=str(idx.date()), close=round(float(c), 2))
+                    )
+
+            if price_history:
+                current_price = price_history[-1].close
+                closes = [p.close for p in price_history]
+                week_52_high = max(closes)
+                week_52_low  = min(closes)
+    except Exception as e:
+        logger.warning("KR 가격 히스토리 조회 실패 (%s): %s", ticker, e)
+
+    # ── 시가총액 ────────────────────────────────────────────────
+    market_cap: int | None = None
+    try:
+        cap_df = krx_stock.get_market_cap_by_ticker(date_str, market="KOSPI")
+        if cap_df is not None and not cap_df.empty:
+            cap_df.index = cap_df.index.astype(str).str.zfill(6)
+            if ticker in cap_df.index:
+                col = "시가총액" if "시가총액" in cap_df.columns else cap_df.columns[0]
+                v = cap_df.at[ticker, col]
+                if v and np.isfinite(float(v)):
+                    market_cap = int(v)
+    except Exception as e:
+        logger.warning("KR 시가총액 조회 실패 (%s): %s", ticker, e)
+
+    if not name and not price_history:
+        raise HTTPException(status_code=404, detail=f"종목을 찾을 수 없습니다: {ticker}")
+
+    return StockDetailResponse(
+        ticker=ticker,
+        name=name,
+        sector=None,
+        industry=None,
+        price_history=price_history,
+        per=per,
+        pbr=pbr,
+        roe=roe,
+        ev_ebitda=None,
+        psr=None,
+        debt_ratio=None,
+        operating_margin=None,
+        market_cap=market_cap,
+        week_52_high=week_52_high,
+        week_52_low=week_52_low,
+        current_price=current_price,
+    )
+
+
 @app.get("/stock/{ticker}", response_model=StockDetailResponse)
 def get_stock_detail(ticker: str):
+    # 6자리 숫자면 한국 종목
+    if _is_kr_ticker(ticker):
+        return _get_kr_stock_detail(ticker)
+
+    # ── 미국 종목 (yfinance) ─────────────────────────────────────
     upper = ticker.upper()
     try:
         t = yf.Ticker(upper)
@@ -1149,14 +1268,12 @@ def get_stock_detail(ticker: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"yfinance 오류: {e}")
 
-    # 종목이 존재하는지 최소 검증
     if not info.get("regularMarketPrice") and not info.get("currentPrice"):
         raise HTTPException(status_code=404, detail=f"종목을 찾을 수 없습니다: {upper}")
 
-    # 최근 1년 일봉 가격 히스토리
     try:
         hist = t.history(period="1y")
-        price_history: list[PricePoint] = [
+        price_history = [
             PricePoint(date=str(idx.date()), close=round(float(close), 4))
             for idx, close in zip(hist.index, hist["Close"])
             if pd.notna(close)
