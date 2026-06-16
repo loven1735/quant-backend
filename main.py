@@ -1,15 +1,10 @@
 from __future__ import annotations
 
-import io
 import logging
 import os
-import xml.etree.ElementTree as ET
-import zipfile
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta
 from typing import Literal
-
-import requests
 
 import numpy as np
 import pandas as pd
@@ -124,37 +119,74 @@ STRESS_PERIODS: list[dict[str, str]] = [
 _factor_cache: dict[str, pd.DataFrame] = {}
 
 # ── KR 시장 상수 ──────────────────────────────────────────────────
-DART_API_KEY: str = os.environ.get(
-    "DART_API_KEY", "50b787d351a2bdb6e499293a663069be9047d462"
-)
+# KOSPI 200 대표 50종목 (yfinance .KS 티커 → 한글 종목명)
+KR_TICKER_NAMES: dict[str, str] = {
+    "005930.KS": "삼성전자",
+    "000660.KS": "SK하이닉스",
+    "035420.KS": "NAVER",
+    "005380.KS": "현대차",
+    "051910.KS": "LG화학",
+    "006400.KS": "삼성SDI",
+    "035720.KS": "카카오",
+    "068270.KS": "셀트리온",
+    "105560.KS": "KB금융",
+    "055550.KS": "신한지주",
+    "012330.KS": "현대모비스",
+    "028260.KS": "삼성물산",
+    "066570.KS": "LG전자",
+    "003670.KS": "포스코홀딩스",
+    "096770.KS": "SK이노베이션",
+    "017670.KS": "SK텔레콤",
+    "030200.KS": "KT",
+    "032830.KS": "삼성생명",
+    "086790.KS": "하나금융지주",
+    "316140.KS": "우리금융지주",
+    "018260.KS": "삼성에스디에스",
+    "011200.KS": "HMM",
+    "010950.KS": "S-Oil",
+    "009150.KS": "삼성전기",
+    "042700.KS": "한미반도체",
+    "000270.KS": "기아",
+    "207940.KS": "삼성바이오로직스",
+    "091990.KS": "셀트리온헬스케어",
+    "036570.KS": "엔씨소프트",
+    "251270.KS": "넷마블",
+    "011070.KS": "LG이노텍",
+    "009540.KS": "한국조선해양",
+    "010140.KS": "삼성중공업",
+    "042660.KS": "한화오션",
+    "047810.KS": "한국항공우주",
+    "012450.KS": "한화에어로스페이스",
+    "015760.KS": "한국전력",
+    "036460.KS": "한국가스공사",
+    "003490.KS": "대한항공",
+    "020560.KS": "아시아나항공",
+    "004020.KS": "현대제철",
+    "005490.KS": "POSCO홀딩스",
+    "000720.KS": "현대건설",
+    "006360.KS": "GS건설",
+    "034730.KS": "SK",
+    "034220.KS": "LG디스플레이",
+    "008770.KS": "호텔신라",
+    "139480.KS": "이마트",
+    "004170.KS": "신세계",
+    "023530.KS": "롯데쇼핑",
+}
 
-KOSPI200_TICKERS: list[str] = [
-    "005930", "000660", "373220", "207940", "005380",  # 삼성전자, SK하이닉스, LG에너지솔루션, 삼성바이오로직스, 현대차
-    "006400", "051910", "035420", "000270", "105560",  # 삼성SDI, LG화학, NAVER, 기아, KB금융
-    "055550", "012330", "028260", "066570", "316140",  # 신한지주, 현대모비스, 삼성물산, LG전자, 우리금융지주
-    "086790", "003550", "032830", "034730", "017670",  # 하나금융지주, LG, 삼성생명, SK, SK텔레콤
-    "011200", "018260", "096770", "009150", "010130",  # HMM, 삼성에스디에스, SK이노베이션, 삼성전기, 고려아연
-    "030200", "003490", "015760", "036570", "086280",  # KT, 대한항공, 한국전력, 엔씨소프트, 현대글로비스
-    "259960", "068270", "035720", "003670", "010950",  # 크래프톤, 셀트리온, 카카오, 포스코퓨처엠, S-Oil
-    "034220", "000810", "005490", "011070", "042700",  # LG디스플레이, 삼성화재, POSCO홀딩스, LG이노텍, 한미반도체
-    "000100", "033780", "139480", "097950", "009830",  # 유한양행, KT&G, 이마트, CJ제일제당, 한화솔루션
-    "024110", "001040", "023530", "029780", "005830",  # IBK기업은행, CJ, 롯데쇼핑, 삼성카드, DB손해보험
-    "000720", "004020", "271560", "326030", "079550",  # 현대건설, 현대제철, 오리온, SK바이오팜, LIG넥스원
-    "088350", "002790", "069620", "036460", "047050",  # 한화생명, 아모레G, 대웅제약, 한국가스공사, 포스코인터내셔널
-    "251270", "000880", "047810", "010060", "069960",  # 넷마블, 한화, 한국항공우주, OCI홀딩스, 현대백화점
-    "002380", "175330", "022100", "012750", "111770",  # KCC, JB금융지주, 포스코DX, 에스원, 영원무역
-]
+KOSPI200_TICKERS: list[str] = list(KR_TICKER_NAMES.keys())
 
 KR_THEME_TICKERS: dict[str, list[str]] = {
     "all": KOSPI200_TICKERS,
-    "semiconductor": ["005930", "000660", "009150", "011070", "042700", "096770"],
-    "battery": ["373220", "006400", "051910", "003670", "009830"],
-    "finance": ["105560", "055550", "086790", "316140", "024110", "005830", "088350", "029780", "175330"],
-    "auto": ["005380", "000270", "012330", "086280"],
-    "pharma_bio": ["207940", "068270", "000100", "069620", "326030"],
-    "tech": ["035420", "035720", "036570", "018260", "259960", "251270"],
-    "energy": ["096770", "010950", "015760", "036460", "010060"],
-    "consumer": ["139480", "023530", "097950", "001040", "002790", "271560"],
+    "semiconductor": ["005930.KS", "000660.KS", "009150.KS", "011070.KS", "042700.KS", "096770.KS"],
+    "battery":       ["006400.KS", "051910.KS", "003670.KS"],
+    "finance":       ["105560.KS", "055550.KS", "086790.KS", "316140.KS", "032830.KS"],
+    "auto":          ["005380.KS", "000270.KS", "012330.KS"],
+    "pharma_bio":    ["207940.KS", "068270.KS", "091990.KS"],
+    "tech":          ["035420.KS", "035720.KS", "036570.KS", "018260.KS", "251270.KS"],
+    "energy":        ["096770.KS", "010950.KS", "015760.KS", "036460.KS"],
+    "defense":       ["047810.KS", "012450.KS"],
+    "shipbuilding":  ["009540.KS", "010140.KS", "042660.KS"],
+    "consumer":      ["139480.KS", "023530.KS", "004170.KS", "008770.KS"],
 }
 
 KR_STRESS_PERIODS: list[dict[str, str]] = [
@@ -164,9 +196,8 @@ KR_STRESS_PERIODS: list[dict[str, str]] = [
     {"name": "IT버블",        "start": "2000-03-10", "end": "2001-09-30"},
 ]
 
-# KR 팩터 캐시 + DART corp_code 캐시
+# KR 팩터 캐시
 _kr_factor_cache: dict[str, pd.DataFrame] = {}
-_kr_corp_codes: dict[str, str] = {}
 
 
 # ── Pydantic 모델 ─────────────────────────────────────────────────
@@ -412,266 +443,6 @@ def load_factor_universe(theme: str = "all") -> pd.DataFrame:
 
 
 # ── KR 팩터 데이터 로딩 ───────────────────────────────────────────
-def _get_recent_trading_date() -> str:
-    """최근 평일(거래일 근사) 날짜 반환 (YYYYMMDD)"""
-    d = datetime.now()
-    for _ in range(10):
-        if d.weekday() < 5:
-            return d.strftime("%Y%m%d")
-        d -= timedelta(days=1)
-    return datetime.now().strftime("%Y%m%d")
-
-
-def _parse_kr_number(raw: str) -> float | None:
-    """한국 재무제표 숫자 파싱 (쉼표·괄호 처리)"""
-    s = raw.strip().replace(",", "")
-    if not s:
-        return None
-    try:
-        if s.startswith("(") and s.endswith(")"):
-            return -float(s[1:-1])
-        return float(s)
-    except ValueError:
-        return None
-
-
-def _load_kr_pykrx_factors(tickers: list[str]) -> pd.DataFrame:
-    """pykrx로 KR 기본 팩터 로드 (PER, PBR, ROE 근사)"""
-    try:
-        from pykrx import stock as krx_stock  # type: ignore[import-not-found]
-    except ImportError:
-        logger.warning("pykrx 미설치. pip install pykrx 실행 필요.")
-        return pd.DataFrame()
-
-    date_str = _get_recent_trading_date()
-    try:
-        df = krx_stock.get_market_fundamental_by_ticker(date_str, market="KOSPI")
-        if df is None or df.empty:
-            return pd.DataFrame()
-
-        # 인덱스를 6자리 문자열로 정규화
-        df.index = df.index.astype(str).str.zfill(6)
-        filtered = df[df.index.isin(tickers)].copy()
-        if filtered.empty:
-            return pd.DataFrame()
-
-        result = pd.DataFrame(index=filtered.index)
-
-        per = filtered["PER"].replace(0, np.nan).astype(float)
-        result["per"] = per.where(np.isfinite(per))
-
-        pbr = filtered["PBR"].replace(0, np.nan).astype(float)
-        result["pbr"] = pbr.where(np.isfinite(pbr))
-
-        eps = filtered["EPS"].replace(0, np.nan).astype(float)
-        bps = filtered["BPS"].replace(0, np.nan).astype(float)
-        with np.errstate(divide="ignore", invalid="ignore"):
-            roe = eps / bps
-        result["roe"] = roe.where(np.isfinite(roe))
-
-        logger.info("pykrx 팩터 로드 완료: %d종목", len(result))
-        return result
-    except Exception as e:
-        logger.warning("pykrx 팩터 로드 실패: %s", e)
-        return pd.DataFrame()
-
-
-def _load_kr_market_caps(tickers: list[str]) -> dict[str, float]:
-    """pykrx로 시가총액 조회"""
-    try:
-        from pykrx import stock as krx_stock  # type: ignore[import-not-found]
-    except ImportError:
-        return {}
-
-    date_str = _get_recent_trading_date()
-    try:
-        df = krx_stock.get_market_cap_by_ticker(date_str, market="KOSPI")
-        if df is None or df.empty:
-            return {}
-        df.index = df.index.astype(str).str.zfill(6)
-        result = {}
-        col = "시가총액" if "시가총액" in df.columns else df.columns[0]
-        for ticker in tickers:
-            if ticker in df.index:
-                v = df.at[ticker, col]
-                if v and np.isfinite(float(v)):
-                    result[ticker] = float(v)
-        return result
-    except Exception as e:
-        logger.warning("pykrx 시가총액 조회 실패: %s", e)
-        return {}
-
-
-def _load_kr_company_names(tickers: list[str]) -> dict[str, str]:
-    """pykrx로 KR 종목명 조회"""
-    try:
-        from pykrx import stock as krx_stock  # type: ignore[import-not-found]
-    except ImportError:
-        return {}
-
-    result: dict[str, str] = {}
-    for ticker in tickers:
-        try:
-            name = krx_stock.get_market_ticker_name(ticker)
-            if name:
-                result[ticker] = str(name)
-        except Exception:
-            pass
-    return result
-
-
-def _fetch_kr_prices(ticker: str, start_str: str, end_str: str) -> "pd.Series | None":
-    """pykrx로 단일 KR 종목 종가 시계열 반환"""
-    try:
-        from pykrx import stock as krx_stock  # type: ignore[import-not-found]
-        df = krx_stock.get_market_ohlcv_by_date(start_str, end_str, ticker)
-        if df is None or df.empty:
-            return None
-        close_col = "종가" if "종가" in df.columns else "Close"
-        prices = df[close_col].dropna()
-        return prices if len(prices) >= 2 else None
-    except Exception as e:
-        logger.debug("KR 가격 조회 실패 (%s): %s", ticker, e)
-        return None
-
-
-def _load_kr_momentum(tickers: list[str], days: int, name: str) -> pd.Series:
-    """pykrx로 KR 모멘텀 계산 (병렬)"""
-    end_dt = datetime.now()
-    start_dt = end_dt - timedelta(days=days + 10)
-    start_str = start_dt.strftime("%Y%m%d")
-    end_str = end_dt.strftime("%Y%m%d")
-
-    momentum: dict[str, float] = {}
-
-    def _calc(ticker: str) -> "tuple[str, float] | None":
-        prices = _fetch_kr_prices(ticker, start_str, end_str)
-        if prices is None:
-            return None
-        ret = float(prices.iloc[-1] / prices.iloc[0] - 1)
-        return (ticker, ret) if np.isfinite(ret) else None
-
-    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        futures = {executor.submit(_calc, t): t for t in tickers}
-        for future in as_completed(futures):
-            result = future.result()
-            if result:
-                momentum[result[0]] = result[1]
-
-    return pd.Series(momentum, name=name)
-
-
-def _load_dart_corp_codes() -> dict[str, str]:
-    """DART에서 종목코드 → corp_code 매핑 로드 (최초 1회)"""
-    global _kr_corp_codes
-    if _kr_corp_codes:
-        return _kr_corp_codes
-
-    url = f"https://opendart.fss.or.kr/api/corpCode.xml?crtfc_key={DART_API_KEY}"
-    try:
-        resp = requests.get(url, timeout=60)
-        if resp.status_code != 200:
-            logger.warning("DART corpCode API 오류: %d", resp.status_code)
-            return {}
-
-        with zipfile.ZipFile(io.BytesIO(resp.content)) as z:
-            xml_bytes = z.read("CORPCODE.xml")
-
-        root = ET.fromstring(xml_bytes)
-        for item in root.findall(".//list"):
-            sc = (item.findtext("stock_code") or "").strip()
-            cc = (item.findtext("corp_code") or "").strip()
-            if sc and cc:
-                _kr_corp_codes[sc] = cc
-
-        logger.info("DART corp_code 로드 완료: %d개", len(_kr_corp_codes))
-    except Exception as e:
-        logger.warning("DART corp_code 로드 실패: %s", e)
-
-    return _kr_corp_codes
-
-
-def _fetch_dart_financials(corp_code: str) -> dict[str, float]:
-    """DART 단일 회사 재무제표 조회 (전년도 사업보고서)"""
-    year = datetime.now().year - 1
-    for fs_div in ("CFS", "OFS"):
-        params = {
-            "crtfc_key": DART_API_KEY,
-            "corp_code": corp_code,
-            "bsns_year": str(year),
-            "reprt_code": "11011",
-            "fs_div": fs_div,
-        }
-        try:
-            resp = requests.get(
-                "https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json",
-                params=params,
-                timeout=15,
-            )
-            data = resp.json()
-            if data.get("status") != "000":
-                continue
-
-            result: dict[str, float] = {}
-            for item in data.get("list", []):
-                nm = item.get("account_nm", "")
-                val = _parse_kr_number(item.get("thstrm_amount", ""))
-                if val is None:
-                    continue
-
-                if nm in ("매출액", "수익(매출액)", "영업수익", "매출"):
-                    result.setdefault("revenue", val)
-                elif nm == "매출총이익":
-                    result["gross_profit"] = val
-                elif nm in ("영업이익", "영업이익(손실)"):
-                    result["operating_income"] = val
-                elif nm in ("당기순이익", "분기순이익", "당기순이익(손실)"):
-                    result.setdefault("net_income", val)
-                elif nm == "자산총계":
-                    result["total_assets"] = val
-                elif nm == "자본총계":
-                    result["total_equity"] = val
-                elif nm == "부채총계":
-                    result["total_liabilities"] = val
-
-            if result:
-                return result
-        except Exception as e:
-            logger.debug("DART 조회 실패 (corp=%s fs=%s): %s", corp_code, fs_div, e)
-
-    return {}
-
-
-def _load_kr_dart_factors(tickers: list[str]) -> pd.DataFrame:
-    """DART API로 KR 재무 팩터 배치 로드"""
-    corp_codes = _load_dart_corp_codes()
-    if not corp_codes:
-        return pd.DataFrame()
-
-    rows: list[dict] = []
-
-    def _fetch_one(ticker: str) -> dict | None:
-        cc = corp_codes.get(ticker)
-        if not cc:
-            return None
-        data = _fetch_dart_financials(cc)
-        if not data:
-            return None
-        return {"ticker": ticker, **data}
-
-    with ThreadPoolExecutor(max_workers=10) as executor:
-        futures = {executor.submit(_fetch_one, t): t for t in tickers}
-        for future in as_completed(futures):
-            r = future.result()
-            if r:
-                rows.append(r)
-
-    if not rows:
-        return pd.DataFrame()
-
-    return pd.DataFrame(rows).set_index("ticker")
-
-
 def load_kr_factor_universe(theme: str = "all") -> pd.DataFrame:
     global _kr_factor_cache
     cache_key = f"kr_{theme}"
@@ -679,80 +450,30 @@ def load_kr_factor_universe(theme: str = "all") -> pd.DataFrame:
         return _kr_factor_cache[cache_key]
 
     tickers = list(KR_THEME_TICKERS.get(theme, KR_THEME_TICKERS["all"]))
+    rows: list[dict[str, float | str]] = []
 
-    # pykrx 팩터, DART 재무, 종목명 병렬 로드
-    with ThreadPoolExecutor(max_workers=3) as executor:
-        f_pykrx = executor.submit(_load_kr_pykrx_factors, tickers)
-        f_dart  = executor.submit(_load_kr_dart_factors, tickers)
-        f_names = executor.submit(_load_kr_company_names, tickers)
-        pykrx_df = f_pykrx.result()
-        dart_df  = f_dart.result()
-        names    = f_names.result()
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        futures = {executor.submit(_fetch_info_factors, t): t for t in tickers}
+        for future in as_completed(futures):
+            ticker = futures[future]
+            factors = future.result()
+            if factors:
+                rows.append({"ticker": ticker, **factors})
 
-    market_caps = _load_kr_market_caps(tickers)
-
-    # base DataFrame
     idx = pd.Index(tickers, name="ticker")
-    df = pykrx_df.copy() if not pykrx_df.empty else pd.DataFrame(index=idx)
+    df = pd.DataFrame(rows).set_index("ticker") if rows else pd.DataFrame(index=idx)
 
-    if not dart_df.empty:
-        for col in dart_df.columns:
-            df[col] = dart_df.reindex(df.index)[col]
+    # 하드코딩 한글 종목명 (yfinance 영문명 대신)
+    df["longName"] = df.index.map(lambda t: KR_TICKER_NAMES.get(t, t))
 
-    # index.map 으로 할당: names 미매칭 시 종목코드를 그대로 사용
-    df["longName"] = df.index.map(lambda t: names.get(str(t), str(t)))
-    df["market_cap"] = pd.Series(market_caps, dtype=float).reindex(df.index)
-
-    # PSR = 시가총액 / 매출액
-    if "revenue" in df.columns and "market_cap" in df.columns:
-        rev = df["revenue"].replace(0, np.nan)
-        psr = df["market_cap"] / rev
-        df["psr"] = psr.where(np.isfinite(psr) & (psr > 0))
-
-    # GPA = 매출총이익 / 자산총계
-    if "gross_profit" in df.columns and "total_assets" in df.columns:
-        ta = df["total_assets"].replace(0, np.nan)
-        gpa = df["gross_profit"] / ta
-        df["gpa"] = gpa.where(np.isfinite(gpa))
-
-    # 부채비율 = 부채총계 / 자본총계
-    if "total_liabilities" in df.columns and "total_equity" in df.columns:
-        eq = df["total_equity"].replace(0, np.nan)
-        dr = df["total_liabilities"] / eq
-        df["debt_ratio"] = dr.where(np.isfinite(dr))
-
-    # ROE from DART (DART 데이터로 pykrx ROE 보완)
-    if "net_income" in df.columns and "total_equity" in df.columns:
-        eq = df["total_equity"].replace(0, np.nan)
-        roe_dart = (df["net_income"] / eq).where(
-            lambda s: np.isfinite(s)
-        )
-        if "roe" not in df.columns:
-            df["roe"] = roe_dart
-        else:
-            df["roe"] = df["roe"].fillna(roe_dart)
-
-    # EV/EBITDA 근사: EV ≈ 시가총액 + 부채총계, EBITDA ≈ 영업이익
-    if "operating_income" in df.columns and "market_cap" in df.columns:
-        liab = df.get("total_liabilities", pd.Series(0.0, index=df.index)).fillna(0)
-        ev = df["market_cap"].fillna(0) + liab
-        ebitda = df["operating_income"].replace(0, np.nan)
-        ev_ebitda = ev / ebitda
-        df["ev_ebitda"] = ev_ebitda.where(np.isfinite(ev_ebitda) & (ev_ebitda > 0))
-
-    # 모멘텀 (pykrx)
-    mom_1m = _load_kr_momentum(tickers, days=30, name="momentum_1m")
+    # 모멘텀 (yfinance .KS)
+    mom_1m = _load_momentum(tickers, period="1mo", name="momentum_1m")
     if not mom_1m.empty:
         df["momentum_1m"] = mom_1m
 
-    mom_3m = _load_kr_momentum(tickers, days=90, name="momentum_3m")
+    mom_3m = _load_momentum(tickers, period="3mo", name="momentum_3m")
     if not mom_3m.empty:
         df["momentum_3m"] = mom_3m
-
-    # 중간 계산용 컬럼 제거
-    for col in ("revenue", "gross_profit", "net_income", "total_assets",
-                "total_equity", "total_liabilities", "operating_income", "market_cap"):
-        df.drop(columns=[col], inplace=True, errors="ignore")
 
     _kr_factor_cache[cache_key] = df
     logger.info("KR 팩터 유니버스 로드 완료 (theme='%s'): %d종목", theme, len(df))
@@ -762,85 +483,42 @@ def load_kr_factor_universe(theme: str = "all") -> pd.DataFrame:
 def run_kr_equal_weight_backtest(
     tickers: list[str], start: datetime, end: datetime, interval: str = "1d"
 ) -> tuple[pd.Series, pd.Series]:
-    """KR 종목 백테스트 (pykrx 기반)"""
-    start_str = start.strftime("%Y%m%d")
-    end_str = end.strftime("%Y%m%d")
-
-    close_dict: dict[str, pd.Series] = {}
-
-    def _fetch(ticker: str) -> "tuple[str, pd.Series] | None":
-        prices = _fetch_kr_prices(ticker, start_str, end_str)
-        return (ticker, prices) if prices is not None else None
-
-    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        futures = {executor.submit(_fetch, t): t for t in tickers}
-        for future in as_completed(futures):
-            result = future.result()
-            if result:
-                close_dict[result[0]] = result[1]
-
-    if not close_dict:
-        raise HTTPException(status_code=503, detail="KR 주가 데이터를 가져오지 못했습니다.")
-
-    close = pd.DataFrame(close_dict)
-
-    if interval == "1wk":
-        close = close.resample("W-FRI").last()
-    elif interval == "1mo":
-        close = close.resample("ME").last()
-
-    close = close.dropna(axis=1, how="all").dropna(how="all")
-    if close.shape[1] == 0:
-        raise HTTPException(status_code=503, detail="유효한 KR 주가 시계열이 없습니다.")
-
-    daily_returns = close.pct_change().dropna(how="all")
-    portfolio_returns = daily_returns.mean(axis=1).dropna()
-    if portfolio_returns.empty:
-        raise HTTPException(status_code=503, detail="KR 포트폴리오 수익률을 계산할 수 없습니다.")
-
-    equity = (1 + portfolio_returns).cumprod()
-    return portfolio_returns, equity
+    """KR 종목 백테스트 (yfinance .KS)"""
+    return run_equal_weight_backtest(tickers, start, end, interval)
 
 
 def _calc_kr_single_stress(
     tickers: list[str], period: dict[str, str]
 ) -> StressTestResult | None:
-    start_str = period["start"].replace("-", "")
-    end_str = period["end"].replace("-", "")
     try:
-        # 포트폴리오 수익률 (pykrx)
-        close_dict: dict[str, pd.Series] = {}
+        all_tickers = list(set(tickers + ["^KS11"]))
+        hist = yf.download(
+            all_tickers,
+            start=period["start"],
+            end=period["end"],
+            interval="1d",
+            auto_adjust=True, progress=False, threads=True,
+        )
+        if hist.empty:
+            return None
 
-        def _fetch(ticker: str) -> "tuple[str, pd.Series] | None":
-            prices = _fetch_kr_prices(ticker, start_str, end_str)
-            return (ticker, prices) if prices is not None else None
+        close = hist["Close"] if isinstance(hist.columns, pd.MultiIndex) else hist
+        if isinstance(close, pd.Series):
+            close = close.to_frame(all_tickers[0])
 
-        with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-            futures = {executor.submit(_fetch, t): t for t in tickers}
-            for future in as_completed(futures):
-                result = future.result()
-                if result:
-                    close_dict[result[0]] = result[1]
-
+        port_cols = [t for t in tickers if t in close.columns]
         portfolio_return: float = 0.0
-        if close_dict:
-            port_close = pd.DataFrame(close_dict).dropna(how="all")
+        if port_cols:
+            port_close = close[port_cols].dropna(how="all")
             if len(port_close) >= 2:
                 ret_df = port_close.pct_change().dropna(how="all")
                 portfolio_return = float((1 + ret_df.mean(axis=1)).prod() - 1)
 
-        # KOSPI 벤치마크 (pykrx 인덱스 코드 1001)
         kospi_return: float = 0.0
-        try:
-            from pykrx import stock as krx_stock  # type: ignore[import-not-found]
-            kospi_df = krx_stock.get_index_ohlcv_by_date(start_str, end_str, "1001")
-            if kospi_df is not None and not kospi_df.empty:
-                close_col = "종가" if "종가" in kospi_df.columns else "Close"
-                kp = kospi_df[close_col].dropna()
-                if len(kp) >= 2:
-                    kospi_return = float(kp.iloc[-1] / kp.iloc[0] - 1)
-        except Exception as e:
-            logger.debug("KOSPI 벤치마크 조회 실패 (%s): %s", period["name"], e)
+        if "^KS11" in close.columns:
+            kp = close["^KS11"].dropna()
+            if len(kp) >= 2:
+                kospi_return = float(kp.iloc[-1] / kp.iloc[0] - 1)
 
         return StressTestResult(
             name=period["name"],
@@ -1220,116 +898,58 @@ def backtest(request: BacktestRequest):
 
 # ── 기업 상세 엔드포인트 ──────────────────────────────────────────
 def _is_kr_ticker(ticker: str) -> bool:
-    """6자리 숫자 → 한국 종목코드"""
-    return ticker.isdigit() and len(ticker) == 6
+    """.KS suffix 또는 6자리 숫자 → 한국 종목"""
+    return ticker.upper().endswith(".KS") or (ticker.isdigit() and len(ticker) == 6)
 
 
 def _get_kr_stock_detail(ticker: str) -> StockDetailResponse:
-    """pykrx로 한국 종목 상세 정보 조회"""
+    """yfinance .KS 티커로 한국 종목 상세 정보 조회"""
+    ks = ticker if ticker.upper().endswith(".KS") else f"{ticker}.KS"
     try:
-        from pykrx import stock as krx_stock  # type: ignore[import-not-found]
-    except ImportError:
-        raise HTTPException(status_code=500, detail="pykrx가 설치되어 있지 않습니다.")
+        t = yf.Ticker(ks)
+        info = t.info or {}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"yfinance 오류: {e}")
 
-    # ── 종목명 ──────────────────────────────────────────────────
+    # 하드코딩 한글명 우선, 없으면 yfinance longName
+    name = KR_TICKER_NAMES.get(ks) or str(info.get("longName") or info.get("shortName") or ks)
+
     try:
-        name: str = krx_stock.get_market_ticker_name(ticker) or ticker
+        hist = t.history(period="1y")
+        price_history = [
+            PricePoint(date=str(idx.date()), close=round(float(close), 2))
+            for idx, close in zip(hist.index, hist["Close"])
+            if pd.notna(close)
+        ]
     except Exception:
-        name = ticker
+        price_history = []
 
-    # ── 펀더멘털 (PER, PBR, EPS, BPS) ──────────────────────────
-    date_str = _get_recent_trading_date()
-    per: float | None = None
-    pbr: float | None = None
-    roe: float | None = None
+    if not price_history:
+        raise HTTPException(status_code=404, detail=f"종목을 찾을 수 없습니다: {ks}")
 
-    try:
-        fund_df = krx_stock.get_market_fundamental_by_ticker(date_str, market="KOSPI")
-        if fund_df is not None and not fund_df.empty:
-            fund_df.index = fund_df.index.astype(str).str.zfill(6)
-            if ticker in fund_df.index:
-                row = fund_df.loc[ticker]
-                per_raw = _finite_float(row.get("PER"))
-                pbr_raw = _finite_float(row.get("PBR"))
-                eps_raw = _finite_float(row.get("EPS"))
-                bps_raw = _finite_float(row.get("BPS"))
+    def safe_float(key: str) -> float | None:
+        return _finite_float(info.get(key))
 
-                per = per_raw if per_raw and per_raw != 0 else None
-                pbr = pbr_raw if pbr_raw and pbr_raw != 0 else None
-
-                # ROE ≈ EPS / BPS (소수, yfinance returnOnEquity 형식 통일)
-                if eps_raw is not None and bps_raw and bps_raw != 0:
-                    r = eps_raw / bps_raw
-                    roe = r if np.isfinite(r) else None
-    except Exception as e:
-        logger.warning("KR 펀더멘털 조회 실패 (%s): %s", ticker, e)
-
-    # ── 1년 가격 히스토리 ────────────────────────────────────────
-    end_dt   = datetime.now()
-    start_dt = end_dt - timedelta(days=365)
-    price_history: list[PricePoint] = []
-    current_price: float | None = None
-    week_52_high:  float | None = None
-    week_52_low:   float | None = None
-
-    try:
-        ohlcv = krx_stock.get_market_ohlcv_by_date(
-            start_dt.strftime("%Y%m%d"),
-            end_dt.strftime("%Y%m%d"),
-            ticker,
-        )
-        if ohlcv is not None and not ohlcv.empty:
-            # pykrx 는 컬럼명이 한글(종가) 또는 영문(Close) 일 수 있음
-            close_col = "종가" if "종가" in ohlcv.columns else "Close"
-            for idx, row in ohlcv.iterrows():
-                c = row.get(close_col)
-                if c is not None and np.isfinite(float(c)) and float(c) > 0:
-                    price_history.append(
-                        PricePoint(date=str(idx.date()), close=round(float(c), 2))
-                    )
-
-            if price_history:
-                current_price = price_history[-1].close
-                closes = [p.close for p in price_history]
-                week_52_high = max(closes)
-                week_52_low  = min(closes)
-    except Exception as e:
-        logger.warning("KR 가격 히스토리 조회 실패 (%s): %s", ticker, e)
-
-    # ── 시가총액 ────────────────────────────────────────────────
-    market_cap: int | None = None
-    try:
-        cap_df = krx_stock.get_market_cap_by_ticker(date_str, market="KOSPI")
-        if cap_df is not None and not cap_df.empty:
-            cap_df.index = cap_df.index.astype(str).str.zfill(6)
-            if ticker in cap_df.index:
-                col = "시가총액" if "시가총액" in cap_df.columns else cap_df.columns[0]
-                v = cap_df.at[ticker, col]
-                if v and np.isfinite(float(v)):
-                    market_cap = int(v)
-    except Exception as e:
-        logger.warning("KR 시가총액 조회 실패 (%s): %s", ticker, e)
-
-    if not name and not price_history:
-        raise HTTPException(status_code=404, detail=f"종목을 찾을 수 없습니다: {ticker}")
+    raw_cap = info.get("marketCap")
+    market_cap = int(raw_cap) if raw_cap and np.isfinite(float(raw_cap)) else None
 
     return StockDetailResponse(
-        ticker=ticker,
+        ticker=ks,
         name=name,
-        sector=None,
-        industry=None,
+        sector=info.get("sector") or None,
+        industry=info.get("industry") or None,
         price_history=price_history,
-        per=per,
-        pbr=pbr,
-        roe=roe,
-        ev_ebitda=None,
-        psr=None,
-        debt_ratio=None,
-        operating_margin=None,
+        per=safe_float("trailingPE"),
+        pbr=safe_float("priceToBook"),
+        roe=safe_float("returnOnEquity"),
+        ev_ebitda=safe_float("enterpriseToEbitda"),
+        psr=safe_float("priceToSalesTrailing12Months"),
+        debt_ratio=safe_float("debtToEquity"),
+        operating_margin=safe_float("operatingMargins"),
         market_cap=market_cap,
-        week_52_high=week_52_high,
-        week_52_low=week_52_low,
-        current_price=current_price,
+        week_52_high=safe_float("fiftyTwoWeekHigh"),
+        week_52_low=safe_float("fiftyTwoWeekLow"),
+        current_price=price_history[-1].close,
     )
 
 
