@@ -265,40 +265,44 @@ def _parse_kr_number(raw: str) -> float | None:
 
 
 def _fetch_dart_financials(corp_code: str) -> dict[str, float]:
-    """DART 단일 회사 재무제표 조회 → 당기순이익·자기자본 반환 (단위: 백만원)"""
-    year = datetime.now().year - 1
-    for fs_div in ("CFS", "OFS"):
-        params = {
-            "crtfc_key": DART_API_KEY,
-            "corp_code": corp_code,
-            "bsns_year": str(year),
-            "reprt_code": "11011",   # 사업보고서
-            "fs_div": fs_div,
-        }
-        try:
-            resp = requests.get(
-                "https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json",
-                params=params, timeout=15,
-            )
-            data = resp.json()
-            if data.get("status") != "000":
-                continue
-
-            result: dict[str, float] = {}
-            for item in data.get("list", []):
-                nm  = item.get("account_nm", "")
-                val = _parse_kr_number(item.get("thstrm_amount", ""))
-                if val is None:
+    """DART 단일 회사 재무제표 조회 → 당기순이익·자기자본 반환 (단위: 백만원).
+    1월 초에 전년도 사업보고서가 미제출일 수 있으므로 전전년도까지 fallback.
+    """
+    current_year = datetime.now().year
+    # 사업보고서(11011)는 통상 3~4월에 제출되므로 전년도 → 전전년도 순서로 시도
+    for year in (current_year - 1, current_year - 2):
+        for fs_div in ("CFS", "OFS"):
+            params = {
+                "crtfc_key": DART_API_KEY,
+                "corp_code": corp_code,
+                "bsns_year": str(year),
+                "reprt_code": "11011",   # 사업보고서
+                "fs_div": fs_div,
+            }
+            try:
+                resp = requests.get(
+                    "https://opendart.fss.or.kr/api/fnlttSinglAcntAll.json",
+                    params=params, timeout=15,
+                )
+                data = resp.json()
+                if data.get("status") != "000":
                     continue
-                if nm in ("당기순이익", "당기순이익(손실)", "분기순이익"):
-                    result.setdefault("net_income", val)
-                elif nm in ("자본총계", "지배기업주주지분"):
-                    result.setdefault("total_equity", val)
 
-            if result:
-                return result
-        except Exception as e:
-            logger.debug("DART 재무 조회 실패 (corp=%s fs=%s): %s", corp_code, fs_div, e)
+                result: dict[str, float] = {}
+                for item in data.get("list", []):
+                    nm  = item.get("account_nm", "")
+                    val = _parse_kr_number(item.get("thstrm_amount", ""))
+                    if val is None:
+                        continue
+                    if nm in ("당기순이익", "당기순이익(손실)", "분기순이익"):
+                        result.setdefault("net_income", val)
+                    elif nm in ("자본총계", "지배기업주주지분"):
+                        result.setdefault("total_equity", val)
+
+                if result:
+                    return result
+            except Exception as e:
+                logger.debug("DART 재무 조회 실패 (corp=%s year=%d fs=%s): %s", corp_code, year, fs_div, e)
 
     return {}
 
@@ -360,9 +364,12 @@ def _load_kr_dart_factors(
     with ThreadPoolExecutor(max_workers=10) as executor:
         futures = {executor.submit(_fetch_one, t): t for t in tickers}
         for future in as_completed(futures):
-            r = future.result()
-            if r:
-                rows.append(r)
+            try:
+                r = future.result()
+                if r:
+                    rows.append(r)
+            except Exception as e:
+                logger.debug("DART factor fetch 예외: %s", e)
 
     if not rows:
         return pd.DataFrame()
@@ -384,24 +391,26 @@ def _load_kospi_universe(n: int = 200) -> list[str]:
     try:
         from pykrx import stock as krx_stock  # type: ignore[import-not-found]
 
-        # 최근 평일(거래일 근사)
-        d = datetime.now()
+        # 어제부터 최대 10일 소급해 가장 최근 평일 탐색
+        # (오늘 오전에는 당일 데이터가 아직 없을 수 있으므로 어제 기준 시작)
+        d = datetime.now() - timedelta(days=1)
+        cap_df = None
         for _ in range(10):
             if d.weekday() < 5:
-                break
+                date_str = d.strftime("%Y%m%d")
+                cap_df = krx_stock.get_market_cap_by_ticker(date_str, market="KOSPI")
+                if cap_df is not None and not cap_df.empty:
+                    break
             d -= timedelta(days=1)
-        date_str = d.strftime("%Y%m%d")
-
-        cap_df = krx_stock.get_market_cap_by_ticker(date_str, market="KOSPI")
         if cap_df is None or cap_df.empty:
-            raise ValueError("pykrx 시가총액 데이터 없음")
+            raise ValueError("pykrx 시가총액 데이터 없음 (최근 10일 시도 실패)")
 
         cap_col = "시가총액" if "시가총액" in cap_df.columns else cap_df.columns[0]
-        cap_df = cap_df[cap_df[cap_col] > 0].sort_values(cap_col, ascending=False)
+        cap_df = cap_df[cap_df[cap_col] > 0].sort_values(cap_col, ascending=False, kind="stable")
 
         top_codes = cap_df.head(n).index.astype(str).str.zfill(6).tolist()
         _kospi_universe_cache = [f"{c}.KS" for c in top_codes]
-        logger.info("KOSPI 시가총액 상위 %d종목 로드 완료", len(_kospi_universe_cache))
+        logger.info("KOSPI 시가총액 상위 %d종목 로드 완료 (기준일: %s)", len(_kospi_universe_cache), date_str)
 
     except Exception as e:
         logger.warning("KOSPI 유니버스 로드 실패 (%s), 하드코딩 50종목 사용", e)
@@ -643,9 +652,12 @@ def load_factor_universe(theme: str = "all") -> pd.DataFrame:
         futures = {executor.submit(_fetch_info_factors, t): t for t in tickers}
         for future in as_completed(futures):
             ticker = futures[future]
-            factors = future.result()
-            if factors:
-                rows.append({"ticker": ticker, **factors})
+            try:
+                factors = future.result()
+                if factors:
+                    rows.append({"ticker": ticker, **factors})
+            except Exception as e:
+                logger.debug("팩터 조회 예외 (%s): %s", ticker, e)
 
     if not rows:
         raise HTTPException(
@@ -686,9 +698,12 @@ def load_kr_factor_universe(theme: str = "all") -> pd.DataFrame:
         futures = {executor.submit(_fetch_info_factors, t): t for t in tickers}
         for future in as_completed(futures):
             ticker = futures[future]
-            factors = future.result()
-            if factors:
-                rows.append({"ticker": ticker, **factors})
+            try:
+                factors = future.result()
+                if factors:
+                    rows.append({"ticker": ticker, **factors})
+            except Exception as e:
+                logger.debug("KR 팩터 조회 예외 (%s): %s", ticker, e)
 
     rows.sort(key=lambda r: r["ticker"])
     idx = pd.Index(tickers, name="ticker")
@@ -739,7 +754,7 @@ def _calc_kr_single_stress(
     tickers: list[str], period: dict[str, str]
 ) -> StressTestResult | None:
     try:
-        all_tickers = list(set(tickers + ["^KS11"]))
+        all_tickers = sorted(set(tickers + ["^KS11"]))
         hist = yf.download(
             all_tickers,
             start=period["start"],
@@ -949,7 +964,7 @@ def _calc_single_stress(
     tickers: list[str], period: dict[str, str]
 ) -> StressTestResult | None:
     try:
-        all_tickers = list(set(tickers + ["^GSPC"]))
+        all_tickers = sorted(set(tickers + ["^GSPC"]))
         hist = yf.download(
             all_tickers,
             start=period["start"],
