@@ -343,20 +343,22 @@ def _load_kr_dart_factors(
         eq = fin.get("total_equity")  # 백만원
         row: dict = {"ticker": ticker}
 
-        if ni and ni != 0:
+        # PER: 당기순이익이 양수인 종목만 (적자 종목 제외)
+        if ni is not None and ni > 0:
             per = mc / (ni * 1_000_000)
             if np.isfinite(per) and 0 < per < 1000:
                 row["per"] = round(per, 2)
 
-        if eq and eq != 0:
+        # PBR/ROE: 자기자본 양수인 종목만 (자본잠식 제외)
+        if eq is not None and eq > 0:
             pbr = mc / (eq * 1_000_000)
             if np.isfinite(pbr) and 0 < pbr < 100:
                 row["pbr"] = round(pbr, 2)
 
-        if ni and eq and eq != 0:
-            roe = ni / eq               # 동일 단위 → 변환 불필요
-            if np.isfinite(roe):
-                row["roe"] = round(roe, 4)
+            if ni is not None:
+                roe = ni / eq           # 동일 단위 → 변환 불필요
+                if np.isfinite(roe):
+                    row["roe"] = round(roe, 4)
 
         return row if len(row) > 1 else None
 
@@ -679,6 +681,24 @@ def load_factor_universe(theme: str = "all") -> pd.DataFrame:
     return df
 
 
+def _fill_kr_sector_median(df: pd.DataFrame, cols: list[str]) -> pd.DataFrame:
+    """NaN 팩터값을 섹터 중위값 → 전체 중위값 순서로 채운다.
+
+    yfinance sector 컬럼이 있으면 섹터별로 그룹화하고,
+    섹터 정보 없거나 섹터 내에도 모두 NaN이면 전체 중위값 사용.
+    """
+    for col in cols:
+        if col not in df.columns:
+            continue
+        if "sector" in df.columns:
+            sector_med = df.groupby("sector", observed=True)[col].transform("median")
+            df[col] = df[col].fillna(sector_med)
+        overall_med = df[col].median()
+        if pd.notna(overall_med):
+            df[col] = df[col].fillna(overall_med)
+    return df
+
+
 # ── KR 팩터 데이터 로딩 ───────────────────────────────────────────
 def load_kr_factor_universe(theme: str = "all") -> pd.DataFrame:
     global _kr_factor_cache
@@ -723,11 +743,30 @@ def load_kr_factor_universe(theme: str = "all") -> pd.DataFrame:
         }
         df.drop(columns=["market_cap"], inplace=True)
 
-    # DART PER/PBR/ROE로 yfinance 값 덮어씌우기
+    # DART PER/PBR/ROE (우선) → yfinance fallback 보존 → 섹터 중위값 imputation
     dart_fund = _load_kr_dart_factors(tickers, market_caps=market_caps)
     for col in ("per", "pbr", "roe"):
-        if col in dart_fund.columns:
-            df[col] = dart_fund[col].reindex(df.index)
+        dart_col = (
+            dart_fund[col].reindex(df.index)
+            if col in dart_fund.columns
+            else pd.Series(dtype=float, index=df.index)
+        )
+        yf_col = df[col] if col in df.columns else pd.Series(dtype=float, index=df.index)
+        # DART 값 우선 적용, DART 없는 종목은 yfinance 값 유지
+        df[col] = dart_col.combine_first(yf_col)
+
+    dart_count = {
+        c: int(dart_fund[c].notna().sum())
+        for c in ("per", "pbr", "roe") if c in dart_fund.columns
+    }
+    after_merge = {c: int(df[c].notna().sum()) for c in ("per", "pbr", "roe") if c in df.columns}
+    logger.info("PER/PBR/ROE — DART: %s / DART+yfinance 합산: %s", dart_count, after_merge)
+
+    # 여전히 NaN인 종목: 섹터 중위값 → 전체 중위값 순서로 보완
+    _fill_kr_sector_median(df, ["per", "pbr", "roe"])
+
+    after_impute = {c: int(df[c].notna().sum()) for c in ("per", "pbr", "roe") if c in df.columns}
+    logger.info("섹터 imputation 후 유효 종목 수: %s / 전체 %d종목", after_impute, len(df))
 
     # 모멘텀 (yfinance .KS) — reindex로 인덱스 불일치 시 NaN 처리
     mom_1m = _load_momentum(tickers, period="1mo", name="momentum_1m")
