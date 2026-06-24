@@ -128,74 +128,135 @@ STRESS_PERIODS: list[dict[str, str]] = [
 _factor_cache: dict[str, pd.DataFrame] = {}
 
 # ── KR 시장 상수 ──────────────────────────────────────────────────
-# KOSPI 200 대표 50종목 (yfinance .KS 티커 → 한글 종목명)
+# KOSPI 대표 종목 (yfinance .KS 티커 → 한글 종목명)
+# pykrx 동적 로딩 실패 시 fallback으로 사용; 8개 섹터를 고르게 커버
 KR_TICKER_NAMES: dict[str, str] = {
+    # 반도체
     "005930.KS": "삼성전자",
     "000660.KS": "SK하이닉스",
-    "035420.KS": "NAVER",
+    "009150.KS": "삼성전기",
+    "011070.KS": "LG이노텍",
+    "042700.KS": "한미반도체",
+    "000990.KS": "DB하이텍",
+    "058470.KS": "리노공업",
+    # 자동차
     "005380.KS": "현대차",
-    "051910.KS": "LG화학",
-    "006400.KS": "삼성SDI",
-    "035720.KS": "카카오",
-    "068270.KS": "셀트리온",
+    "000270.KS": "기아",
+    "012330.KS": "현대모비스",
+    "011210.KS": "현대위아",
+    "204320.KS": "만도",
+    "018880.KS": "한온시스템",
+    # 금융
     "105560.KS": "KB금융",
     "055550.KS": "신한지주",
-    "012330.KS": "현대모비스",
-    "028260.KS": "삼성물산",
-    "066570.KS": "LG전자",
-    "003670.KS": "포스코홀딩스",
-    "096770.KS": "SK이노베이션",
-    "017670.KS": "SK텔레콤",
-    "030200.KS": "KT",
-    "032830.KS": "삼성생명",
     "086790.KS": "하나금융지주",
     "316140.KS": "우리금융지주",
-    "018260.KS": "삼성에스디에스",
-    "011200.KS": "HMM",
-    "010950.KS": "S-Oil",
-    "009150.KS": "삼성전기",
-    "042700.KS": "한미반도체",
-    "000270.KS": "기아",
+    "032830.KS": "삼성생명",
+    "000810.KS": "삼성화재",
+    "006800.KS": "미래에셋증권",
+    "005940.KS": "NH투자증권",
+    # 바이오·제약
     "207940.KS": "삼성바이오로직스",
+    "068270.KS": "셀트리온",
     "091990.KS": "셀트리온헬스케어",
+    "128940.KS": "한미약품",
+    "000100.KS": "유한양행",
+    "185750.KS": "종근당",
+    "069620.KS": "대웅제약",
+    # IT·소프트웨어
+    "035420.KS": "NAVER",
+    "035720.KS": "카카오",
+    "259960.KS": "크래프톤",
     "036570.KS": "엔씨소프트",
     "251270.KS": "넷마블",
-    "011070.KS": "LG이노텍",
+    "018260.KS": "삼성에스디에스",
+    "293490.KS": "카카오게임즈",
+    # 에너지·화학
+    "051910.KS": "LG화학",
+    "006400.KS": "삼성SDI",
+    "096770.KS": "SK이노베이션",
+    "011170.KS": "롯데케미칼",
+    "009830.KS": "한화솔루션",
+    "011780.KS": "금호석유",
+    "010950.KS": "S-Oil",
+    "036460.KS": "한국가스공사",
+    "015760.KS": "한국전력",
+    # 건설·부동산
+    "000720.KS": "현대건설",
+    "006360.KS": "GS건설",
+    "047040.KS": "대우건설",
+    "375500.KS": "DL이앤씨",
+    "294870.KS": "HDC현대산업개발",
+    "028260.KS": "삼성물산",
+    # 소비재·유통
+    "139480.KS": "이마트",
+    "023530.KS": "롯데쇼핑",
+    "097950.KS": "CJ제일제당",
+    "004170.KS": "신세계",
+    "008770.KS": "호텔신라",
+    "282330.KS": "BGF리테일",
+    "035760.KS": "CJ ENM",
+    # 기타 대형주
+    "003670.KS": "포스코홀딩스",
+    "066570.KS": "LG전자",
+    "017670.KS": "SK텔레콤",
+    "030200.KS": "KT",
+    "034730.KS": "SK",
+    "011200.KS": "HMM",
+    "003490.KS": "대한항공",
+    "004020.KS": "현대제철",
+    "005490.KS": "POSCO홀딩스",
     "009540.KS": "한국조선해양",
     "010140.KS": "삼성중공업",
     "042660.KS": "한화오션",
     "047810.KS": "한국항공우주",
     "012450.KS": "한화에어로스페이스",
-    "015760.KS": "한국전력",
-    "036460.KS": "한국가스공사",
-    "003490.KS": "대한항공",
-    "020560.KS": "아시아나항공",
-    "004020.KS": "현대제철",
-    "005490.KS": "POSCO홀딩스",
-    "000720.KS": "현대건설",
-    "006360.KS": "GS건설",
-    "034730.KS": "SK",
     "034220.KS": "LG디스플레이",
-    "008770.KS": "호텔신라",
-    "139480.KS": "이마트",
-    "004170.KS": "신세계",
-    "023530.KS": "롯데쇼핑",
+    "373220.KS": "LG에너지솔루션",
 }
 
 KOSPI200_TICKERS: list[str] = list(KR_TICKER_NAMES.keys())
 
 KR_THEME_TICKERS: dict[str, list[str]] = {
     "all": KOSPI200_TICKERS,
-    "semiconductor": ["005930.KS", "000660.KS", "009150.KS", "011070.KS", "042700.KS", "096770.KS"],
-    "battery":       ["006400.KS", "051910.KS", "003670.KS"],
-    "finance":       ["105560.KS", "055550.KS", "086790.KS", "316140.KS", "032830.KS"],
-    "auto":          ["005380.KS", "000270.KS", "012330.KS"],
-    "pharma_bio":    ["207940.KS", "068270.KS", "091990.KS"],
-    "tech":          ["035420.KS", "035720.KS", "036570.KS", "018260.KS", "251270.KS"],
-    "energy":        ["096770.KS", "010950.KS", "015760.KS", "036460.KS"],
-    "defense":       ["047810.KS", "012450.KS"],
-    "shipbuilding":  ["009540.KS", "010140.KS", "042660.KS"],
-    "consumer":      ["139480.KS", "023530.KS", "004170.KS", "008770.KS"],
+    # ── 8대 섹터 ──────────────────────────────────────────────
+    "semiconductor": [
+        "005930.KS", "000660.KS", "009150.KS",
+        "011070.KS", "042700.KS", "000990.KS", "058470.KS",
+    ],
+    "auto": [
+        "005380.KS", "000270.KS", "012330.KS",
+        "011210.KS", "204320.KS", "018880.KS",
+    ],
+    "finance": [
+        "105560.KS", "055550.KS", "086790.KS", "316140.KS",
+        "032830.KS", "000810.KS", "006800.KS", "005940.KS",
+    ],
+    "pharma_bio": [
+        "207940.KS", "068270.KS", "091990.KS",
+        "128940.KS", "000100.KS", "185750.KS", "069620.KS",
+    ],
+    "tech": [
+        "035420.KS", "035720.KS", "259960.KS",
+        "036570.KS", "251270.KS", "018260.KS", "293490.KS",
+    ],
+    "energy_chem": [
+        "051910.KS", "006400.KS", "096770.KS",
+        "011170.KS", "009830.KS", "011780.KS", "010950.KS",
+    ],
+    "construction": [
+        "000720.KS", "006360.KS", "047040.KS",
+        "375500.KS", "294870.KS", "028260.KS",
+    ],
+    "consumer": [
+        "139480.KS", "023530.KS", "097950.KS",
+        "004170.KS", "008770.KS", "282330.KS", "035760.KS",
+    ],
+    # ── 기존 테마 (하위 호환) ──────────────────────────────────
+    "battery":      ["006400.KS", "051910.KS", "003670.KS", "373220.KS"],
+    "energy":       ["096770.KS", "010950.KS", "015760.KS", "036460.KS"],
+    "defense":      ["047810.KS", "012450.KS"],
+    "shipbuilding": ["009540.KS", "010140.KS", "042660.KS"],
 }
 
 KR_STRESS_PERIODS: list[dict[str, str]] = [
@@ -383,18 +444,19 @@ def _load_kr_dart_factors(
 
 
 def _load_kospi_universe(n: int = 200) -> list[str]:
-    """pykrx로 KOSPI 시가총액 상위 N종목을 .KS 형식으로 반환 (1회 캐시).
-    실패 시 하드코딩된 KOSPI200_TICKERS(50종목) fallback.
+    """KOSPI 종목 .KS 리스트를 반환 (1회 캐시). 4단계 fallback.
+
+    1단계 pykrx 시가총액 기반 → 2단계 pykrx 종목리스트 →
+    3단계 DART corpCode + 하드코딩 결합 → 4단계 하드코딩만
     """
     global _kospi_universe_cache
     if _kospi_universe_cache:
         return _kospi_universe_cache
 
+    # ── 1단계: pykrx 시가총액 기반 (최선 — 시가총액 순 정렬) ─────────
     try:
         from pykrx import stock as krx_stock  # type: ignore[import-not-found]
 
-        # 어제부터 최대 10일 소급해 가장 최근 평일 탐색
-        # (오늘 오전에는 당일 데이터가 아직 없을 수 있으므로 어제 기준 시작)
         d = datetime.now() - timedelta(days=1)
         cap_df = None
         for _ in range(10):
@@ -404,20 +466,53 @@ def _load_kospi_universe(n: int = 200) -> list[str]:
                 if cap_df is not None and not cap_df.empty:
                     break
             d -= timedelta(days=1)
-        if cap_df is None or cap_df.empty:
-            raise ValueError("pykrx 시가총액 데이터 없음 (최근 10일 시도 실패)")
 
-        cap_col = "시가총액" if "시가총액" in cap_df.columns else cap_df.columns[0]
-        cap_df = cap_df[cap_df[cap_col] > 0].sort_values(cap_col, ascending=False, kind="stable")
+        if cap_df is not None and not cap_df.empty:
+            cap_col = "시가총액" if "시가총액" in cap_df.columns else cap_df.columns[0]
+            cap_df = cap_df[cap_df[cap_col] > 0].sort_values(cap_col, ascending=False, kind="stable")
+            top_codes = cap_df.head(n).index.astype(str).str.zfill(6).tolist()
+            _kospi_universe_cache = [f"{c}.KS" for c in top_codes]
+            logger.info("1단계 pykrx 시가총액 기준 KOSPI %d종목 (기준일: %s)",
+                        len(_kospi_universe_cache), date_str)
+            return _kospi_universe_cache
 
-        top_codes = cap_df.head(n).index.astype(str).str.zfill(6).tolist()
-        _kospi_universe_cache = [f"{c}.KS" for c in top_codes]
-        logger.info("KOSPI 시가총액 상위 %d종목 로드 완료 (기준일: %s)", len(_kospi_universe_cache), date_str)
+        raise ValueError("cap_df 비어 있음")
 
     except Exception as e:
-        logger.warning("KOSPI 유니버스 로드 실패 (%s), 하드코딩 50종목 사용", e)
-        _kospi_universe_cache = list(KOSPI200_TICKERS)
+        logger.warning("1단계 pykrx 시가총액 조회 실패 (%s), 2단계 시도", e)
 
+    # ── 2단계: pykrx 종목 리스트 (날짜 없이 KOSPI 티커 목록) ─────────
+    try:
+        from pykrx import stock as krx_stock  # type: ignore[import-not-found]
+
+        codes = krx_stock.get_market_ticker_list(market="KOSPI")
+        if codes:
+            _kospi_universe_cache = [f"{str(c).zfill(6)}.KS" for c in codes]
+            logger.info("2단계 pykrx ticker list 기준 KOSPI %d종목", len(_kospi_universe_cache))
+            return _kospi_universe_cache
+
+    except Exception as e:
+        logger.warning("2단계 pykrx 종목리스트 조회 실패 (%s), 3단계 시도", e)
+
+    # ── 3단계: DART corpCode + 하드코딩 결합 ─────────────────────────
+    # DART stock_code에 .KS를 붙이면 yfinance가 KOSPI 종목만 데이터 반환
+    # (KOSDAQ 종목은 .KQ를 사용하므로 .KS 조회 시 빈 결과 → 이후 단계에서 자연 탈락)
+    _load_dart_kr_names()  # _kr_corp_codes 보장
+    if _kr_corp_codes:
+        # 하드코딩 73종목(확실한 KOSPI) 우선 배치 + DART 추가 종목으로 n개 채우기
+        known_codes = [t.split(".")[0] for t in KOSPI200_TICKERS]
+        known_set   = set(known_codes)
+        extra_codes = sorted(_kr_corp_codes.keys() - known_set)
+        combined    = known_codes + extra_codes
+        _kospi_universe_cache = [f"{c.zfill(6)}.KS" for c in combined[:n]]
+        logger.info("3단계 DART+하드코딩 %d종목 (DART 추가 %d종목)",
+                    len(_kospi_universe_cache),
+                    max(0, len(_kospi_universe_cache) - len(known_codes)))
+        return _kospi_universe_cache
+
+    # ── 4단계: 하드코딩 최후 fallback ────────────────────────────────
+    logger.warning("4단계: 모든 로드 실패, 하드코딩 %d종목 사용", len(KOSPI200_TICKERS))
+    _kospi_universe_cache = list(KOSPI200_TICKERS)
     return _kospi_universe_cache
 
 
@@ -727,7 +822,12 @@ def load_kr_factor_universe(theme: str = "all") -> pd.DataFrame:
 
     rows.sort(key=lambda r: r["ticker"])
     idx = pd.Index(tickers, name="ticker")
-    df = pd.DataFrame(rows).set_index("ticker") if rows else pd.DataFrame(index=idx)
+    # 병목 1 수정: idx(전체 tickers)를 기준으로 DataFrame 초기화 후 데이터 합치기
+    # 기존 코드는 rows가 비어있을 때만 idx 사용 → yfinance 무응답 종목이 통째로 탈락했음
+    df = pd.DataFrame(index=idx)
+    if rows:
+        data_df = pd.DataFrame(rows).set_index("ticker")
+        df = df.join(data_df)
 
     # DART 종목명 (실패 시 KR_TICKER_NAMES fallback → 티커 코드)
     dart_names = _load_dart_kr_names()
@@ -768,14 +868,30 @@ def load_kr_factor_universe(theme: str = "all") -> pd.DataFrame:
     after_impute = {c: int(df[c].notna().sum()) for c in ("per", "pbr", "roe") if c in df.columns}
     logger.info("섹터 imputation 후 유효 종목 수: %s / 전체 %d종목", after_impute, len(df))
 
-    # 모멘텀 (yfinance .KS) — reindex로 인덱스 불일치 시 NaN 처리
+    # ── 병목 3 수정: momentum — 가격 데이터 없는 종목 제거 + 섹터 imputation ──
     mom_1m = _load_momentum(tickers, period="1mo", name="momentum_1m")
-    if not mom_1m.empty:
-        df["momentum_1m"] = mom_1m.reindex(df.index)
-
     mom_3m = _load_momentum(tickers, period="3mo", name="momentum_3m")
-    if not mom_3m.empty:
-        df["momentum_3m"] = mom_3m.reindex(df.index)
+
+    # 두 기간 모두 가격 데이터가 없는 종목 제거
+    # (백테스트에서도 수익률 계산 불가 → top_tickers에 포함돼도 의미 없음)
+    tickers_with_price: set[str] = set(mom_1m.dropna().index) | set(mom_3m.dropna().index)
+    no_price = [t for t in df.index if t not in tickers_with_price]
+    if no_price:
+        logger.info("가격 데이터 없어 %d종목 제외 (예: %s%s)",
+                    len(no_price), no_price[:3],
+                    " ..." if len(no_price) > 3 else "")
+        df = df.drop(index=no_price)
+
+    # 살아남은 종목에 momentum 값 할당
+    df["momentum_1m"] = mom_1m.reindex(df.index)
+    df["momentum_3m"] = mom_3m.reindex(df.index)
+
+    # 한 기간은 데이터가 있는데 다른 기간이 NaN인 종목 → 섹터 중위값으로 보완
+    # (예: 신규 상장 종목이 3m 데이터는 없지만 1m은 있는 경우)
+    _fill_kr_sector_median(df, ["momentum_1m", "momentum_3m"])
+
+    mom_valid = {c: int(df[c].notna().sum()) for c in ("momentum_1m", "momentum_3m") if c in df.columns}
+    logger.info("momentum 유효 종목: %s / 전체 %d종목", mom_valid, len(df))
 
     _kr_factor_cache[cache_key] = df
     logger.info("KR 팩터 유니버스 로드 완료 (theme='%s'): %d종목", theme, len(df))
