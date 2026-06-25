@@ -1328,7 +1328,7 @@ def _is_kr_ticker(ticker: str) -> bool:
 
 
 def _get_kr_stock_detail(ticker: str) -> StockDetailResponse:
-    """yfinance .KS 티커로 한국 종목 상세 정보 조회"""
+    """yfinance .KS 티커로 한국 종목 상세 정보 조회 (PER/PBR/ROE는 DART 우선)"""
     ks = ticker if ticker.upper().endswith(".KS") else f"{ticker}.KS"
     try:
         t = yf.Ticker(ks)
@@ -1337,7 +1337,7 @@ def _get_kr_stock_detail(ticker: str) -> StockDetailResponse:
         raise HTTPException(status_code=500, detail=f"yfinance 오류: {e}")
 
     # DART 종목명 → KR_TICKER_NAMES fallback → yfinance longName
-    dart_names = _load_dart_kr_names()
+    dart_names = _load_dart_kr_names()  # 부수 효과: _kr_corp_codes 채움
     name = (
         dart_names.get(ks)
         or KR_TICKER_NAMES.get(ks)
@@ -1363,15 +1363,47 @@ def _get_kr_stock_detail(ticker: str) -> StockDetailResponse:
     raw_cap = info.get("marketCap")
     market_cap = int(raw_cap) if raw_cap and np.isfinite(float(raw_cap)) else None
 
+    # ── DART PER/PBR/ROE 계산 ────────────────────────────────────
+    dart_per: float | None = None
+    dart_pbr: float | None = None
+    dart_roe: float | None = None
+
+    base_code = ks.split(".")[0]
+    corp_code = _kr_corp_codes.get(base_code)
+    if corp_code and market_cap:
+        fin = _fetch_dart_financials(corp_code)
+        ni = fin.get("net_income")    # 백만원
+        eq = fin.get("total_equity")  # 백만원
+        mc = float(market_cap)
+
+        if ni is not None and ni > 0:
+            per_val = mc / (ni * 1_000_000)
+            if np.isfinite(per_val) and 0 < per_val < 1000:
+                dart_per = round(per_val, 2)
+
+        if eq is not None and eq > 0:
+            pbr_val = mc / (eq * 1_000_000)
+            if np.isfinite(pbr_val) and 0 < pbr_val < 100:
+                dart_pbr = round(pbr_val, 2)
+            if ni is not None:
+                roe_val = ni / eq
+                if np.isfinite(roe_val):
+                    dart_roe = round(roe_val, 4)
+
+    # DART 값 우선, 없으면 yfinance fallback
+    per = dart_per if dart_per is not None else safe_float("trailingPE")
+    pbr = dart_pbr if dart_pbr is not None else safe_float("priceToBook")
+    roe = dart_roe if dart_roe is not None else safe_float("returnOnEquity")
+
     return StockDetailResponse(
         ticker=ks,
         name=name,
         sector=info.get("sector") or None,
         industry=info.get("industry") or None,
         price_history=price_history,
-        per=safe_float("trailingPE"),
-        pbr=safe_float("priceToBook"),
-        roe=safe_float("returnOnEquity"),
+        per=per,
+        pbr=pbr,
+        roe=roe,
         ev_ebitda=safe_float("enterpriseToEbitda"),
         psr=safe_float("priceToSalesTrailing12Months"),
         debt_ratio=safe_float("debtToEquity"),
