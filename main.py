@@ -326,7 +326,7 @@ def _parse_kr_number(raw: str) -> float | None:
 
 
 def _fetch_dart_financials(corp_code: str) -> dict[str, float]:
-    """DART 단일 회사 재무제표 조회 → 당기순이익·자기자본 반환 (단위: 백만원).
+    """DART 단일 회사 재무제표 조회 → 당기순이익·자기자본 반환 (단위: 원).
     1월 초에 전년도 사업보고서가 미제출일 수 있으므로 전전년도까지 fallback.
     """
     current_year = datetime.now().year
@@ -375,7 +375,7 @@ def _load_kr_dart_factors(
     """DART 재무 + 시가총액으로 PER/PBR/ROE 계산 (병렬)
 
     market_caps: {ticker: KRW} — 사전 로드된 시가총액 (없으면 yfinance에서 재조회)
-    DART 금액 단위: 백만원 → KRW = val × 1_000_000
+    DART 금액 단위: 원 / yfinance marketCap 단위: 원 → 동일 단위이므로 변환 없음
     """
     _load_dart_kr_names()   # _kr_corp_codes 보장
 
@@ -400,24 +400,24 @@ def _load_kr_dart_factors(
         if not (np.isfinite(mc) and mc > 0):
             return None
 
-        ni = fin.get("net_income")    # 백만원
-        eq = fin.get("total_equity")  # 백만원
+        ni = fin.get("net_income")    # 원
+        eq = fin.get("total_equity")  # 원
         row: dict = {"ticker": ticker}
 
         # PER: 당기순이익이 양수인 종목만 (적자 종목 제외)
         if ni is not None and ni > 0:
-            per = mc / (ni * 1_000_000)
+            per = mc / ni              # 둘 다 원 단위
             if np.isfinite(per) and 0 < per < 1000:
                 row["per"] = round(per, 2)
 
         # PBR/ROE: 자기자본 양수인 종목만 (자본잠식 제외)
         if eq is not None and eq > 0:
-            pbr = mc / (eq * 1_000_000)
+            pbr = mc / eq              # 둘 다 원 단위
             if np.isfinite(pbr) and 0 < pbr < 100:
                 row["pbr"] = round(pbr, 2)
 
             if ni is not None:
-                roe = ni / eq           # 동일 단위 → 변환 불필요
+                roe = ni / eq          # 동일 단위 → 변환 불필요
                 if np.isfinite(roe):
                     row["roe"] = round(roe, 4)
 
@@ -1372,17 +1372,17 @@ def _get_kr_stock_detail(ticker: str) -> StockDetailResponse:
     corp_code = _kr_corp_codes.get(base_code)
     if corp_code and market_cap:
         fin = _fetch_dart_financials(corp_code)
-        ni = fin.get("net_income")    # 백만원
-        eq = fin.get("total_equity")  # 백만원
-        mc = float(market_cap)
+        ni = fin.get("net_income")    # 원
+        eq = fin.get("total_equity")  # 원
+        mc = float(market_cap)        # 원 (yfinance marketCap)
 
         if ni is not None and ni > 0:
-            per_val = mc / (ni * 1_000_000)
+            per_val = mc / ni          # 둘 다 원 단위
             if np.isfinite(per_val) and 0 < per_val < 1000:
                 dart_per = round(per_val, 2)
 
         if eq is not None and eq > 0:
-            pbr_val = mc / (eq * 1_000_000)
+            pbr_val = mc / eq          # 둘 다 원 단위
             if np.isfinite(pbr_val) and 0 < pbr_val < 100:
                 dart_pbr = round(pbr_val, 2)
             if ni is not None:
