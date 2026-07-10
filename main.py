@@ -17,7 +17,11 @@ import pandas as pd
 import yfinance as yf
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
 from pydantic import BaseModel, Field
+from supabase import create_client, Client as SupabaseClient
+
+load_dotenv()
 
 random.seed(42)
 np.random.seed(42)
@@ -420,6 +424,27 @@ _kr_factor_cache: dict[str, pd.DataFrame] = {}
 _kr_names_cache: dict[str, str] = {}   # "005930.KS" → "삼성전자"
 _kr_corp_codes: dict[str, str] = {}    # "005930" → DART corp_code
 _kospi_universe_cache: list[str] = []  # 시가총액 상위 200 .KS 티커 목록
+
+# Supabase 클라이언트 캐시
+_supabase_client: SupabaseClient | None = None
+
+
+def _get_supabase() -> SupabaseClient | None:
+    """Supabase 클라이언트 반환 (지연 초기화, 1회 캐시)."""
+    global _supabase_client
+    if _supabase_client is not None:
+        return _supabase_client
+    url = os.environ.get("SUPABASE_URL", "")
+    key = os.environ.get("SUPABASE_KEY", "")
+    if not url or not key:
+        logger.warning("SUPABASE_URL / SUPABASE_KEY 미설정 — KR 역사적 재무 데이터 사용 불가")
+        return None
+    try:
+        _supabase_client = create_client(url, key)
+        logger.info("Supabase 연결 완료")
+    except Exception as exc:
+        logger.warning("Supabase 연결 실패: %s", exc)
+    return _supabase_client
 
 
 def _load_dart_kr_names() -> dict[str, str]:
@@ -1331,6 +1356,180 @@ def calc_factor_correlations(
     return results
 
 
+# ── KR 역사적 재무 데이터 (룩어헤드 바이어스 방지) ─────────────────────────────
+
+def _load_kr_financials_from_supabase(
+    tickers: list[str], fin_year: int
+) -> pd.DataFrame:
+    """
+    kr_financials 테이블에서 fin_year 연도의 재무 데이터 로드.
+    반환: ticker(.KS) 인덱스 DataFrame / 데이터 없으면 빈 DataFrame.
+    """
+    sb = _get_supabase()
+    if sb is None:
+        return pd.DataFrame()
+
+    stock_codes = [t.split(".")[0] for t in tickers]
+    FIN_COLS = "stock_code, net_income, total_equity, total_assets, total_debt, gross_profit, revenue"
+
+    try:
+        resp = (
+            sb.table("kr_financials")
+            .select(FIN_COLS)
+            .eq("year", fin_year)
+            .in_("stock_code", stock_codes)
+            .execute()
+        )
+    except Exception as exc:
+        logger.warning("Supabase kr_financials 조회 실패 (year=%d): %s", fin_year, exc)
+        return pd.DataFrame()
+
+    if not resp.data:
+        logger.debug("kr_financials: %d년 데이터 없음", fin_year)
+        return pd.DataFrame()
+
+    cols = ("net_income", "total_equity", "total_assets", "total_debt", "gross_profit", "revenue")
+    rows = [
+        {"ticker": f"{row['stock_code']}.KS", **{c: row.get(c) for c in cols}}
+        for row in resp.data
+    ]
+    df = pd.DataFrame(rows).set_index("ticker")
+    df = df.apply(pd.to_numeric, errors="coerce")
+    logger.info("kr_financials %d년 로드: %d종목", fin_year, len(df))
+    return df
+
+
+def _apply_supabase_financials(
+    universe: pd.DataFrame, fin_df: pd.DataFrame
+) -> pd.DataFrame:
+    """
+    현재 팩터 유니버스에 Supabase 역사적 재무 데이터를 덮어씀.
+
+    완전 교체 (순수 재무 비율):
+      · roe       = net_income / total_equity
+      · gpa       = gross_profit / total_assets
+      · debt_ratio= total_debt / total_equity
+
+    시가총액이 필요한 팩터(per, pbr, psr)는 현재 market cap 기반 값을 유지.
+    """
+    if fin_df.empty:
+        return universe
+
+    df = universe.copy()
+
+    for ticker in df.index:
+        if ticker not in fin_df.index:
+            continue
+
+        fin = fin_df.loc[ticker]
+
+        def fv(col: str) -> float | None:
+            v = fin.get(col)
+            if v is None:
+                return None
+            f = float(v)
+            return f if np.isfinite(f) else None
+
+        ni     = fv("net_income")
+        eq     = fv("total_equity")
+        assets = fv("total_assets")
+        debt   = fv("total_debt")
+        gp     = fv("gross_profit")
+
+        if ni is not None and eq is not None and eq > 0:
+            roe = ni / eq
+            if np.isfinite(roe):
+                df.at[ticker, "roe"] = round(roe, 4)
+
+        if gp is not None and assets is not None and assets > 0:
+            gpa = gp / assets
+            if np.isfinite(gpa):
+                df.at[ticker, "gpa"] = round(gpa, 4)
+
+        if debt is not None and eq is not None and eq > 0:
+            dr = debt / eq
+            if np.isfinite(dr):
+                df.at[ticker, "debt_ratio"] = round(dr, 4)
+
+    return df
+
+
+def run_kr_annual_rebalancing_backtest(
+    universe: pd.DataFrame,
+    factors: list[FactorInput],
+    start: datetime,
+    end: datetime,
+    interval: str,
+) -> tuple[pd.Series, pd.Series, list[str]]:
+    """
+    연도별 전년도 재무 데이터로 연초 리밸런싱하는 KR 백테스트.
+
+    각 연도마다 (year - 1) 연도의 Supabase 재무 데이터로 팩터 스코어를 재계산하고
+    상위 종목을 새로 선정한 뒤 해당 연도 수익률을 계산한다.
+    Supabase 미설정 또는 데이터 없으면 현재 universe 그대로 fallback.
+    """
+    tickers_all = universe.index.tolist()
+    years = list(range(start.year, end.year + 1))
+
+    all_returns: list[pd.Series] = []
+    last_top_tickers: list[str] = []
+
+    for year in years:
+        seg_start = max(start, datetime(year, 1, 1))
+        seg_end   = min(end,   datetime(year, 12, 31))
+
+        if seg_start >= seg_end:
+            continue
+
+        fin_year  = year - 1
+        fin_df    = _load_kr_financials_from_supabase(tickers_all, fin_year)
+        year_univ = _apply_supabase_financials(universe, fin_df)
+
+        logger.info(
+            "KR 리밸런싱 %d년 (재무 기준: %d년%s): %s ~ %s",
+            year, fin_year,
+            f" [{len(fin_df)}종목 Supabase]" if not fin_df.empty else " [현재 데이터 fallback]",
+            seg_start.date(), seg_end.date(),
+        )
+
+        try:
+            scores      = compute_composite_scores(year_univ, factors)
+            top_tickers = scores.head(TOP_N).index.tolist()
+        except HTTPException:
+            if last_top_tickers:
+                logger.warning("  %d년 팩터 계산 실패 — 직전 포트폴리오 유지", year)
+                top_tickers = last_top_tickers
+            else:
+                continue
+
+        last_top_tickers = top_tickers
+
+        # yfinance end는 exclusive이므로 +1일 전달
+        bt_end = seg_end + timedelta(days=1)
+        try:
+            seg_returns, _ = run_equal_weight_backtest(
+                top_tickers, seg_start, bt_end, interval
+            )
+        except HTTPException as exc:
+            logger.warning("  %d년 백테스트 실패: %s — 스킵", year, exc.detail)
+            continue
+
+        if not seg_returns.empty:
+            all_returns.append(seg_returns)
+
+    if not all_returns:
+        raise HTTPException(
+            status_code=503,
+            detail="연도별 백테스트 수익률을 계산할 수 없습니다.",
+        )
+
+    combined = pd.concat(all_returns).sort_index()
+    combined = combined[~combined.index.duplicated(keep="last")]
+    equity   = (1 + combined).cumprod()
+
+    return combined, equity, last_top_tickers
+
+
 # ── API 엔드포인트 ────────────────────────────────────────────────
 @app.get("/health")
 def health():
@@ -1354,11 +1553,14 @@ def backtest(request: BacktestRequest):
         # ── 한국 시장 ────────────────────────────────────────────
         kr_theme  = request.theme if request.theme in KR_THEME_TICKERS else "all"
         universe  = load_kr_factor_universe(kr_theme)
-        scores    = compute_composite_scores(universe, request.factors)
-        top_tickers = scores.head(TOP_N).index.tolist()
 
-        period_returns, equity = run_kr_equal_weight_backtest(
-            top_tickers, start, end, request.interval
+        # 연도별 전년도 재무 데이터로 연초 리밸런싱 (룩어헤드 바이어스 방지)
+        period_returns, equity, top_tickers = run_kr_annual_rebalancing_backtest(
+            universe=universe,
+            factors=request.factors,
+            start=start,
+            end=end,
+            interval=request.interval,
         )
 
         # longName 은 항상 값 있음 (fallback = 종목코드)
