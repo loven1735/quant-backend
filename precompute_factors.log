@@ -430,3 +430,389 @@
 2026-07-16 14:52:30,466 INFO HTTP Request: POST https://zyiqxmasmnvspjzvpeaa.supabase.co/rest/v1/factor_scores?on_conflict=ticker%2Cdate&columns=%22gpa%22%2C%22roe%22%2C%22debt_ratio%22%2C%22ticker%22%2C%22momentum_3m%22%2C%22psr%22%2C%22per%22%2C%22market_cap%22%2C%22pbr%22%2C%22momentum_1m%22%2C%22date%22 "HTTP/2 201 Created"
 2026-07-16 14:52:30,478 INFO upsert 완료: 성공 1 / 실패 0
 2026-07-16 14:52:30,478 INFO === precompute_factors 완료 ===
+2026-07-16 15:01:39,518 INFO === precompute_factors 시작 ===
+2026-07-16 15:01:39,519 INFO 실행 시각 (KST) : 2026-07-16 15:01:39
+2026-07-16 15:01:39,519 INFO 데이터 기준일   : 2026-07-15
+2026-07-16 15:01:39,519 INFO 재무 기준 연도  : 2025년
+2026-07-16 15:01:39,815 INFO DART corpCode.xml 에서 종목 리스트 조회 중...
+2026-07-16 15:01:41,301 INFO DART 상장 종목: 3924개
+2026-07-16 15:01:41,344 INFO [단계 1] DART 종목 수: 3924
+2026-07-16 15:01:41,344 INFO 시가총액 조회 중 (yfinance, 3924종목)...
+2026-07-16 15:01:42,512 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 040130.KS"}}}
+2026-07-16 15:01:42,513 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 015390.KS"}}}
+2026-07-16 15:01:42,513 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 056140.KS"}}}
+2026-07-16 15:01:42,514 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 046350.KS"}}}
+2026-07-16 15:01:42,515 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 013650.KS"}}}
+2026-07-16 15:01:42,516 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 026540.KS"}}}
+2026-07-16 15:01:42,518 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 055000.KS"}}}
+2026-07-16 15:01:42,520 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 045880.KS"}}}
+2026-07-16 15:01:42,520 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 036720.KS"}}}
+2026-07-16 15:01:42,522 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 041320.KS"}}}
+2026-07-16 15:01:42,529 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 035400.KS"}}}
+2026-07-16 15:01:42,529 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 037830.KS"}}}
+2026-07-16 15:01:42,530 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 058690.KS"}}}
+2026-07-16 15:01:42,530 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 019640.KS"}}}
+2026-07-16 15:01:42,542 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 030390.KS"}}}
+2026-07-16 15:01:42,637 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 032600.KS"}}}
+2026-07-16 15:01:43,847 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 950030.KS"}}}
+2026-07-16 15:01:43,859 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 036790.KS"}}}
+2026-07-16 15:01:43,863 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 038830.KS"}}}
+2026-07-16 15:01:43,867 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 020070.KS"}}}
+2026-07-16 15:01:44,862 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 056850.KS"}}}
+2026-07-16 15:01:44,863 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 037110.KS"}}}
+2026-07-16 15:01:44,870 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 062730.KS"}}}
+2026-07-16 15:01:44,871 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 022520.KS"}}}
+2026-07-16 15:01:44,873 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 055250.KS"}}}
+2026-07-16 15:01:44,916 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 045760.KS"}}}
+2026-07-16 15:01:45,285 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 089240.KS"}}}
+2026-07-16 15:01:45,293 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 035710.KS"}}}
+2026-07-16 15:01:45,298 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 045260.KS"}}}
+2026-07-16 15:01:45,303 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 032380.KS"}}}
+2026-07-16 15:01:45,307 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 114410.KS"}}}
+2026-07-16 15:01:46,346 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 065340.KS"}}}
+2026-07-16 15:01:46,364 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 034660.KS"}}}
+2026-07-16 15:01:46,839 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 048640.KS"}}}
+2026-07-16 15:01:46,846 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 035010.KS"}}}
+2026-07-16 15:01:46,848 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 043680.KS"}}}
+2026-07-16 15:01:47,256 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 066690.KS"}}}
+2026-07-16 15:01:47,262 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 067850.KS"}}}
+2026-07-16 15:01:47,265 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 084810.KS"}}}
+2026-07-16 15:01:47,272 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 040740.KS"}}}
+2026-07-16 15:01:47,275 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 038420.KS"}}}
+2026-07-16 15:01:47,881 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 054010.KS"}}}
+2026-07-16 15:01:47,895 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 054170.KS"}}}
+2026-07-16 15:01:47,895 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 033720.KS"}}}
+2026-07-16 15:01:47,912 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 086720.KS"}}}
+2026-07-16 15:01:48,319 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 078700.KS"}}}
+2026-07-16 15:01:48,787 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 042870.KS"}}}
+2026-07-16 15:01:48,797 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 048510.KS"}}}
+2026-07-16 15:01:48,798 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 030030.KS"}}}
+2026-07-16 15:01:49,209 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 037510.KS"}}}
+2026-07-16 15:01:49,211 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 036270.KS"}}}
+2026-07-16 15:01:49,215 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 032030.KS"}}}
+2026-07-16 15:01:49,225 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 021060.KS"}}}
+2026-07-16 15:01:49,823 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 093820.KS"}}}
+2026-07-16 15:01:49,830 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 043630.KS"}}}
+2026-07-16 15:01:50,228 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 052310.KS"}}}
+2026-07-16 15:01:51,056 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 046240.KS"}}}
+2026-07-16 15:01:51,070 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 051820.KS"}}}
+2026-07-16 15:01:51,070 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 044640.KS"}}}
+2026-07-16 15:01:51,071 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 017010.KS"}}}
+2026-07-16 15:01:51,072 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 065410.KS"}}}
+2026-07-16 15:01:51,773 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 043790.KS"}}}
+2026-07-16 15:01:51,774 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 088020.KS"}}}
+2026-07-16 15:01:51,779 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 060750.KS"}}}
+2026-07-16 15:01:52,227 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 094950.KS"}}}
+2026-07-16 15:01:52,637 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 052210.KS"}}}
+2026-07-16 15:01:52,640 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 031800.KS"}}}
+2026-07-16 15:01:52,640 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 046320.KS"}}}
+2026-07-16 15:01:52,653 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 032930.KS"}}}
+2026-07-16 15:01:52,658 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 061050.KS"}}}
+2026-07-16 15:01:52,662 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 060670.KS"}}}
+2026-07-16 15:01:53,251 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 074140.KS"}}}
+2026-07-16 15:01:53,254 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 068770.KS"}}}
+2026-07-16 15:01:53,255 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 003020.KS"}}}
+2026-07-16 15:01:53,679 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 045820.KS"}}}
+2026-07-16 15:01:54,123 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 031960.KS"}}}
+2026-07-16 15:01:54,125 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 067950.KS"}}}
+2026-07-16 15:01:54,525 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 058550.KS"}}}
+2026-07-16 15:01:54,547 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 035950.KS"}}}
+2026-07-16 15:01:54,566 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 017050.KS"}}}
+2026-07-16 15:01:54,960 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 039990.KS"}}}
+2026-07-16 15:01:54,965 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 058900.KS"}}}
+2026-07-16 15:01:55,371 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 066340.KS"}}}
+2026-07-16 15:01:55,380 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 063280.KS"}}}
+2026-07-16 15:01:55,381 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 077960.KS"}}}
+2026-07-16 15:01:55,382 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 079870.KS"}}}
+2026-07-16 15:01:55,393 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 032150.KS"}}}
+2026-07-16 15:01:55,399 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 047600.KS"}}}
+2026-07-16 15:01:55,908 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 080570.KS"}}}
+2026-07-16 15:01:56,423 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 061140.KS"}}}
+2026-07-16 15:01:56,435 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 084160.KS"}}}
+2026-07-16 15:01:56,449 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 038690.KS"}}}
+2026-07-16 15:01:56,449 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 090090.KS"}}}
+2026-07-16 15:01:56,856 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 054120.KS"}}}
+2026-07-16 15:01:57,473 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 035500.KS"}}}
+2026-07-16 15:01:57,888 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 016990.KS"}}}
+2026-07-16 15:01:57,897 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 054650.KS"}}}
+2026-07-16 15:01:57,903 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 033880.KS"}}}
+2026-07-16 15:01:58,305 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 023670.KS"}}}
+2026-07-16 15:01:58,308 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 036660.KS"}}}
+2026-07-16 15:01:58,310 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 094520.KS"}}}
+2026-07-16 15:01:58,311 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 088960.KS"}}}
+2026-07-16 15:01:58,326 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 037020.KS"}}}
+2026-07-16 15:01:58,332 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 049690.KS"}}}
+2026-07-16 15:01:58,739 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 052650.KS"}}}
+2026-07-16 15:01:58,751 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 035830.KS"}}}
+2026-07-16 15:01:59,176 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 045400.KS"}}}
+2026-07-16 15:01:59,179 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 048130.KS"}}}
+2026-07-16 15:01:59,717 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 047450.KS"}}}
+2026-07-16 15:01:59,729 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 037700.KS"}}}
+2026-07-16 15:01:59,752 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 088810.KS"}}}
+2026-07-16 15:02:00,129 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 023020.KS"}}}
+2026-07-16 15:02:00,130 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 900020.KS"}}}
+2026-07-16 15:02:00,563 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 078670.KS"}}}
+2026-07-16 15:02:00,977 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 073130.KS"}}}
+2026-07-16 15:02:00,984 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 045380.KS"}}}
+2026-07-16 15:02:00,990 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 079340.KS"}}}
+2026-07-16 15:02:00,991 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 053070.KS"}}}
+2026-07-16 15:02:00,992 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 076090.KS"}}}
+2026-07-16 15:02:00,995 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 032570.KS"}}}
+2026-07-16 15:02:01,001 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 033190.KS"}}}
+2026-07-16 15:02:01,001 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 045290.KS"}}}
+2026-07-16 15:02:01,003 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 080140.KS"}}}
+2026-07-16 15:02:01,403 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 047370.KS"}}}
+2026-07-16 15:02:01,936 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 085680.KS"}}}
+2026-07-16 15:02:01,937 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 052970.KS"}}}
+2026-07-16 15:02:02,374 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 030420.KS"}}}
+2026-07-16 15:02:02,796 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 048760.KS"}}}
+2026-07-16 15:02:02,811 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 037320.KS"}}}
+2026-07-16 15:02:02,815 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 059720.KS"}}}
+2026-07-16 15:02:02,898 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 025970.KS"}}}
+2026-07-16 15:02:03,312 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 025460.KS"}}}
+2026-07-16 15:02:03,313 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 052560.KS"}}}
+2026-07-16 15:02:03,411 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 084240.KS"}}}
+2026-07-16 15:02:03,812 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 041800.KS"}}}
+2026-07-16 15:02:03,815 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 052640.KS"}}}
+2026-07-16 15:02:03,827 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 018890.KS"}}}
+2026-07-16 15:02:03,839 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 033260.KS"}}}
+2026-07-16 15:02:04,833 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 057100.KS"}}}
+2026-07-16 15:02:04,836 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 039350.KS"}}}
+2026-07-16 15:02:04,843 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 041450.KS"}}}
+2026-07-16 15:02:04,851 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 098150.KS"}}}
+2026-07-16 15:02:05,250 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 108070.KS"}}}
+2026-07-16 15:02:05,273 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 037150.KS"}}}
+2026-07-16 15:02:05,872 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 056200.KS"}}}
+2026-07-16 15:02:06,323 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 039040.KS"}}}
+2026-07-16 15:02:06,416 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 019430.KS"}}}
+2026-07-16 15:02:06,789 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 052810.KS"}}}
+2026-07-16 15:02:06,804 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 007830.KS"}}}
+2026-07-16 15:02:06,806 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 036550.KS"}}}
+2026-07-16 15:02:06,815 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 056010.KS"}}}
+2026-07-16 15:02:06,848 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 037550.KS"}}}
+2026-07-16 15:02:07,204 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 053470.KS"}}}
+2026-07-16 15:02:07,212 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 068630.KS"}}}
+2026-07-16 15:02:07,922 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 038920.KS"}}}
+2026-07-16 15:02:07,935 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 047710.KS"}}}
+2026-07-16 15:02:07,951 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 014420.KS"}}}
+2026-07-16 15:02:07,961 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 036850.KS"}}}
+2026-07-16 15:02:09,075 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 066850.KS"}}}
+2026-07-16 15:02:09,076 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 083120.KS"}}}
+2026-07-16 15:02:09,096 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 051530.KS"}}}
+2026-07-16 15:02:09,484 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 004790.KS"}}}
+2026-07-16 15:02:09,488 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 048140.KS"}}}
+2026-07-16 15:02:09,493 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 093400.KS"}}}
+2026-07-16 15:02:09,923 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 025920.KS"}}}
+2026-07-16 15:02:09,932 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 081220.KS"}}}
+2026-07-16 15:02:09,935 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 048460.KS"}}}
+2026-07-16 15:02:10,373 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 036210.KS"}}}
+2026-07-16 15:02:10,384 INFO   시가총액 진행: 200/3924
+2026-07-16 15:02:10,385 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 015050.KS"}}}
+2026-07-16 15:02:10,386 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 046720.KS"}}}
+2026-07-16 15:02:10,395 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 073930.KS"}}}
+2026-07-16 15:02:10,398 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 040180.KS"}}}
+2026-07-16 15:02:11,939 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 037540.KS"}}}
+2026-07-16 15:02:11,967 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 126680.KS"}}}
+2026-07-16 15:02:11,974 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 034010.KS"}}}
+2026-07-16 15:02:12,360 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 054150.KS"}}}
+2026-07-16 15:02:12,378 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 041630.KS"}}}
+2026-07-16 15:02:12,827 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 090540.KS"}}}
+2026-07-16 15:02:12,829 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 036920.KS"}}}
+2026-07-16 15:02:13,285 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 033850.KS"}}}
+2026-07-16 15:02:13,291 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 123290.KS"}}}
+2026-07-16 15:02:13,702 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 066060.KS"}}}
+2026-07-16 15:02:13,711 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 071660.KS"}}}
+2026-07-16 15:02:14,422 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 123300.KS"}}}
+2026-07-16 15:02:14,428 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 053040.KS"}}}
+2026-07-16 15:02:14,429 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 128910.KS"}}}
+2026-07-16 15:02:14,439 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 089480.KS"}}}
+2026-07-16 15:02:14,440 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 036610.KS"}}}
+2026-07-16 15:02:14,458 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 034510.KS"}}}
+2026-07-16 15:02:14,846 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 049000.KS"}}}
+2026-07-16 15:02:14,873 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 032420.KS"}}}
+2026-07-16 15:02:15,479 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 093410.KS"}}}
+2026-07-16 15:02:15,488 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 950070.KS"}}}
+2026-07-16 15:02:15,970 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 010670.KS"}}}
+2026-07-16 15:02:16,396 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 121950.KS"}}}
+2026-07-16 15:02:16,405 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 110310.KS"}}}
+2026-07-16 15:02:16,405 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 037380.KS"}}}
+2026-07-16 15:02:16,414 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 045470.KS"}}}
+2026-07-16 15:02:16,421 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 091690.KS"}}}
+2026-07-16 15:02:16,836 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 065610.KS"}}}
+2026-07-16 15:02:16,838 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 040020.KS"}}}
+2026-07-16 15:02:17,263 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 085990.KS"}}}
+2026-07-16 15:02:17,683 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 081090.KS"}}}
+2026-07-16 15:02:17,688 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 066300.KS"}}}
+2026-07-16 15:02:17,700 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 900150.KS"}}}
+2026-07-16 15:02:17,798 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 009010.KS"}}}
+2026-07-16 15:02:18,870 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 056710.KS"}}}
+2026-07-16 15:02:19,479 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 038720.KS"}}}
+2026-07-16 15:02:19,482 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 900010.KS"}}}
+2026-07-16 15:02:20,218 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 123550.KS"}}}
+2026-07-16 15:02:20,218 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 071530.KS"}}}
+2026-07-16 15:02:20,222 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 019120.KS"}}}
+2026-07-16 15:02:20,225 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 124050.KS"}}}
+2026-07-16 15:02:20,280 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 041030.KS"}}}
+2026-07-16 15:02:20,643 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 056810.KS"}}}
+2026-07-16 15:02:20,648 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 038120.KS"}}}
+2026-07-16 15:02:20,649 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 037240.KS"}}}
+2026-07-16 15:02:20,662 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 019260.KS"}}}
+2026-07-16 15:02:20,744 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 123910.KS"}}}
+2026-07-16 15:02:20,767 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 042820.KS"}}}
+2026-07-16 15:02:21,496 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 013780.KS"}}}
+2026-07-16 15:02:21,519 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 123160.KS"}}}
+2026-07-16 15:02:22,008 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 041060.KS"}}}
+2026-07-16 15:02:22,018 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 042340.KS"}}}
+2026-07-16 15:02:22,034 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 105070.KS"}}}
+2026-07-16 15:02:22,456 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 034600.KS"}}}
+2026-07-16 15:02:22,865 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 900060.KS"}}}
+2026-07-16 15:02:22,872 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 035450.KS"}}}
+2026-07-16 15:02:22,873 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 046430.KS"}}}
+2026-07-16 15:02:23,303 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 042570.KS"}}}
+2026-07-16 15:02:23,309 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 045310.KS"}}}
+2026-07-16 15:02:23,311 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 038810.KS"}}}
+2026-07-16 15:02:23,312 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 047420.KS"}}}
+2026-07-16 15:02:23,334 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 072530.KS"}}}
+2026-07-16 15:02:23,749 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 066200.KS"}}}
+2026-07-16 15:02:23,821 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 053890.KS"}}}
+2026-07-16 15:02:23,841 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 073780.KS"}}}
+2026-07-16 15:02:24,154 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 081500.KS"}}}
+2026-07-16 15:02:24,162 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 078610.KS"}}}
+2026-07-16 15:02:24,263 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 050600.KS"}}}
+2026-07-16 15:02:24,789 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 093730.KS"}}}
+2026-07-16 15:02:24,792 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 083160.KS"}}}
+2026-07-16 15:02:24,793 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 060550.KS"}}}
+2026-07-16 15:02:25,372 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 032050.KS"}}}
+2026-07-16 15:02:25,792 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 064720.KS"}}}
+2026-07-16 15:02:25,793 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 035270.KS"}}}
+2026-07-16 15:02:25,794 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 041940.KS"}}}
+2026-07-16 15:02:25,798 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 036900.KS"}}}
+2026-07-16 15:02:26,218 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 036360.KS"}}}
+2026-07-16 15:02:26,218 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 053170.KS"}}}
+2026-07-16 15:02:26,223 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 038410.KS"}}}
+2026-07-16 15:02:26,225 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 071360.KS"}}}
+2026-07-16 15:02:26,641 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 054440.KS"}}}
+2026-07-16 15:02:26,657 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 036760.KS"}}}
+2026-07-16 15:02:26,682 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 065910.KS"}}}
+2026-07-16 15:02:27,115 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 056060.KS"}}}
+2026-07-16 15:02:27,213 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 065810.KS"}}}
+2026-07-16 15:02:27,528 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 048270.KS"}}}
+2026-07-16 15:02:27,532 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 057110.KS"}}}
+2026-07-16 15:02:27,999 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 089170.KS"}}}
+2026-07-16 15:02:27,999 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 032590.KS"}}}
+2026-07-16 15:02:28,011 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 033330.KS"}}}
+2026-07-16 15:02:28,455 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 089190.KS"}}}
+2026-07-16 15:02:28,463 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 089200.KS"}}}
+2026-07-16 15:02:28,465 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 058680.KS"}}}
+2026-07-16 15:02:28,464 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 038960.KS"}}}
+2026-07-16 15:02:28,465 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 089180.KS"}}}
+2026-07-16 15:02:28,877 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 009790.KS"}}}
+2026-07-16 15:02:28,888 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 066330.KS"}}}
+2026-07-16 15:02:29,328 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 044370.KS"}}}
+2026-07-16 15:02:29,879 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 060660.KS"}}}
+2026-07-16 15:02:30,271 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 085450.KS"}}}
+2026-07-16 15:02:30,276 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 055970.KS"}}}
+2026-07-16 15:02:30,935 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 088510.KS"}}}
+2026-07-16 15:02:30,953 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 037060.KS"}}}
+2026-07-16 15:02:30,961 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 016040.KS"}}}
+2026-07-16 15:02:31,955 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 012460.KS"}}}
+2026-07-16 15:02:31,965 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 060410.KS"}}}
+2026-07-16 15:02:31,967 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 009220.KS"}}}
+2026-07-16 15:02:31,968 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 025450.KS"}}}
+2026-07-16 15:02:31,970 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 041310.KS"}}}
+2026-07-16 15:02:31,983 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 056020.KS"}}}
+2026-07-16 15:02:32,745 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 003930.KS"}}}
+2026-07-16 15:02:34,094 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 008780.KS"}}}
+2026-07-16 15:02:34,502 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 037750.KS"}}}
+2026-07-16 15:02:34,507 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 033210.KS"}}}
+2026-07-16 15:02:34,507 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 037250.KS"}}}
+2026-07-16 15:02:34,507 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 018180.KS"}}}
+2026-07-16 15:02:34,515 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 036820.KS"}}}
+2026-07-16 15:02:34,912 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 039000.KS"}}}
+2026-07-16 15:02:34,920 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 038050.KS"}}}
+2026-07-16 15:02:34,927 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 035870.KS"}}}
+2026-07-16 15:02:34,952 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 037220.KS"}}}
+2026-07-16 15:02:35,015 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 027440.KS"}}}
+2026-07-16 15:02:35,347 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 043690.KS"}}}
+2026-07-16 15:02:35,355 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 037730.KS"}}}
+2026-07-16 15:02:35,361 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 035780.KS"}}}
+2026-07-16 15:02:35,362 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 001150.KS"}}}
+2026-07-16 15:02:35,789 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 036020.KS"}}}
+2026-07-16 15:02:35,790 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 053250.KS"}}}
+2026-07-16 15:02:36,218 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 055810.KS"}}}
+2026-07-16 15:02:36,219 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 054530.KS"}}}
+2026-07-16 15:02:36,254 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 004190.KS"}}}
+2026-07-16 15:02:36,649 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 025690.KS"}}}
+2026-07-16 15:02:37,061 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 002850.KS"}}}
+2026-07-16 15:02:37,067 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 032180.KS"}}}
+2026-07-16 15:02:37,074 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 008030.KS"}}}
+2026-07-16 15:02:37,074 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 048150.KS"}}}
+2026-07-16 15:02:37,075 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 003590.KS"}}}
+2026-07-16 15:02:37,872 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 019930.KS"}}}
+2026-07-16 15:02:37,874 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 027350.KS"}}}
+2026-07-16 15:02:37,909 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 054080.KS"}}}
+2026-07-16 15:02:38,336 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 048540.KS"}}}
+2026-07-16 15:02:38,338 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 037500.KS"}}}
+2026-07-16 15:02:38,460 INFO   시가총액 진행: 400/3924
+2026-07-16 15:02:40,672 INFO   시가총액 진행: 600/3924
+2026-07-16 15:02:41,827 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 15:02:42,963 INFO   시가총액 진행: 800/3924
+2026-07-16 15:02:45,275 INFO   시가총액 진행: 1000/3924
+2026-07-16 15:02:47,517 INFO   시가총액 진행: 1200/3924
+2026-07-16 15:02:49,768 INFO   시가총액 진행: 1400/3924
+2026-07-16 15:02:49,806 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 15:02:50,062 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"User is unable to access this feature - https://bit.ly/yahoo-finance-api-feedback"}}}
+2026-07-16 15:02:50,298 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 15:02:50,552 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"User is unable to access this feature - https://bit.ly/yahoo-finance-api-feedback"}}}
+2026-07-16 15:02:50,794 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 15:02:51,053 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"User is unable to access this feature - https://bit.ly/yahoo-finance-api-feedback"}}}
+2026-07-16 15:02:51,283 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 15:02:51,422 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 15:02:51,546 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 15:02:51,552 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"User is unable to access this feature - https://bit.ly/yahoo-finance-api-feedback"}}}
+2026-07-16 15:02:51,657 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 15:02:51,658 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 15:02:51,676 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 15:02:51,681 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"User is unable to access this feature - https://bit.ly/yahoo-finance-api-feedback"}}}
+2026-07-16 15:02:51,683 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 15:02:51,686 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 15:02:51,687 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 15:02:51,755 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 15:02:51,850 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 15:02:52,023 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"User is unable to access this feature - https://bit.ly/yahoo-finance-api-feedback"}}}
+2026-07-16 15:02:52,188 INFO   시가총액 진행: 1600/3924
+2026-07-16 15:02:52,284 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 15:02:54,488 INFO   시가총액 진행: 1800/3924
+2026-07-16 15:02:56,705 INFO   시가총액 진행: 2000/3924
+2026-07-16 15:02:59,006 INFO   시가총액 진행: 2200/3924
+2026-07-16 15:03:00,759 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 15:03:01,020 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"User is unable to access this feature - https://bit.ly/yahoo-finance-api-feedback"}}}
+2026-07-16 15:03:01,492 INFO   시가총액 진행: 2400/3924
+2026-07-16 15:03:03,609 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 15:03:03,862 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"User is unable to access this feature - https://bit.ly/yahoo-finance-api-feedback"}}}
+2026-07-16 15:03:03,875 INFO   시가총액 진행: 2600/3924
+2026-07-16 15:03:06,710 INFO   시가총액 진행: 2800/3924
+2026-07-16 15:03:07,897 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 15:03:08,009 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 15:03:08,126 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"User is unable to access this feature - https://bit.ly/yahoo-finance-api-feedback"}}}
+2026-07-16 15:03:08,285 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"User is unable to access this feature - https://bit.ly/yahoo-finance-api-feedback"}}}
+2026-07-16 15:03:08,507 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 15:03:08,792 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"User is unable to access this feature - https://bit.ly/yahoo-finance-api-feedback"}}}
+2026-07-16 15:03:08,975 INFO   시가총액 진행: 3000/3924
+2026-07-16 15:03:11,346 INFO   시가총액 진행: 3200/3924
+2026-07-16 15:03:14,136 INFO   시가총액 진행: 3400/3924
+2026-07-16 15:03:16,354 INFO   시가총액 진행: 3600/3924
+2026-07-16 15:03:18,640 INFO   시가총액 진행: 3800/3924
+2026-07-16 15:03:20,070 INFO 시가총액 수집 완료: 0종목
+2026-07-16 15:03:20,073 INFO [단계 2] 시가총액 수집 종목 수: 0
+2026-07-16 15:03:20,081 INFO [단계 3] 시가총액 필터(100억 이상) 후 활성 종목: 0개
+2026-07-16 15:03:20,081 INFO 모멘텀 계산 중 (yfinance, 0종목)...
+2026-07-16 15:03:20,082 WARNING 모멘텀: 가격 데이터 없음
+2026-07-16 15:03:20,082 INFO Supabase 재무 데이터 조회 (year=2025, 0종목)...
+2026-07-16 15:03:20,083 WARNING 2025년 재무 데이터 없음 → 2024년으로 재시도
+2026-07-16 15:03:20,083 INFO Supabase 재무 데이터 조회 (year=2024, 0종목)...
+2026-07-16 15:03:20,083 INFO [단계 4] 재무 데이터 수집 종목 수: 0
+2026-07-16 15:03:20,086 INFO [단계 5] 팩터 계산 완료: 0종목
+2026-07-16 15:03:20,086 INFO Supabase upsert 시작: 0종목 / 2026-07-15
+2026-07-16 15:03:20,087 INFO upsert 완료: 성공 0 / 실패 0
+2026-07-16 15:03:20,087 INFO === precompute_factors 완료 ===

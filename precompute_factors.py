@@ -6,8 +6,9 @@ Railway Cron Job으로 매일 새벽 3시 KST 자동 실행.
 
 데이터 소스:
   · 종목 리스트  : DART corpCode.xml  (stock_code 있는 전체 상장 종목)
-  · 시가총액     : yfinance fast_info (ThreadPoolExecutor 병렬)
-  · 모멘텀 1M/3M: yfinance bulk download
+  · 유효 종목 필터: yfinance bulk download (Yahoo Finance에 데이터 있는 종목만)
+  · 시가총액     : yfinance fast_info.market_cap (ThreadPoolExecutor 병렬)
+  · 모멘텀 1M/3M: yfinance bulk download (유효 종목 필터와 동일 데이터 재사용)
   · PER, PBR    : 시가총액(yfinance) / 재무(Supabase kr_financials)
   · ROE, GPA, 부채비율, PSR : Supabase kr_financials (전년도 재무)
 
@@ -34,6 +35,7 @@ from __future__ import annotations
 import io
 import logging
 import os
+import time
 import xml.etree.ElementTree as ET
 import zipfile
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -68,15 +70,16 @@ KST = timezone(timedelta(hours=9))
 
 MIN_MARKET_CAP   = 10_000_000_000   # 100억 원 미만 제외
 BATCH_SIZE       = 300              # Supabase upsert 배치 크기
-YF_WORKERS       = 20               # yfinance fast_info 병렬 스레드 수
-YF_PRICE_CHUNK   = 500              # yfinance bulk download 청크 크기
+YF_WORKERS       = 5               # fast_info 병렬 스레드 수 (rate limit 방지)
+YF_PRICE_CHUNK   = 100              # yfinance bulk download 청크 크기 (소형 유지)
+YF_CHUNK_SLEEP   = 3               # 청크 간 대기 시간(초) — rate limit 방지
 MOMENTUM_DAYS    = 100              # 다운로드할 과거 거래일 (3M + 여유)
 
 
 # ── 유틸 ──────────────────────────────────────────────────────────────────
 
 def last_trading_day(base: date) -> date:
-    """base 직전 영업일 (주말 건너뜀). 공휴일은 yfinance alternative 데이터로 처리."""
+    """base 직전 영업일 (주말 건너뜀)."""
     d = base - timedelta(days=1)
     while d.weekday() >= 5:   # 5=토, 6=일
         d -= timedelta(days=1)
@@ -88,7 +91,7 @@ def last_trading_day(base: date) -> date:
 def fetch_tickers_from_dart() -> list[str]:
     """
     DART corpCode.xml 파싱 → 6자리 stock_code 보유한 전체 상장 종목 코드 반환.
-    KOSPI + KOSDAQ + KONEX 포함. 시가총액 필터로 KONEX 자연 제거.
+    KOSPI + KOSDAQ + KONEX 포함. 이후 yfinance 유효성 검증으로 필터링.
     """
     logger.info("DART corpCode.xml 에서 종목 리스트 조회 중...")
     url = f"https://opendart.fss.or.kr/api/corpCode.xml?crtfc_key={DART_API_KEY}"
@@ -117,56 +120,35 @@ def fetch_tickers_from_dart() -> list[str]:
     return tickers
 
 
-# ── 2. 시가총액: yfinance fast_info 병렬 조회 ─────────────────────────────
+# ── 2. 유효 종목 확인 + 가격 데이터 (yfinance bulk download) ──────────────
 
-def fetch_market_caps(stock_codes: list[str]) -> pd.Series:
+def screen_valid_tickers(
+    stock_codes: list[str], target: date
+) -> tuple[list[str], pd.DataFrame]:
     """
-    yfinance Ticker.fast_info.market_cap 을 ThreadPoolExecutor로 병렬 조회.
-    KRW 단위. 조회 실패 종목은 NaN.
+    yfinance bulk download로 Yahoo Finance에 데이터가 있는 유효 종목 확인.
+    동시에 MOMENTUM_DAYS 기간의 종가 데이터를 수집(모멘텀 계산에 재사용).
+
+    DART 3924 종목 중 KONEX/상폐 등 Yahoo Finance 미등록 종목은 자동 제거됨.
+
+    Returns
+    -------
+    valid_codes : list[str]  Yahoo Finance에서 최근 종가가 있는 종목 코드
+    close_df    : pd.DataFrame  (날짜 × "코드.KS") 종가 DataFrame
     """
-    logger.info("시가총액 조회 중 (yfinance, %d종목)...", len(stock_codes))
-    caps: dict[str, float] = {}
-
-    def _get(code: str) -> tuple[str, float]:
-        try:
-            ticker = yf.Ticker(f"{code}.KS")
-            # fast_info.market_cap은 한국 주식에서 대부분 None → .info["marketCap"] 사용
-            mc = ticker.info.get("marketCap") or ticker.fast_info.market_cap
-            return code, float(mc) if mc and mc > 0 else 0.0
-        except Exception:
-            return code, 0.0
-
-    with ThreadPoolExecutor(max_workers=YF_WORKERS) as ex:
-        futures = {ex.submit(_get, c): c for c in stock_codes}
-        done = 0
-        for f in as_completed(futures):
-            code, mc = f.result()
-            if mc > 0:
-                caps[code] = mc
-            done += 1
-            if done % 200 == 0:
-                logger.info("  시가총액 진행: %d/%d", done, len(stock_codes))
-
-    logger.info("시가총액 수집 완료: %d종목", len(caps))
-    return pd.Series(caps, dtype=float)
-
-
-# ── 3. 모멘텀: yfinance bulk download ────────────────────────────────────
-
-def fetch_momentum(stock_codes: list[str], target: date) -> pd.DataFrame:
-    """
-    yfinance bulk download로 1M(21거래일) / 3M(63거래일) 모멘텀 계산.
-    YF_PRICE_CHUNK 단위로 나눠 다운로드 후 합산.
-    """
-    logger.info("모멘텀 계산 중 (yfinance, %d종목)...", len(stock_codes))
+    logger.info("유효 종목 확인 + 가격 데이터 수집 (yfinance bulk, %d종목)...", len(stock_codes))
     start_str = (target - timedelta(days=MOMENTUM_DAYS + 30)).strftime("%Y-%m-%d")
     end_str   = (target + timedelta(days=1)).strftime("%Y-%m-%d")
 
     tickers_ks = [f"{c}.KS" for c in stock_codes]
-
     all_close: list[pd.DataFrame] = []
+
+    n_chunks = (len(tickers_ks) + YF_PRICE_CHUNK - 1) // YF_PRICE_CHUNK
     for i in range(0, len(tickers_ks), YF_PRICE_CHUNK):
+        chunk_idx = i // YF_PRICE_CHUNK
         chunk = tickers_ks[i : i + YF_PRICE_CHUNK]
+        if chunk_idx > 0:
+            time.sleep(YF_CHUNK_SLEEP)   # rate limit 방지
         try:
             hist = yf.download(
                 chunk,
@@ -180,40 +162,135 @@ def fetch_momentum(stock_codes: list[str], target: date) -> pd.DataFrame:
             if hist.empty:
                 continue
             if isinstance(hist.columns, pd.MultiIndex):
-                # 정상 케이스: (field, ticker) 구조
                 close = hist["Close"]
                 if isinstance(close, pd.Series):
                     close = close.to_frame()
             else:
-                # 단일 종목만 반환된 경우 → flat 컬럼 (Open/High/Low/Close/Volume)
-                # 종목명을 특정할 수 없으므로 해당 청크는 건너뜀
+                # 청크 내 단일 종목만 유효한 경우 → flat 컬럼 (Open/High/Close 등)
+                # 종목 식별 불가로 건너뜀
                 logger.debug(
-                    "yfinance flat DataFrame 수신 (chunk %d, %d종목) — 스킵",
-                    i // YF_PRICE_CHUNK, len(chunk),
+                    "yfinance flat DataFrame (chunk %d, %d종목) — 스킵",
+                    chunk_idx, len(chunk),
                 )
                 continue
-            all_close.append(close.dropna(how="all"))
+            close_valid = close.loc[:, close.iloc[-1].notna()]
+            if not close_valid.empty:
+                all_close.append(close_valid.dropna(how="all"))
+            if chunk_idx % 10 == 9:
+                logger.info(
+                    "  가격 다운로드: %d/%d 청크 완료, 현재까지 유효 종목 %d개",
+                    chunk_idx + 1, n_chunks,
+                    sum(df.shape[1] for df in all_close),
+                )
         except Exception as exc:
-            logger.warning("yfinance 다운로드 실패 (chunk %d): %s", i // YF_PRICE_CHUNK, exc)
+            logger.warning("yfinance 다운로드 실패 (chunk %d): %s", chunk_idx, exc)
 
     if not all_close:
-        logger.warning("모멘텀: 가격 데이터 없음")
-        return pd.DataFrame()
+        logger.error("가격 데이터를 전혀 수집하지 못함")
+        return [], pd.DataFrame()
 
     close_all = pd.concat(all_close, axis=1)
     close_all = close_all.loc[:, ~close_all.columns.duplicated()]
-    close_all = close_all.dropna(how="all")
-    logger.info("모멘텀 가격 수집: %d종목 × %d거래일", close_all.shape[1], len(close_all))
 
-    if len(close_all) < 2:
+    # 마지막 거래일 기준 종가가 있는 종목만 유효
+    last_row = close_all.iloc[-1]
+    valid_cols = last_row.index[last_row.notna()].tolist()
+    close_all = close_all[valid_cols].dropna(how="all")
+
+    valid_codes = [str(c).replace(".KS", "") for c in valid_cols]
+    logger.info(
+        "유효 종목: %d개 (DART %d개 중 Yahoo Finance 데이터 보유)",
+        len(valid_codes), len(stock_codes),
+    )
+    return valid_codes, close_all
+
+
+# ── 3. 시가총액: yfinance fast_info 병렬 조회 ─────────────────────────────
+
+def fetch_market_caps(stock_codes: list[str]) -> pd.Series:
+    """
+    fast_info.market_cap 을 ThreadPoolExecutor로 병렬 조회.
+    fast_info가 None이면 .info["marketCap"] 으로 fallback.
+    401/429 rate limit 감지 시 60초 대기 후 한 번 재시도.
+    KRW 단위. 조회 실패 종목은 caps 에 미포함.
+    """
+    logger.info("시가총액 조회 중 (yfinance fast_info, %d종목)...", len(stock_codes))
+
+    def _try(code: str) -> tuple[str, float, bool]:
+        """Returns (code, market_cap, rate_limited)."""
+        try:
+            t = yf.Ticker(f"{code}.KS")
+            mc = t.fast_info.market_cap
+            if not mc or mc <= 0:
+                mc = t.info.get("marketCap")
+            return code, float(mc) if mc and mc > 0 else 0.0, False
+        except Exception as exc:
+            err = str(exc).lower()
+            rate_limited = "401" in err or "429" in err or "rate" in err or "crumb" in err
+            return code, 0.0, rate_limited
+
+    def _run_batch(codes: list[str]) -> tuple[dict[str, float], list[str]]:
+        caps: dict[str, float] = {}
+        rate_limited_codes: list[str] = []
+        with ThreadPoolExecutor(max_workers=YF_WORKERS) as ex:
+            futures = {ex.submit(_try, c): c for c in codes}
+            done = 0
+            for f in as_completed(futures):
+                code, mc, rl = f.result()
+                if mc > 0:
+                    caps[code] = mc
+                elif rl:
+                    rate_limited_codes.append(code)
+                done += 1
+                if done % 100 == 0:
+                    logger.info("  시가총액 진행: %d/%d", done, len(codes))
+        return caps, rate_limited_codes
+
+    # 1차 시도
+    caps, rate_limited = _run_batch(stock_codes)
+    logger.info(
+        "시가총액 1차 수집: %d종목 성공, %d종목 rate limit",
+        len(caps), len(rate_limited),
+    )
+
+    # rate limit 종목이 30% 초과면 60초 대기 후 재시도
+    if len(rate_limited) > len(stock_codes) * 0.3:
+        logger.warning(
+            "rate limit 과다 (%d종목) — 60초 대기 후 재시도", len(rate_limited)
+        )
+        time.sleep(60)
+        retry_caps, _ = _run_batch(rate_limited)
+        caps.update(retry_caps)
+        logger.info("재시도 후 추가 수집: %d종목", len(retry_caps))
+
+    logger.info("시가총액 수집 완료: %d종목", len(caps))
+    return pd.Series(caps, dtype=float)
+
+
+# ── 4. 모멘텀: screen_valid_tickers 에서 받은 가격 데이터 재사용 ──────────
+
+def compute_momentum(close_df: pd.DataFrame, stock_codes: list[str]) -> pd.DataFrame:
+    """
+    이미 다운로드한 종가 DataFrame에서 1M·3M 모멘텀 계산.
+    close_df 컬럼은 "코드.KS" 형식.
+    """
+    if close_df.empty:
         return pd.DataFrame()
 
-    # 기준: 마지막 거래일 (target 이전)
-    today_px = close_all.iloc[-1]
-    idx_1m   = max(0, len(close_all) - 1 - 21)
-    idx_3m   = max(0, len(close_all) - 1 - 63)
-    px_1m    = close_all.iloc[idx_1m]
-    px_3m    = close_all.iloc[idx_3m]
+    close_ks = [f"{c}.KS" for c in stock_codes]
+    available = [c for c in close_ks if c in close_df.columns]
+    if not available:
+        return pd.DataFrame()
+
+    close = close_df[available].dropna(how="all")
+    if len(close) < 2:
+        return pd.DataFrame()
+
+    today_px = close.iloc[-1]
+    idx_1m   = max(0, len(close) - 1 - 21)
+    idx_3m   = max(0, len(close) - 1 - 63)
+    px_1m    = close.iloc[idx_1m]
+    px_3m    = close.iloc[idx_3m]
 
     with np.errstate(divide="ignore", invalid="ignore"):
         mom_1m = (today_px - px_1m) / px_1m.replace(0, np.nan)
@@ -221,13 +298,12 @@ def fetch_momentum(stock_codes: list[str], target: date) -> pd.DataFrame:
 
     mom = pd.DataFrame({"momentum_1m": mom_1m, "momentum_3m": mom_3m})
     mom = mom.replace([np.inf, -np.inf], np.nan)
-    # 인덱스: "005930.KS" → "005930"
     mom.index = [str(t).replace(".KS", "") for t in mom.index]
     logger.info("모멘텀 계산 완료: %d종목", mom.notna().any(axis=1).sum())
     return mom
 
 
-# ── 4. Supabase 재무 데이터 ───────────────────────────────────────────────
+# ── 5. Supabase 재무 데이터 ───────────────────────────────────────────────
 
 def fetch_financials(supabase, stock_codes: list[str], fin_year: int) -> pd.DataFrame:
     """
@@ -264,7 +340,7 @@ def fetch_financials(supabase, stock_codes: list[str], fin_year: int) -> pd.Data
     return df
 
 
-# ── 5. 팩터 합치기 ────────────────────────────────────────────────────────
+# ── 6. 팩터 합치기 ────────────────────────────────────────────────────────
 
 def build_factors(
     stock_codes: list[str],
@@ -274,15 +350,12 @@ def build_factors(
 ) -> pd.DataFrame:
     df = pd.DataFrame(index=stock_codes)
 
-    # 시가총액
     df["market_cap"] = market_caps.reindex(df.index)
 
-    # 모멘텀
     for col in ("momentum_1m", "momentum_3m"):
-        if col in momentum.columns:
+        if not momentum.empty and col in momentum.columns:
             df[col] = momentum[col].reindex(df.index)
 
-    # 재무 기반 팩터 (Supabase kr_financials)
     if not fin_df.empty:
         fin    = fin_df.reindex(df.index)
         ni     = fin["net_income"]
@@ -294,18 +367,12 @@ def build_factors(
         mc     = df["market_cap"]
 
         with np.errstate(divide="ignore", invalid="ignore"):
-            # PER = 시가총액 / 당기순이익
-            df["per"] = np.where((ni > 0) & mc.notna(), mc / ni, np.nan)
-            # PBR = 시가총액 / 자기자본
-            df["pbr"] = np.where((eq > 0) & mc.notna(), mc / eq, np.nan)
-            # ROE = 당기순이익 / 자기자본
-            df["roe"] = np.where(eq > 0, ni / eq, np.nan)
-            # GPA = 매출총이익 / 총자산
-            df["gpa"] = np.where(assets > 0, gp / assets, np.nan)
-            # 부채비율 = 부채총계 / 자기자본
+            df["per"]        = np.where((ni > 0) & mc.notna(), mc / ni, np.nan)
+            df["pbr"]        = np.where((eq > 0) & mc.notna(), mc / eq, np.nan)
+            df["roe"]        = np.where(eq > 0, ni / eq, np.nan)
+            df["gpa"]        = np.where(assets > 0, gp / assets, np.nan)
             df["debt_ratio"] = np.where(eq > 0, debt / eq, np.nan)
-            # PSR = 시가총액 / 매출액
-            df["psr"] = np.where((rev > 0) & mc.notna(), mc / rev, np.nan)
+            df["psr"]        = np.where((rev > 0) & mc.notna(), mc / rev, np.nan)
 
     # 최소 시가총액 필터 (100억 미만 제외)
     df = df[df["market_cap"].fillna(0) >= MIN_MARKET_CAP]
@@ -313,7 +380,7 @@ def build_factors(
     return df.replace([np.inf, -np.inf], np.nan)
 
 
-# ── 6. Supabase 저장 ──────────────────────────────────────────────────────
+# ── 7. Supabase 저장 ──────────────────────────────────────────────────────
 
 def upsert_factors(supabase, df: pd.DataFrame, target_date: date) -> None:
     date_iso    = target_date.isoformat()
@@ -353,8 +420,8 @@ def upsert_factors(supabase, df: pd.DataFrame, target_date: date) -> None:
 
 def main() -> None:
     now_kst  = datetime.now(KST)
-    target   = last_trading_day(now_kst.date())   # 직전 영업일
-    fin_year = target.year - 1                    # 전년도 재무 (룩어헤드 바이어스 방지)
+    target   = last_trading_day(now_kst.date())
+    fin_year = target.year - 1   # 전년도 재무 (룩어헤드 바이어스 방지)
 
     logger.info("=== precompute_factors 시작 ===")
     logger.info("실행 시각 (KST) : %s", now_kst.strftime("%Y-%m-%d %H:%M:%S"))
@@ -370,33 +437,52 @@ def main() -> None:
         return
     logger.info("[단계 1] DART 종목 수: %d", len(stock_codes))
 
-    # 2. 시가총액 (yfinance .info["marketCap"])
-    market_caps = fetch_market_caps(stock_codes)
-    logger.info("[단계 2] 시가총액 수집 종목 수: %d", len(market_caps))
+    # 2. 유효 종목 확인 + 가격 데이터 (yfinance bulk download)
+    #    DART 3924개 중 Yahoo Finance에 데이터 있는 종목만 추림 (KONEX/상폐 자동 제거)
+    #    → 동시에 130일 종가 수집 (모멘텀 계산에 재사용)
+    valid_codes, close_df = screen_valid_tickers(stock_codes, target)
+    if not valid_codes:
+        logger.error("유효 종목 없음 — 종료")
+        return
+    logger.info("[단계 2] Yahoo Finance 유효 종목: %d개", len(valid_codes))
 
-    # 3. 모멘텀 (yfinance)
-    # 시가총액 있는 종목만 대상 (존재하지 않는 티커 yfinance 호출 절약)
+    # 대규모 다운로드 후 Yahoo Finance rate limit 해소 대기
+    logger.info("rate limit 해소 대기 (30초)...")
+    time.sleep(30)
+
+    # 3. 시가총액 (유효 종목에만 fast_info 호출)
+    market_caps = fetch_market_caps(valid_codes)
+    logger.info("[단계 3] 시가총액 수집 종목: %d개", len(market_caps))
+
+    # 4. 시가총액 필터 (100억 이상)
     active_codes = [
-        c for c in stock_codes
+        c for c in valid_codes
         if c in market_caps.index and market_caps[c] >= MIN_MARKET_CAP
     ]
-    logger.info("[단계 3] 시가총액 필터(%d억 이상) 후 활성 종목: %d개",
-                MIN_MARKET_CAP // 100_000_000, len(active_codes))
+    logger.info(
+        "[단계 4] 시가총액 필터 후 활성 종목: %d개 (기준: %d억 이상)",
+        len(active_codes), MIN_MARKET_CAP // 100_000_000,
+    )
+    if not active_codes:
+        logger.error("활성 종목 없음 — 종료")
+        return
 
-    momentum = fetch_momentum(active_codes, target)
+    # 5. 모멘텀 (이미 다운로드한 가격 데이터 재사용)
+    momentum = compute_momentum(close_df, active_codes)
+    logger.info("[단계 5] 모멘텀 계산: %d종목", len(momentum))
 
-    # 4. 재무 데이터 (Supabase)
+    # 6. 재무 데이터 (Supabase kr_financials)
     fin_df = fetch_financials(sb, active_codes, fin_year)
     if fin_df.empty:
         logger.warning("%d년 재무 데이터 없음 → %d년으로 재시도", fin_year, fin_year - 1)
         fin_df = fetch_financials(sb, active_codes, fin_year - 1)
-    logger.info("[단계 4] 재무 데이터 수집 종목 수: %d", len(fin_df))
+    logger.info("[단계 6] 재무 데이터: %d종목", len(fin_df))
 
-    # 5. 팩터 합치기
+    # 7. 팩터 합치기
     factor_df = build_factors(active_codes, market_caps, momentum, fin_df)
-    logger.info("[단계 5] 팩터 계산 완료: %d종목", len(factor_df))
+    logger.info("[단계 7] 팩터 계산 완료: %d종목", len(factor_df))
 
-    # 6. Supabase 저장
+    # 8. Supabase 저장
     upsert_factors(sb, factor_df, target)
 
     logger.info("=== precompute_factors 완료 ===")
