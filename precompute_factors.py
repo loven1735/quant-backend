@@ -312,7 +312,12 @@ def upsert_factors(supabase, df: pd.DataFrame, target_date: date) -> None:
         record: dict = {"ticker": str(ticker), "date": date_iso}
         for col in FACTOR_COLS:
             val = row.get(col) if col in row.index else None
-            record[col] = round(float(val), 6) if (val is not None and pd.notna(val)) else None
+            if val is None or not pd.notna(val):
+                record[col] = None
+            elif col == "market_cap":
+                record[col] = int(float(val))
+            else:
+                record[col] = round(float(val), 6)
         rows.append(record)
 
     logger.info("Supabase upsert 시작: %d종목 / %s", len(rows), date_iso)
