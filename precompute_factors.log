@@ -379,3 +379,54 @@
 2026-07-16 14:48:41,883 ERROR upsert 실패 (batch 0): {'message': 'invalid input syntax for type bigint: "95949252480.0"', 'code': '22P02', 'hint': None, 'details': None}
 2026-07-16 14:48:41,884 INFO upsert 완료: 성공 0 / 실패 3
 2026-07-16 14:48:41,885 INFO === precompute_factors 완료 ===
+2026-07-16 14:51:38,628 INFO === precompute_factors 시작 ===
+2026-07-16 14:51:38,629 INFO 실행 시각 (KST) : 2026-07-16 14:51:38
+2026-07-16 14:51:38,629 INFO 데이터 기준일   : 2026-07-15
+2026-07-16 14:51:38,630 INFO 재무 기준 연도  : 2025년
+2026-07-16 14:51:38,978 INFO DART corpCode.xml 에서 종목 리스트 조회 중...
+2026-07-16 14:51:41,408 INFO DART 상장 종목: 3924개
+2026-07-16 14:51:41,454 INFO 시가총액 조회 중 (yfinance, 3924종목)...
+2026-07-16 14:51:45,335 INFO   시가총액 진행: 200/3924
+2026-07-16 14:51:48,133 INFO   시가총액 진행: 400/3924
+2026-07-16 14:51:50,646 INFO   시가총액 진행: 600/3924
+2026-07-16 14:51:52,876 INFO   시가총액 진행: 800/3924
+2026-07-16 14:51:55,106 INFO   시가총액 진행: 1000/3924
+2026-07-16 14:51:57,457 INFO   시가총액 진행: 1200/3924
+2026-07-16 14:51:59,807 INFO   시가총액 진행: 1400/3924
+2026-07-16 14:52:02,079 INFO   시가총액 진행: 1600/3924
+2026-07-16 14:52:04,331 INFO   시가총액 진행: 1800/3924
+2026-07-16 14:52:06,595 INFO   시가총액 진행: 2000/3924
+2026-07-16 14:52:08,177 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 14:52:08,424 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"User is unable to access this feature - https://bit.ly/yahoo-finance-api-feedback"}}}
+2026-07-16 14:52:08,575 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 14:52:08,648 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 14:52:08,650 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 14:52:08,712 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 14:52:08,713 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 14:52:08,722 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 14:52:08,861 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 14:52:08,950 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-16 14:52:08,951 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"User is unable to access this feature - https://bit.ly/yahoo-finance-api-feedback"}}}
+2026-07-16 14:52:09,622 INFO   시가총액 진행: 2200/3924
+2026-07-16 14:52:11,827 INFO   시가총액 진행: 2400/3924
+2026-07-16 14:52:14,168 INFO   시가총액 진행: 2600/3924
+2026-07-16 14:52:16,375 INFO   시가총액 진행: 2800/3924
+2026-07-16 14:52:18,597 INFO   시가총액 진행: 3000/3924
+2026-07-16 14:52:21,078 INFO   시가총액 진행: 3200/3924
+2026-07-16 14:52:23,321 INFO   시가총액 진행: 3400/3924
+2026-07-16 14:52:25,480 INFO   시가총액 진행: 3600/3924
+2026-07-16 14:52:27,780 INFO   시가총액 진행: 3800/3924
+2026-07-16 14:52:29,142 INFO 시가총액 수집 완료: 1종목
+2026-07-16 14:52:29,150 INFO 시가총액 필터 후 활성 종목: 1개
+2026-07-16 14:52:29,150 INFO 모멘텀 계산 중 (yfinance, 1종목)...
+2026-07-16 14:52:29,450 INFO 모멘텀 계산 완료: 1종목
+2026-07-16 14:52:29,451 INFO Supabase 재무 데이터 조회 (year=2025, 1종목)...
+2026-07-16 14:52:30,170 INFO HTTP Request: GET https://zyiqxmasmnvspjzvpeaa.supabase.co/rest/v1/kr_financials?select=stock_code%2Cnet_income%2Ctotal_equity%2Ctotal_assets%2Ctotal_debt%2Cgross_profit%2Crevenue&year=eq.2025&stock_code=in.%28019680%29 "HTTP/2 200 OK"
+2026-07-16 14:52:30,181 WARNING 2025년 재무 데이터 없음 → 2024년으로 재시도
+2026-07-16 14:52:30,182 INFO Supabase 재무 데이터 조회 (year=2024, 1종목)...
+2026-07-16 14:52:30,322 INFO HTTP Request: GET https://zyiqxmasmnvspjzvpeaa.supabase.co/rest/v1/kr_financials?select=stock_code%2Cnet_income%2Ctotal_equity%2Ctotal_assets%2Ctotal_debt%2Cgross_profit%2Crevenue&year=eq.2024&stock_code=in.%28019680%29 "HTTP/2 200 OK"
+2026-07-16 14:52:30,327 INFO 팩터 계산 완료: 1종목 (필터 후)
+2026-07-16 14:52:30,328 INFO Supabase upsert 시작: 1종목 / 2026-07-15
+2026-07-16 14:52:30,466 INFO HTTP Request: POST https://zyiqxmasmnvspjzvpeaa.supabase.co/rest/v1/factor_scores?on_conflict=ticker%2Cdate&columns=%22gpa%22%2C%22roe%22%2C%22debt_ratio%22%2C%22ticker%22%2C%22momentum_3m%22%2C%22psr%22%2C%22per%22%2C%22market_cap%22%2C%22pbr%22%2C%22momentum_1m%22%2C%22date%22 "HTTP/2 201 Created"
+2026-07-16 14:52:30,478 INFO upsert 완료: 성공 1 / 실패 0
+2026-07-16 14:52:30,478 INFO === precompute_factors 완료 ===

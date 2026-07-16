@@ -129,7 +129,9 @@ def fetch_market_caps(stock_codes: list[str]) -> pd.Series:
 
     def _get(code: str) -> tuple[str, float]:
         try:
-            mc = yf.Ticker(f"{code}.KS").fast_info.market_cap
+            ticker = yf.Ticker(f"{code}.KS")
+            # fast_info.market_cap은 한국 주식에서 대부분 None → .info["marketCap"] 사용
+            mc = ticker.info.get("marketCap") or ticker.fast_info.market_cap
             return code, float(mc) if mc and mc > 0 else 0.0
         except Exception:
             return code, 0.0
@@ -177,9 +179,19 @@ def fetch_momentum(stock_codes: list[str], target: date) -> pd.DataFrame:
             )
             if hist.empty:
                 continue
-            close = hist["Close"] if isinstance(hist.columns, pd.MultiIndex) else hist
-            if isinstance(close, pd.Series):
-                close = close.to_frame()
+            if isinstance(hist.columns, pd.MultiIndex):
+                # 정상 케이스: (field, ticker) 구조
+                close = hist["Close"]
+                if isinstance(close, pd.Series):
+                    close = close.to_frame()
+            else:
+                # 단일 종목만 반환된 경우 → flat 컬럼 (Open/High/Low/Close/Volume)
+                # 종목명을 특정할 수 없으므로 해당 청크는 건너뜀
+                logger.debug(
+                    "yfinance flat DataFrame 수신 (chunk %d, %d종목) — 스킵",
+                    i // YF_PRICE_CHUNK, len(chunk),
+                )
+                continue
             all_close.append(close.dropna(how="all"))
         except Exception as exc:
             logger.warning("yfinance 다운로드 실패 (chunk %d): %s", i // YF_PRICE_CHUNK, exc)
@@ -191,6 +203,7 @@ def fetch_momentum(stock_codes: list[str], target: date) -> pd.DataFrame:
     close_all = pd.concat(all_close, axis=1)
     close_all = close_all.loc[:, ~close_all.columns.duplicated()]
     close_all = close_all.dropna(how="all")
+    logger.info("모멘텀 가격 수집: %d종목 × %d거래일", close_all.shape[1], len(close_all))
 
     if len(close_all) < 2:
         return pd.DataFrame()
@@ -355,14 +368,20 @@ def main() -> None:
     if not stock_codes:
         logger.error("종목 리스트 없음 — 종료")
         return
+    logger.info("[단계 1] DART 종목 수: %d", len(stock_codes))
 
-    # 2. 시가총액 (yfinance)
+    # 2. 시가총액 (yfinance .info["marketCap"])
     market_caps = fetch_market_caps(stock_codes)
+    logger.info("[단계 2] 시가총액 수집 종목 수: %d", len(market_caps))
 
     # 3. 모멘텀 (yfinance)
-    # 시가총액 있는 종목만 대상으로 (존재하지 않는 티커 yfinance 호출 절약)
-    active_codes = [c for c in stock_codes if c in market_caps.index and market_caps[c] >= MIN_MARKET_CAP]
-    logger.info("시가총액 필터 후 활성 종목: %d개", len(active_codes))
+    # 시가총액 있는 종목만 대상 (존재하지 않는 티커 yfinance 호출 절약)
+    active_codes = [
+        c for c in stock_codes
+        if c in market_caps.index and market_caps[c] >= MIN_MARKET_CAP
+    ]
+    logger.info("[단계 3] 시가총액 필터(%d억 이상) 후 활성 종목: %d개",
+                MIN_MARKET_CAP // 100_000_000, len(active_codes))
 
     momentum = fetch_momentum(active_codes, target)
 
@@ -371,10 +390,11 @@ def main() -> None:
     if fin_df.empty:
         logger.warning("%d년 재무 데이터 없음 → %d년으로 재시도", fin_year, fin_year - 1)
         fin_df = fetch_financials(sb, active_codes, fin_year - 1)
+    logger.info("[단계 4] 재무 데이터 수집 종목 수: %d", len(fin_df))
 
     # 5. 팩터 합치기
     factor_df = build_factors(active_codes, market_caps, momentum, fin_df)
-    logger.info("팩터 계산 완료: %d종목 (필터 후)", len(factor_df))
+    logger.info("[단계 5] 팩터 계산 완료: %d종목", len(factor_df))
 
     # 6. Supabase 저장
     upsert_factors(sb, factor_df, target)
