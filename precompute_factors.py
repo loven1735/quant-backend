@@ -205,29 +205,58 @@ def screen_valid_tickers(
     return valid_codes, close_all
 
 
-# ── 3. 시가총액: yfinance fast_info 병렬 조회 ─────────────────────────────
+# ── 3. 시가총액: fast_info 병렬 조회 (yf.download 가격 재사용) ─────────────
 
-def fetch_market_caps(stock_codes: list[str]) -> pd.Series:
+def fetch_market_caps(
+    stock_codes: list[str],
+    close_df: pd.DataFrame,
+) -> pd.Series:
     """
-    fast_info.market_cap 을 ThreadPoolExecutor로 병렬 조회.
-    fast_info가 None이면 .info["marketCap"] 으로 fallback.
-    401/429 rate limit 감지 시 60초 대기 후 한 번 재시도.
-    KRW 단위. 조회 실패 종목은 caps 에 미포함.
+    각 종목 시가총액을 세 단계 fallback으로 조회.
+
+    1순위: fast_info.market_cap          — Yahoo Finance 직접 계산값 (fastest)
+    2순위: close_df 종가 × fast_info.shares — 이미 다운받은 가격 재사용, 추가 호출 최소화
+    3순위: .info["marketCap"]            — quoteSummary 풀 조회 (slowest, most complete)
+
+    rate limit(401/429) 감지 시 60초 대기 후 한 번 재시도.
+    KRW 단위. 모든 fallback 실패 종목은 결과에서 제외됨.
     """
-    logger.info("시가총액 조회 중 (yfinance fast_info, %d종목)...", len(stock_codes))
+    logger.info("시가총액 조회 중 (%d종목)...", len(stock_codes))
+
+    def _get_price_from_close(code: str) -> float:
+        """close_df에서 해당 종목의 최신 종가 반환."""
+        col = f"{code}.KS"
+        if col in close_df.columns:
+            series = close_df[col].dropna()
+            if not series.empty:
+                return float(series.iloc[-1])
+        return 0.0
 
     def _try(code: str) -> tuple[str, float, bool]:
-        """Returns (code, market_cap, rate_limited)."""
+        """(code, market_cap_krw, is_rate_limited) 반환."""
         try:
             t = yf.Ticker(f"{code}.KS")
+
+            # 1순위: fast_info.market_cap
             mc = t.fast_info.market_cap
-            if not mc or mc <= 0:
-                mc = t.info.get("marketCap")
+            if mc and mc > 0:
+                return code, float(mc), False
+
+            # 2순위: yf.download 종가 × fast_info.shares
+            shares = t.fast_info.shares
+            if shares and shares > 0:
+                price = _get_price_from_close(code)
+                if price > 0:
+                    return code, price * float(shares), False
+
+            # 3순위: .info["marketCap"]
+            mc = t.info.get("marketCap")
             return code, float(mc) if mc and mc > 0 else 0.0, False
+
         except Exception as exc:
             err = str(exc).lower()
-            rate_limited = "401" in err or "429" in err or "rate" in err or "crumb" in err
-            return code, 0.0, rate_limited
+            is_rl = any(k in err for k in ("401", "429", "rate", "crumb", "too many"))
+            return code, 0.0, is_rl
 
     def _run_batch(codes: list[str]) -> tuple[dict[str, float], list[str]]:
         caps: dict[str, float] = {}
@@ -249,19 +278,16 @@ def fetch_market_caps(stock_codes: list[str]) -> pd.Series:
     # 1차 시도
     caps, rate_limited = _run_batch(stock_codes)
     logger.info(
-        "시가총액 1차 수집: %d종목 성공, %d종목 rate limit",
-        len(caps), len(rate_limited),
+        "시가총액 1차: 성공 %d종목, rate limit %d종목", len(caps), len(rate_limited)
     )
 
     # rate limit 종목이 30% 초과면 60초 대기 후 재시도
     if len(rate_limited) > len(stock_codes) * 0.3:
-        logger.warning(
-            "rate limit 과다 (%d종목) — 60초 대기 후 재시도", len(rate_limited)
-        )
+        logger.warning("rate limit 과다 (%d종목) — 60초 대기 후 재시도", len(rate_limited))
         time.sleep(60)
         retry_caps, _ = _run_batch(rate_limited)
         caps.update(retry_caps)
-        logger.info("재시도 후 추가 수집: %d종목", len(retry_caps))
+        logger.info("재시도 추가 수집: %d종목", len(retry_caps))
 
     logger.info("시가총액 수집 완료: %d종목", len(caps))
     return pd.Series(caps, dtype=float)
@@ -450,8 +476,8 @@ def main() -> None:
     logger.info("rate limit 해소 대기 (30초)...")
     time.sleep(30)
 
-    # 3. 시가총액 (유효 종목에만 fast_info 호출)
-    market_caps = fetch_market_caps(valid_codes)
+    # 3. 시가총액 (유효 종목에만 fast_info 호출, close_df 가격 재사용)
+    market_caps = fetch_market_caps(valid_codes, close_df)
     logger.info("[단계 3] 시가총액 수집 종목: %d개", len(market_caps))
 
     # 4. 시가총액 필터 (100억 이상)
