@@ -251,14 +251,18 @@ def fetch_shares_from_dart(
                 if data.get("status") != "000":
                     continue
                 items = data.get("list", [])
-                # 보통주만 추출, 없으면 전체 합산
-                common = [it for it in items if "보통주" in (it.get("stock_knd") or "")]
-                targets = common if common else items
-                total = sum(
-                    int(it["istc_totqy"].replace(",", ""))
-                    for it in targets
-                    if it.get("istc_totqy")
-                )
+                # 보통주만 추출 (se 필드), 없으면 우선주·기타 제외하고 합산
+                def _parse(v):
+                    try:
+                        return int(str(v).replace(",", ""))
+                    except Exception:
+                        return 0
+                common = [it for it in items if (it.get("se") or "") == "보통주"]
+                targets = common if common else [
+                    it for it in items
+                    if (it.get("se") or "") not in ("합계", "기타", "")
+                ]
+                total = sum(_parse(it.get("istc_totqy")) for it in targets)
                 if total > 0:
                     return stock_code, total
             except Exception:
