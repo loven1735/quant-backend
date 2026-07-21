@@ -2273,3 +2273,1697 @@
 2026-07-18 14:57:56,285 INFO HTTP Request: POST https://zyiqxmasmnvspjzvpeaa.supabase.co/rest/v1/factor_scores?on_conflict=ticker%2Cdate&columns=%22momentum_3m%22%2C%22roe%22%2C%22date%22%2C%22momentum_1m%22%2C%22per%22%2C%22ticker%22%2C%22psr%22%2C%22debt_ratio%22%2C%22market_cap%22%2C%22pbr%22%2C%22gpa%22 "HTTP/2 201 Created"
 2026-07-18 14:57:56,291 INFO upsert 완료: 성공 2 / 실패 0
 2026-07-18 14:57:56,292 INFO === precompute_factors 완료 ===
+2026-07-18 15:33:02,343 INFO === precompute_factors 시작 ===
+2026-07-18 15:33:02,344 INFO 실행 시각 (KST) : 2026-07-18 15:33:02
+2026-07-18 15:33:02,345 INFO 데이터 기준일   : 2026-07-17
+2026-07-18 15:33:02,345 INFO 재무 기준 연도  : 2025년
+2026-07-18 15:33:02,821 INFO DART corpCode.xml 에서 종목 리스트 조회 중...
+2026-07-18 15:33:06,363 INFO DART 상장 종목: 3924개
+2026-07-18 15:33:06,430 INFO [단계 1] DART 종목 수: 3924
+2026-07-18 15:33:06,430 INFO 유효 종목 확인 + 가격 데이터 수집 (yfinance bulk, 3924종목)...
+2026-07-18 15:33:07,402 ERROR $017300.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:07,413 ERROR $016510.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:07,417 ERROR $024100.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:07,418 ERROR $078420.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:07,979 ERROR $041320.KS: possibly delisted; no timezone found
+2026-07-18 15:33:07,979 ERROR $045880.KS: possibly delisted; no timezone found
+2026-07-18 15:33:08,150 ERROR $024870.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:08,273 ERROR $008320.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:08,986 ERROR HTTP Error 404: {"quoteSummary":{"result":null,"error":{"code":"Not Found","description":"Quote not found for symbol: 040740.KS"}}}
+2026-07-18 15:33:08,992 ERROR $037830.KS: possibly delisted; no timezone found
+2026-07-18 15:33:08,994 ERROR $017010.KS: possibly delisted; no timezone found
+2026-07-18 15:33:09,006 ERROR $048510.KS: possibly delisted; no timezone found
+2026-07-18 15:33:09,021 ERROR $060670.KS: possibly delisted; no timezone found
+2026-07-18 15:33:09,230 ERROR $040740.KS: possibly delisted; no timezone found
+2026-07-18 15:33:09,265 ERROR $103150.KS: possibly delisted; no timezone found
+2026-07-18 15:33:09,330 ERROR $076850.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:09,604 ERROR $045260.KS: possibly delisted; no timezone found
+2026-07-18 15:33:09,606 ERROR $044640.KS: possibly delisted; no timezone found
+2026-07-18 15:33:09,607 ERROR $051820.KS: possibly delisted; no timezone found
+2026-07-18 15:33:09,616 ERROR $048640.KS: possibly delisted; no timezone found
+2026-07-18 15:33:09,617 ERROR $056140.KS: possibly delisted; no timezone found
+2026-07-18 15:33:10,324 ERROR $030390.KS: possibly delisted; no timezone found
+2026-07-18 15:33:10,325 ERROR $038420.KS: possibly delisted; no timezone found
+2026-07-18 15:33:10,328 ERROR $086720.KS: possibly delisted; no timezone found
+2026-07-18 15:33:10,337 ERROR $035010.KS: possibly delisted; no timezone found
+2026-07-18 15:33:10,341 ERROR $052310.KS: possibly delisted; no timezone found
+2026-07-18 15:33:10,343 ERROR $035710.KS: possibly delisted; no timezone found
+2026-07-18 15:33:10,348 ERROR $065340.KS: possibly delisted; no timezone found
+2026-07-18 15:33:10,360 ERROR $013650.KS: possibly delisted; no timezone found
+2026-07-18 15:33:10,620 ERROR $082110.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:10,621 ERROR $012420.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:10,637 ERROR $001370.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:10,655 ERROR $008400.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:10,873 ERROR $004620.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:11,135 ERROR $074140.KS: possibly delisted; no timezone found
+2026-07-18 15:33:11,137 ERROR $003020.KS: possibly delisted; no timezone found
+2026-07-18 15:33:11,142 ERROR $043630.KS: possibly delisted; no timezone found
+2026-07-18 15:33:11,147 ERROR $036790.KS: possibly delisted; no timezone found
+2026-07-18 15:33:11,153 ERROR $046350.KS: possibly delisted; no timezone found
+2026-07-18 15:33:11,315 ERROR $015940.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:11,317 ERROR $009690.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:11,974 ERROR $055000.KS: possibly delisted; no timezone found
+2026-07-18 15:33:11,980 ERROR $114410.KS: possibly delisted; no timezone found
+2026-07-18 15:33:11,981 ERROR $015390.KS: possibly delisted; no timezone found
+2026-07-18 15:33:11,985 ERROR $037110.KS: possibly delisted; no timezone found
+2026-07-18 15:33:11,983 ERROR $060750.KS: possibly delisted; no timezone found
+2026-07-18 15:33:11,989 ERROR $038830.KS: possibly delisted; no timezone found
+2026-07-18 15:33:12,687 ERROR $017050.KS: possibly delisted; no timezone found
+2026-07-18 15:33:12,695 ERROR $950030.KS: possibly delisted; no timezone found
+2026-07-18 15:33:12,696 ERROR $031800.KS: possibly delisted; no timezone found
+2026-07-18 15:33:12,697 ERROR $032380.KS: possibly delisted; no timezone found
+2026-07-18 15:33:12,699 ERROR $045760.KS: possibly delisted; no timezone found
+2026-07-18 15:33:12,689 ERROR $032930.KS: possibly delisted; no timezone found
+2026-07-18 15:33:12,710 ERROR $093820.KS: possibly delisted; no timezone found
+2026-07-18 15:33:12,711 ERROR $058690.KS: possibly delisted; no timezone found
+2026-07-18 15:33:13,607 ERROR $054170.KS: possibly delisted; no timezone found
+2026-07-18 15:33:13,610 ERROR $033720.KS: possibly delisted; no timezone found
+2026-07-18 15:33:13,615 ERROR $052210.KS: possibly delisted; no timezone found
+2026-07-18 15:33:13,612 ERROR $088020.KS: possibly delisted; no timezone found
+2026-07-18 15:33:13,632 ERROR $061050.KS: possibly delisted; no timezone found
+2026-07-18 15:33:13,634 ERROR $066690.KS: possibly delisted; no timezone found
+2026-07-18 15:33:13,637 ERROR $034660.KS: possibly delisted; no timezone found
+2026-07-18 15:33:13,638 ERROR $032600.KS: possibly delisted; no timezone found
+2026-07-18 15:33:13,919 ERROR $007800.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:14,420 ERROR $078700.KS: possibly delisted; no timezone found
+2026-07-18 15:33:14,422 ERROR $019640.KS: possibly delisted; no timezone found
+2026-07-18 15:33:14,424 ERROR $026540.KS: possibly delisted; no timezone found
+2026-07-18 15:33:14,425 ERROR $043680.KS: possibly delisted; no timezone found
+2026-07-18 15:33:14,433 ERROR $031960.KS: possibly delisted; no timezone found
+2026-07-18 15:33:14,438 ERROR $046320.KS: possibly delisted; no timezone found
+2026-07-18 15:33:14,442 ERROR $068770.KS: possibly delisted; no timezone found
+2026-07-18 15:33:14,695 ERROR $007490.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:15,249 ERROR $020070.KS: possibly delisted; no timezone found
+2026-07-18 15:33:15,250 ERROR $032030.KS: possibly delisted; no timezone found
+2026-07-18 15:33:15,257 ERROR $045820.KS: possibly delisted; no timezone found
+2026-07-18 15:33:15,265 ERROR $036270.KS: possibly delisted; no timezone found
+2026-07-18 15:33:15,267 ERROR $065410.KS: possibly delisted; no timezone found
+2026-07-18 15:33:15,272 ERROR $042870.KS: possibly delisted; no timezone found
+2026-07-18 15:33:15,273 ERROR $022520.KS: possibly delisted; no timezone found
+2026-07-18 15:33:15,428 ERROR $011050.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:15,563 ERROR $001190.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:15,564 ERROR $012400.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:15,588 ERROR $013240.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:16,372 ERROR $062730.KS: possibly delisted; no timezone found
+2026-07-18 15:33:16,377 ERROR $021060.KS: possibly delisted; no timezone found
+2026-07-18 15:33:16,385 ERROR $046240.KS: possibly delisted; no timezone found
+2026-07-18 15:33:16,394 ERROR $037510.KS: possibly delisted; no timezone found
+2026-07-18 15:33:16,481 ERROR $036720.KS: possibly delisted; no timezone found
+2026-07-18 15:33:17,199 ERROR $035400.KS: possibly delisted; no timezone found
+2026-07-18 15:33:17,202 ERROR $089240.KS: possibly delisted; no timezone found
+2026-07-18 15:33:17,200 ERROR $030030.KS: possibly delisted; no timezone found
+2026-07-18 15:33:17,211 ERROR $040130.KS: possibly delisted; no timezone found
+2026-07-18 15:33:17,211 ERROR $067850.KS: possibly delisted; no timezone found
+2026-07-18 15:33:17,217 ERROR $055250.KS: possibly delisted; no timezone found
+2026-07-18 15:33:17,218 ERROR $084810.KS: possibly delisted; no timezone found
+2026-07-18 15:33:17,223 ERROR $094950.KS: possibly delisted; no timezone found
+2026-07-18 15:33:17,520 ERROR $014010.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:18,061 ERROR $067950.KS: possibly delisted; no timezone found
+2026-07-18 15:33:18,071 ERROR $056850.KS: possibly delisted; no timezone found
+2026-07-18 15:33:18,077 ERROR $054010.KS: possibly delisted; no timezone found
+2026-07-18 15:33:18,083 ERROR $043790.KS: possibly delisted; no timezone found
+2026-07-18 15:33:18,085 ERROR 
+100 Failed downloads:
+2026-07-18 15:33:18,085 ERROR ['017300.KS', '016510.KS', '024100.KS', '078420.KS', '024870.KS', '008320.KS', '076850.KS', '082110.KS', '012420.KS', '001370.KS', '008400.KS', '004620.KS', '015940.KS', '009690.KS', '007800.KS', '007490.KS', '011050.KS', '001190.KS', '012400.KS', '013240.KS', '014010.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:18,086 ERROR ['041320.KS', '045880.KS', '037830.KS', '017010.KS', '048510.KS', '060670.KS', '040740.KS', '103150.KS', '045260.KS', '044640.KS', '051820.KS', '048640.KS', '056140.KS', '030390.KS', '038420.KS', '086720.KS', '035010.KS', '052310.KS', '035710.KS', '065340.KS', '013650.KS', '074140.KS', '003020.KS', '043630.KS', '036790.KS', '046350.KS', '055000.KS', '114410.KS', '015390.KS', '060750.KS', '037110.KS', '038830.KS', '017050.KS', '032930.KS', '950030.KS', '031800.KS', '032380.KS', '045760.KS', '093820.KS', '058690.KS', '054170.KS', '033720.KS', '088020.KS', '052210.KS', '061050.KS', '066690.KS', '034660.KS', '032600.KS', '078700.KS', '019640.KS', '026540.KS', '043680.KS', '031960.KS', '046320.KS', '068770.KS', '020070.KS', '032030.KS', '045820.KS', '036270.KS', '065410.KS', '042870.KS', '022520.KS', '062730.KS', '021060.KS', '046240.KS', '037510.KS', '036720.KS', '035400.KS', '030030.KS', '089240.KS', '040130.KS', '067850.KS', '055250.KS', '084810.KS', '094950.KS', '067950.KS', '056850.KS', '054010.KS', '043790.KS']: possibly delisted; no timezone found
+2026-07-18 15:33:21,417 ERROR $000610.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:21,449 ERROR $016160.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:22,006 ERROR $025460.KS: possibly delisted; no timezone found
+2026-07-18 15:33:22,016 ERROR $080570.KS: possibly delisted; no timezone found
+2026-07-18 15:33:22,017 ERROR $041800.KS: possibly delisted; no timezone found
+2026-07-18 15:33:22,031 ERROR $036550.KS: possibly delisted; no timezone found
+2026-07-18 15:33:22,033 ERROR $039040.KS: possibly delisted; no timezone found
+2026-07-18 15:33:22,033 ERROR $061140.KS: possibly delisted; no timezone found
+2026-07-18 15:33:22,034 ERROR $032150.KS: possibly delisted; no timezone found
+2026-07-18 15:33:22,939 ERROR $053470.KS: possibly delisted; no timezone found
+2026-07-18 15:33:22,942 ERROR $014420.KS: possibly delisted; no timezone found
+2026-07-18 15:33:22,941 ERROR $037150.KS: possibly delisted; no timezone found
+2026-07-18 15:33:22,955 ERROR $045380.KS: possibly delisted; no timezone found
+2026-07-18 15:33:22,958 ERROR $054120.KS: possibly delisted; no timezone found
+2026-07-18 15:33:22,956 ERROR $033260.KS: possibly delisted; no timezone found
+2026-07-18 15:33:22,959 ERROR $047450.KS: possibly delisted; no timezone found
+2026-07-18 15:33:22,961 ERROR $030420.KS: possibly delisted; no timezone found
+2026-07-18 15:33:23,284 ERROR $001600.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:23,847 ERROR $090090.KS: possibly delisted; no timezone found
+2026-07-18 15:33:23,848 ERROR $045290.KS: possibly delisted; no timezone found
+2026-07-18 15:33:23,849 ERROR $033190.KS: possibly delisted; no timezone found
+2026-07-18 15:33:23,850 ERROR $084240.KS: possibly delisted; no timezone found
+2026-07-18 15:33:23,852 ERROR $080140.KS: possibly delisted; no timezone found
+2026-07-18 15:33:23,862 ERROR $085680.KS: possibly delisted; no timezone found
+2026-07-18 15:33:24,070 ERROR $059720.KS: possibly delisted; no timezone found
+2026-07-18 15:33:24,206 ERROR $027840.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:24,207 ERROR $080410.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:24,552 ERROR $047710.KS: possibly delisted; no timezone found
+2026-07-18 15:33:24,558 ERROR $037550.KS: possibly delisted; no timezone found
+2026-07-18 15:33:24,561 ERROR $101790.KS: possibly delisted; no timezone found
+2026-07-18 15:33:24,562 ERROR $025970.KS: possibly delisted; no timezone found
+2026-07-18 15:33:24,576 ERROR $057100.KS: possibly delisted; no timezone found
+2026-07-18 15:33:24,787 ERROR $007050.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:25,376 ERROR $056010.KS: possibly delisted; no timezone found
+2026-07-18 15:33:25,379 ERROR $052810.KS: possibly delisted; no timezone found
+2026-07-18 15:33:25,378 ERROR $041450.KS: possibly delisted; no timezone found
+2026-07-18 15:33:25,391 ERROR $033880.KS: possibly delisted; no timezone found
+2026-07-18 15:33:25,392 ERROR $088010.KS: possibly delisted; no timezone found
+2026-07-18 15:33:25,393 ERROR $052650.KS: possibly delisted; no timezone found
+2026-07-18 15:33:25,400 ERROR $094520.KS: possibly delisted; no timezone found
+2026-07-18 15:33:25,662 ERROR $000790.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:25,686 ERROR $063350.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:25,999 ERROR $049690.KS: possibly delisted; no timezone found
+2026-07-18 15:33:26,001 ERROR $018890.KS: possibly delisted; no timezone found
+2026-07-18 15:33:26,002 ERROR $088960.KS: possibly delisted; no timezone found
+2026-07-18 15:33:26,005 ERROR $066340.KS: possibly delisted; no timezone found
+2026-07-18 15:33:26,007 ERROR $037700.KS: possibly delisted; no timezone found
+2026-07-18 15:33:26,081 ERROR $048130.KS: possibly delisted; no timezone found
+2026-07-18 15:33:26,118 ERROR $013200.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:26,822 ERROR $037320.KS: possibly delisted; no timezone found
+2026-07-18 15:33:26,823 ERROR $035500.KS: possibly delisted; no timezone found
+2026-07-18 15:33:26,843 ERROR $038690.KS: possibly delisted; no timezone found
+2026-07-18 15:33:26,845 ERROR $039990.KS: possibly delisted; no timezone found
+2026-07-18 15:33:26,844 ERROR $023020.KS: possibly delisted; no timezone found
+2026-07-18 15:33:26,848 ERROR $045710.KS: possibly delisted; no timezone found
+2026-07-18 15:33:26,846 ERROR $035950.KS: possibly delisted; no timezone found
+2026-07-18 15:33:26,940 ERROR $108070.KS: possibly delisted; no timezone found
+2026-07-18 15:33:27,632 ERROR $079340.KS: possibly delisted; no timezone found
+2026-07-18 15:33:27,633 ERROR $019430.KS: possibly delisted; no timezone found
+2026-07-18 15:33:27,643 ERROR $045400.KS: possibly delisted; no timezone found
+2026-07-18 15:33:27,645 ERROR $023670.KS: possibly delisted; no timezone found
+2026-07-18 15:33:27,647 ERROR $047600.KS: possibly delisted; no timezone found
+2026-07-18 15:33:27,655 ERROR $047370.KS: possibly delisted; no timezone found
+2026-07-18 15:33:27,656 ERROR $054650.KS: possibly delisted; no timezone found
+2026-07-18 15:33:27,658 ERROR $098150.KS: possibly delisted; no timezone found
+2026-07-18 15:33:27,912 ERROR $032390.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:28,493 ERROR $063280.KS: possibly delisted; no timezone found
+2026-07-18 15:33:28,500 ERROR $032570.KS: possibly delisted; no timezone found
+2026-07-18 15:33:28,507 ERROR $105380.KS: possibly delisted; no timezone found
+2026-07-18 15:33:28,512 ERROR $052560.KS: possibly delisted; no timezone found
+2026-07-18 15:33:28,514 ERROR $037020.KS: possibly delisted; no timezone found
+2026-07-18 15:33:28,514 ERROR $048760.KS: possibly delisted; no timezone found
+2026-07-18 15:33:28,515 ERROR $078670.KS: possibly delisted; no timezone found
+2026-07-18 15:33:28,677 ERROR $042100.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:28,772 ERROR $004230.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:29,216 ERROR $052970.KS: possibly delisted; no timezone found
+2026-07-18 15:33:29,219 ERROR $077960.KS: possibly delisted; no timezone found
+2026-07-18 15:33:29,217 ERROR $053070.KS: possibly delisted; no timezone found
+2026-07-18 15:33:29,232 ERROR $038920.KS: possibly delisted; no timezone found
+2026-07-18 15:33:29,233 ERROR $052640.KS: possibly delisted; no timezone found
+2026-07-18 15:33:29,236 ERROR $036850.KS: possibly delisted; no timezone found
+2026-07-18 15:33:29,236 ERROR $068630.KS: possibly delisted; no timezone found
+2026-07-18 15:33:29,483 ERROR $007480.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:29,484 ERROR $069470.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:30,310 ERROR $058900.KS: possibly delisted; no timezone found
+2026-07-18 15:33:30,321 ERROR $076090.KS: possibly delisted; no timezone found
+2026-07-18 15:33:30,328 ERROR $007830.KS: possibly delisted; no timezone found
+2026-07-18 15:33:30,333 ERROR $058550.KS: possibly delisted; no timezone found
+2026-07-18 15:33:30,333 ERROR $016990.KS: possibly delisted; no timezone found
+2026-07-18 15:33:30,351 ERROR $073130.KS: possibly delisted; no timezone found
+2026-07-18 15:33:30,628 ERROR $006210.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:30,952 ERROR $039350.KS: possibly delisted; no timezone found
+2026-07-18 15:33:30,953 ERROR $084160.KS: possibly delisted; no timezone found
+2026-07-18 15:33:30,955 ERROR $122290.KS: possibly delisted; no timezone found
+2026-07-18 15:33:30,963 ERROR $036660.KS: possibly delisted; no timezone found
+2026-07-18 15:33:30,963 ERROR $088810.KS: possibly delisted; no timezone found
+2026-07-18 15:33:30,964 ERROR $056200.KS: possibly delisted; no timezone found
+2026-07-18 15:33:30,976 ERROR $900020.KS: possibly delisted; no timezone found
+2026-07-18 15:33:31,948 ERROR $079870.KS: possibly delisted; no timezone found
+2026-07-18 15:33:31,949 ERROR $035830.KS: possibly delisted; no timezone found
+2026-07-18 15:33:31,949 ERROR 
+100 Failed downloads:
+2026-07-18 15:33:31,952 ERROR ['000610.KS', '016160.KS', '001600.KS', '027840.KS', '080410.KS', '007050.KS', '000790.KS', '063350.KS', '013200.KS', '032390.KS', '042100.KS', '004230.KS', '007480.KS', '069470.KS', '006210.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:31,953 ERROR ['025460.KS', '080570.KS', '041800.KS', '036550.KS', '039040.KS', '061140.KS', '032150.KS', '053470.KS', '037150.KS', '014420.KS', '045380.KS', '033260.KS', '054120.KS', '047450.KS', '030420.KS', '090090.KS', '045290.KS', '033190.KS', '084240.KS', '080140.KS', '085680.KS', '059720.KS', '047710.KS', '037550.KS', '101790.KS', '025970.KS', '057100.KS', '056010.KS', '041450.KS', '052810.KS', '033880.KS', '088010.KS', '052650.KS', '094520.KS', '049690.KS', '018890.KS', '088960.KS', '066340.KS', '037700.KS', '048130.KS', '037320.KS', '035500.KS', '038690.KS', '023020.KS', '039990.KS', '035950.KS', '045710.KS', '108070.KS', '079340.KS', '019430.KS', '045400.KS', '023670.KS', '047600.KS', '047370.KS', '054650.KS', '098150.KS', '063280.KS', '032570.KS', '105380.KS', '052560.KS', '037020.KS', '048760.KS', '078670.KS', '052970.KS', '053070.KS', '077960.KS', '038920.KS', '052640.KS', '036850.KS', '068630.KS', '058900.KS', '076090.KS', '007830.KS', '058550.KS', '016990.KS', '073130.KS', '039350.KS', '084160.KS', '122290.KS', '036660.KS', '088810.KS', '056200.KS', '900020.KS', '079870.KS', '035830.KS']: possibly delisted; no timezone found
+2026-07-18 15:33:35,281 ERROR $081200.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:35,282 ERROR $008080.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:35,718 ERROR $034600.KS: possibly delisted; no timezone found
+2026-07-18 15:33:35,721 ERROR $123160.KS: possibly delisted; no timezone found
+2026-07-18 15:33:35,720 ERROR $066060.KS: possibly delisted; no timezone found
+2026-07-18 15:33:35,731 ERROR $038120.KS: possibly delisted; no timezone found
+2026-07-18 15:33:35,731 ERROR $041630.KS: possibly delisted; no timezone found
+2026-07-18 15:33:35,737 ERROR $083120.KS: possibly delisted; no timezone found
+2026-07-18 15:33:35,904 ERROR $081190.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:36,552 ERROR $036210.KS: possibly delisted; no timezone found
+2026-07-18 15:33:36,555 ERROR $042820.KS: possibly delisted; no timezone found
+2026-07-18 15:33:36,556 ERROR $122750.KS: possibly delisted; no timezone found
+2026-07-18 15:33:36,563 ERROR $015050.KS: possibly delisted; no timezone found
+2026-07-18 15:33:36,570 ERROR $041030.KS: possibly delisted; no timezone found
+2026-07-18 15:33:36,574 ERROR $128910.KS: possibly delisted; no timezone found
+2026-07-18 15:33:36,578 ERROR $056710.KS: possibly delisted; no timezone found
+2026-07-18 15:33:36,666 ERROR $011800.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:36,898 ERROR $000470.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:36,937 ERROR $003640.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:37,461 ERROR $042340.KS: possibly delisted; no timezone found
+2026-07-18 15:33:37,473 ERROR $110310.KS: possibly delisted; no timezone found
+2026-07-18 15:33:37,474 ERROR $123300.KS: possibly delisted; no timezone found
+2026-07-18 15:33:37,479 ERROR $045470.KS: possibly delisted; no timezone found
+2026-07-18 15:33:37,492 ERROR $105070.KS: possibly delisted; no timezone found
+2026-07-18 15:33:37,559 ERROR $081220.KS: possibly delisted; no timezone found
+2026-07-18 15:33:37,771 ERROR $004820.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:37,899 ERROR $014900.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:38,187 ERROR $090540.KS: possibly delisted; no timezone found
+2026-07-18 15:33:38,193 ERROR $032420.KS: possibly delisted; no timezone found
+2026-07-18 15:33:38,194 ERROR $035450.KS: possibly delisted; no timezone found
+2026-07-18 15:33:38,195 ERROR $036610.KS: possibly delisted; no timezone found
+2026-07-18 15:33:38,196 ERROR $054150.KS: possibly delisted; no timezone found
+2026-07-18 15:33:38,208 ERROR $065610.KS: possibly delisted; no timezone found
+2026-07-18 15:33:38,440 ERROR $008540.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:38,486 ERROR $001670.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:38,735 ERROR $900030.KS: possibly delisted; no timezone found
+2026-07-18 15:33:38,736 ERROR $056810.KS: possibly delisted; no timezone found
+2026-07-18 15:33:38,744 ERROR $049000.KS: possibly delisted; no timezone found
+2026-07-18 15:33:38,744 ERROR $123910.KS: possibly delisted; no timezone found
+2026-07-18 15:33:38,752 ERROR $073930.KS: possibly delisted; no timezone found
+2026-07-18 15:33:38,831 ERROR $037380.KS: possibly delisted; no timezone found
+2026-07-18 15:33:39,038 ERROR $004550.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:39,115 ERROR $018410.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:39,640 ERROR $040180.KS: possibly delisted; no timezone found
+2026-07-18 15:33:39,641 ERROR $034010.KS: possibly delisted; no timezone found
+2026-07-18 15:33:39,647 ERROR $034510.KS: possibly delisted; no timezone found
+2026-07-18 15:33:39,656 ERROR $093400.KS: possibly delisted; no timezone found
+2026-07-18 15:33:39,657 ERROR $091690.KS: possibly delisted; no timezone found
+2026-07-18 15:33:39,753 ERROR $046720.KS: possibly delisted; no timezone found
+2026-07-18 15:33:39,767 ERROR $080180.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:39,927 ERROR $053000.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:40,181 ERROR $123290.KS: possibly delisted; no timezone found
+2026-07-18 15:33:40,190 ERROR $036920.KS: possibly delisted; no timezone found
+2026-07-18 15:33:40,202 ERROR $123550.KS: possibly delisted; no timezone found
+2026-07-18 15:33:40,202 ERROR $081090.KS: possibly delisted; no timezone found
+2026-07-18 15:33:40,203 ERROR $009010.KS: possibly delisted; no timezone found
+2026-07-18 15:33:40,203 ERROR $093410.KS: possibly delisted; no timezone found
+2026-07-18 15:33:40,336 ERROR $012410.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:40,459 ERROR $064420.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:40,491 ERROR $080970.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:40,509 ERROR $080030.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:40,510 ERROR $007200.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:41,163 ERROR $037540.KS: possibly delisted; no timezone found
+2026-07-18 15:33:41,163 ERROR $071530.KS: possibly delisted; no timezone found
+2026-07-18 15:33:41,173 ERROR $025920.KS: possibly delisted; no timezone found
+2026-07-18 15:33:41,455 ERROR $010670.KS: possibly delisted; no timezone found
+2026-07-18 15:33:41,705 ERROR $066850.KS: possibly delisted; no timezone found
+2026-07-18 15:33:41,719 ERROR $900150.KS: possibly delisted; no timezone found
+2026-07-18 15:33:41,719 ERROR $048460.KS: possibly delisted; no timezone found
+2026-07-18 15:33:41,721 ERROR $121950.KS: possibly delisted; no timezone found
+2026-07-18 15:33:41,722 ERROR $950070.KS: possibly delisted; no timezone found
+2026-07-18 15:33:41,723 ERROR $048140.KS: possibly delisted; no timezone found
+2026-07-18 15:33:41,731 ERROR $013780.KS: possibly delisted; no timezone found
+2026-07-18 15:33:42,059 ERROR $025610.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:42,494 ERROR $900060.KS: possibly delisted; no timezone found
+2026-07-18 15:33:42,496 ERROR $053040.KS: possibly delisted; no timezone found
+2026-07-18 15:33:42,497 ERROR $041060.KS: possibly delisted; no timezone found
+2026-07-18 15:33:42,509 ERROR $019120.KS: possibly delisted; no timezone found
+2026-07-18 15:33:42,510 ERROR $040020.KS: possibly delisted; no timezone found
+2026-07-18 15:33:42,511 ERROR $033850.KS: possibly delisted; no timezone found
+2026-07-18 15:33:42,520 ERROR $037240.KS: possibly delisted; no timezone found
+2026-07-18 15:33:42,620 ERROR $004010.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:42,813 ERROR $080960.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:42,845 ERROR $149130.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:43,323 ERROR $019260.KS: possibly delisted; no timezone found
+2026-07-18 15:33:43,325 ERROR $085990.KS: possibly delisted; no timezone found
+2026-07-18 15:33:43,327 ERROR $089480.KS: possibly delisted; no timezone found
+2026-07-18 15:33:43,326 ERROR $124050.KS: possibly delisted; no timezone found
+2026-07-18 15:33:43,325 ERROR $126680.KS: possibly delisted; no timezone found
+2026-07-18 15:33:43,341 ERROR $038720.KS: possibly delisted; no timezone found
+2026-07-18 15:33:43,482 ERROR $080980.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:43,619 ERROR $012090.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:43,629 ERROR $081930.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:44,226 ERROR $121910.KS: possibly delisted; no timezone found
+2026-07-18 15:33:44,236 ERROR $051530.KS: possibly delisted; no timezone found
+2026-07-18 15:33:44,245 ERROR $900010.KS: possibly delisted; no timezone found
+2026-07-18 15:33:44,536 ERROR $066300.KS: possibly delisted; no timezone found
+2026-07-18 15:33:44,541 ERROR $004790.KS: possibly delisted; no timezone found
+2026-07-18 15:33:44,769 ERROR $101990.KS: possibly delisted; no timezone found
+2026-07-18 15:33:44,778 ERROR $071660.KS: possibly delisted; no timezone found
+2026-07-18 15:33:44,781 ERROR 
+100 Failed downloads:
+2026-07-18 15:33:44,783 ERROR ['081200.KS', '008080.KS', '081190.KS', '011800.KS', '000470.KS', '003640.KS', '004820.KS', '014900.KS', '008540.KS', '001670.KS', '004550.KS', '018410.KS', '080180.KS', '053000.KS', '012410.KS', '064420.KS', '080970.KS', '080030.KS', '007200.KS', '025610.KS', '004010.KS', '080960.KS', '149130.KS', '080980.KS', '012090.KS', '081930.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:44,784 ERROR ['034600.KS', '066060.KS', '123160.KS', '038120.KS', '041630.KS', '083120.KS', '036210.KS', '042820.KS', '122750.KS', '015050.KS', '041030.KS', '128910.KS', '056710.KS', '042340.KS', '110310.KS', '123300.KS', '045470.KS', '105070.KS', '081220.KS', '090540.KS', '032420.KS', '035450.KS', '036610.KS', '054150.KS', '065610.KS', '900030.KS', '056810.KS', '049000.KS', '123910.KS', '073930.KS', '037380.KS', '040180.KS', '034010.KS', '034510.KS', '093400.KS', '091690.KS', '046720.KS', '123290.KS', '036920.KS', '123550.KS', '081090.KS', '009010.KS', '093410.KS', '037540.KS', '071530.KS', '025920.KS', '010670.KS', '066850.KS', '900150.KS', '048460.KS', '121950.KS', '950070.KS', '048140.KS', '013780.KS', '900060.KS', '053040.KS', '041060.KS', '019120.KS', '040020.KS', '033850.KS', '037240.KS', '019260.KS', '085990.KS', '126680.KS', '124050.KS', '089480.KS', '038720.KS', '121910.KS', '051530.KS', '900010.KS', '066300.KS', '004790.KS', '101990.KS', '071660.KS']: possibly delisted; no timezone found
+2026-07-18 15:33:48,095 ERROR $010200.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:48,134 ERROR $038400.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:48,730 ERROR $036360.KS: possibly delisted; no timezone found
+2026-07-18 15:33:48,736 ERROR $060410.KS: possibly delisted; no timezone found
+2026-07-18 15:33:48,736 ERROR $032180.KS: possibly delisted; no timezone found
+2026-07-18 15:33:48,746 ERROR $009220.KS: possibly delisted; no timezone found
+2026-07-18 15:33:48,747 ERROR $055810.KS: possibly delisted; no timezone found
+2026-07-18 15:33:48,748 ERROR $035870.KS: possibly delisted; no timezone found
+2026-07-18 15:33:49,300 ERROR $053250.KS: possibly delisted; no timezone found
+2026-07-18 15:33:49,302 ERROR $001150.KS: possibly delisted; no timezone found
+2026-07-18 15:33:49,306 ERROR $039000.KS: possibly delisted; no timezone found
+2026-07-18 15:33:49,309 ERROR $085450.KS: possibly delisted; no timezone found
+2026-07-18 15:33:49,317 ERROR $065810.KS: possibly delisted; no timezone found
+2026-07-18 15:33:49,318 ERROR $037060.KS: possibly delisted; no timezone found
+2026-07-18 15:33:49,321 ERROR $025690.KS: possibly delisted; no timezone found
+2026-07-18 15:33:49,324 ERROR $089200.KS: possibly delisted; no timezone found
+2026-07-18 15:33:50,270 ERROR $027440.KS: possibly delisted; no timezone found
+2026-07-18 15:33:50,274 ERROR $043690.KS: possibly delisted; no timezone found
+2026-07-18 15:33:50,276 ERROR $055970.KS: possibly delisted; no timezone found
+2026-07-18 15:33:50,277 ERROR $037750.KS: possibly delisted; no timezone found
+2026-07-18 15:33:50,278 ERROR $038410.KS: possibly delisted; no timezone found
+2026-07-18 15:33:50,283 ERROR $009790.KS: possibly delisted; no timezone found
+2026-07-18 15:33:50,290 ERROR $083160.KS: possibly delisted; no timezone found
+2026-07-18 15:33:50,293 ERROR $038960.KS: possibly delisted; no timezone found
+2026-07-18 15:33:50,556 ERROR $025830.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:50,604 ERROR $003330.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:50,611 ERROR $073470.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:50,978 ERROR $056020.KS: possibly delisted; no timezone found
+2026-07-18 15:33:50,994 ERROR $016040.KS: possibly delisted; no timezone found
+2026-07-18 15:33:50,996 ERROR $057110.KS: possibly delisted; no timezone found
+2026-07-18 15:33:50,996 ERROR $053170.KS: possibly delisted; no timezone found
+2026-07-18 15:33:51,093 ERROR $089170.KS: possibly delisted; no timezone found
+2026-07-18 15:33:51,178 ERROR $063510.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:51,254 ERROR $005760.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:51,746 ERROR $050600.KS: possibly delisted; no timezone found
+2026-07-18 15:33:51,749 ERROR $033210.KS: possibly delisted; no timezone found
+2026-07-18 15:33:51,747 ERROR $012460.KS: possibly delisted; no timezone found
+2026-07-18 15:33:51,752 ERROR $042570.KS: possibly delisted; no timezone found
+2026-07-18 15:33:51,756 ERROR $044370.KS: possibly delisted; no timezone found
+2026-07-18 15:33:51,761 ERROR $047420.KS: possibly delisted; no timezone found
+2026-07-18 15:33:52,064 ERROR $009080.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:52,065 ERROR $064900.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:52,303 ERROR $037220.KS: possibly delisted; no timezone found
+2026-07-18 15:33:52,312 ERROR $036020.KS: possibly delisted; no timezone found
+2026-07-18 15:33:52,313 ERROR $053890.KS: possibly delisted; no timezone found
+2026-07-18 15:33:52,330 ERROR $036820.KS: possibly delisted; no timezone found
+2026-07-18 15:33:52,331 ERROR $032590.KS: possibly delisted; no timezone found
+2026-07-18 15:33:52,331 ERROR $078610.KS: possibly delisted; no timezone found
+2026-07-18 15:33:52,497 ERROR $005330.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:52,562 ERROR $003990.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:52,596 ERROR $067910.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:52,610 ERROR $076170.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:52,635 ERROR $072450.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:53,040 ERROR $056060.KS: possibly delisted; no timezone found
+2026-07-18 15:33:53,058 ERROR $073780.KS: possibly delisted; no timezone found
+2026-07-18 15:33:53,137 ERROR $060550.KS: possibly delisted; no timezone found
+2026-07-18 15:33:53,175 ERROR $012990.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:53,241 ERROR $009890.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:53,945 ERROR $041940.KS: possibly delisted; no timezone found
+2026-07-18 15:33:53,954 ERROR $036760.KS: possibly delisted; no timezone found
+2026-07-18 15:33:53,955 ERROR $072530.KS: possibly delisted; no timezone found
+2026-07-18 15:33:53,957 ERROR $038050.KS: possibly delisted; no timezone found
+2026-07-18 15:33:53,966 ERROR $025450.KS: possibly delisted; no timezone found
+2026-07-18 15:33:53,967 ERROR $035780.KS: possibly delisted; no timezone found
+2026-07-18 15:33:54,129 ERROR $011020.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:54,363 ERROR $016970.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:54,641 ERROR $037730.KS: possibly delisted; no timezone found
+2026-07-18 15:33:54,642 ERROR $071360.KS: possibly delisted; no timezone found
+2026-07-18 15:33:54,654 ERROR $054530.KS: possibly delisted; no timezone found
+2026-07-18 15:33:54,730 ERROR $018180.KS: possibly delisted; no timezone found
+2026-07-18 15:33:54,731 ERROR $004190.KS: possibly delisted; no timezone found
+2026-07-18 15:33:54,745 ERROR $058680.KS: possibly delisted; no timezone found
+2026-07-18 15:33:55,215 ERROR $073530.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:55,340 ERROR $008030.KS: possibly delisted; no timezone found
+2026-07-18 15:33:55,355 ERROR $046430.KS: possibly delisted; no timezone found
+2026-07-18 15:33:55,356 ERROR $037250.KS: possibly delisted; no timezone found
+2026-07-18 15:33:55,356 ERROR $089180.KS: possibly delisted; no timezone found
+2026-07-18 15:33:55,357 ERROR $054440.KS: possibly delisted; no timezone found
+2026-07-18 15:33:55,358 ERROR $008780.KS: possibly delisted; no timezone found
+2026-07-18 15:33:55,414 ERROR $065910.KS: possibly delisted; no timezone found
+2026-07-18 15:33:55,630 ERROR $015670.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:55,645 ERROR $003660.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:56,242 ERROR $066200.KS: possibly delisted; no timezone found
+2026-07-18 15:33:56,249 ERROR $064720.KS: possibly delisted; no timezone found
+2026-07-18 15:33:56,254 ERROR $088510.KS: possibly delisted; no timezone found
+2026-07-18 15:33:56,258 ERROR $081500.KS: possibly delisted; no timezone found
+2026-07-18 15:33:56,261 ERROR $048270.KS: possibly delisted; no timezone found
+2026-07-18 15:33:56,267 ERROR $038810.KS: possibly delisted; no timezone found
+2026-07-18 15:33:56,846 ERROR $089190.KS: possibly delisted; no timezone found
+2026-07-18 15:33:56,850 ERROR $036900.KS: possibly delisted; no timezone found
+2026-07-18 15:33:56,847 ERROR $033330.KS: possibly delisted; no timezone found
+2026-07-18 15:33:56,851 ERROR $035270.KS: possibly delisted; no timezone found
+2026-07-18 15:33:56,853 ERROR $093730.KS: possibly delisted; no timezone found
+2026-07-18 15:33:56,863 ERROR $045310.KS: possibly delisted; no timezone found
+2026-07-18 15:33:56,866 ERROR $060660.KS: possibly delisted; no timezone found
+2026-07-18 15:33:56,946 ERROR $003930.KS: possibly delisted; no timezone found
+2026-07-18 15:33:57,135 ERROR $001830.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:57,720 ERROR $066330.KS: possibly delisted; no timezone found
+2026-07-18 15:33:57,759 ERROR $041310.KS: possibly delisted; no timezone found
+2026-07-18 15:33:57,760 ERROR $032050.KS: possibly delisted; no timezone found
+2026-07-18 15:33:57,763 ERROR 
+100 Failed downloads:
+2026-07-18 15:33:57,764 ERROR ['010200.KS', '038400.KS', '025830.KS', '003330.KS', '073470.KS', '063510.KS', '005760.KS', '009080.KS', '064900.KS', '005330.KS', '003990.KS', '067910.KS', '076170.KS', '072450.KS', '012990.KS', '009890.KS', '011020.KS', '016970.KS', '073530.KS', '015670.KS', '003660.KS', '001830.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:33:57,765 ERROR ['036360.KS', '060410.KS', '032180.KS', '009220.KS', '055810.KS', '035870.KS', '053250.KS', '001150.KS', '039000.KS', '085450.KS', '065810.KS', '037060.KS', '025690.KS', '089200.KS', '027440.KS', '043690.KS', '055970.KS', '037750.KS', '038410.KS', '009790.KS', '083160.KS', '038960.KS', '056020.KS', '016040.KS', '057110.KS', '053170.KS', '089170.KS', '050600.KS', '012460.KS', '033210.KS', '042570.KS', '044370.KS', '047420.KS', '037220.KS', '036020.KS', '053890.KS', '036820.KS', '078610.KS', '032590.KS', '056060.KS', '073780.KS', '060550.KS', '041940.KS', '036760.KS', '072530.KS', '038050.KS', '025450.KS', '035780.KS', '037730.KS', '071360.KS', '054530.KS', '018180.KS', '004190.KS', '058680.KS', '008030.KS', '046430.KS', '037250.KS', '089180.KS', '054440.KS', '008780.KS', '065910.KS', '066200.KS', '064720.KS', '088510.KS', '081500.KS', '048270.KS', '038810.KS', '089190.KS', '033330.KS', '036900.KS', '035270.KS', '093730.KS', '045310.KS', '060660.KS', '003930.KS', '066330.KS', '041310.KS', '032050.KS']: possibly delisted; no timezone found
+2026-07-18 15:34:01,172 ERROR $025930.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:01,696 ERROR $083570.KS: possibly delisted; no timezone found
+2026-07-18 15:34:01,698 ERROR $002930.KS: possibly delisted; no timezone found
+2026-07-18 15:34:01,701 ERROR $114140.KS: possibly delisted; no timezone found
+2026-07-18 15:34:01,714 ERROR $068150.KS: possibly delisted; no timezone found
+2026-07-18 15:34:01,715 ERROR $088700.KS: possibly delisted; no timezone found
+2026-07-18 15:34:01,717 ERROR $004320.KS: possibly delisted; no timezone found
+2026-07-18 15:34:01,723 ERROR $031150.KS: possibly delisted; no timezone found
+2026-07-18 15:34:02,569 ERROR $108890.KS: possibly delisted; no timezone found
+2026-07-18 15:34:02,570 ERROR $082930.KS: possibly delisted; no timezone found
+2026-07-18 15:34:02,571 ERROR $001980.KS: possibly delisted; no timezone found
+2026-07-18 15:34:02,574 ERROR $083360.KS: possibly delisted; no timezone found
+2026-07-18 15:34:02,586 ERROR $053810.KS: possibly delisted; no timezone found
+2026-07-18 15:34:02,587 ERROR $038100.KS: possibly delisted; no timezone found
+2026-07-18 15:34:02,593 ERROR $036590.KS: possibly delisted; no timezone found
+2026-07-18 15:34:02,594 ERROR $091000.KS: possibly delisted; no timezone found
+2026-07-18 15:34:03,593 ERROR $066480.KS: possibly delisted; no timezone found
+2026-07-18 15:34:03,597 ERROR $036910.KS: possibly delisted; no timezone found
+2026-07-18 15:34:03,598 ERROR $039580.KS: possibly delisted; no timezone found
+2026-07-18 15:34:03,599 ERROR $054370.KS: possibly delisted; no timezone found
+2026-07-18 15:34:03,609 ERROR $027350.KS: possibly delisted; no timezone found
+2026-07-18 15:34:03,614 ERROR $042960.KS: possibly delisted; no timezone found
+2026-07-18 15:34:03,616 ERROR $037500.KS: possibly delisted; no timezone found
+2026-07-18 15:34:03,703 ERROR $054080.KS: possibly delisted; no timezone found
+2026-07-18 15:34:03,877 ERROR $005890.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:03,942 ERROR $002860.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:03,959 ERROR $017170.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:03,973 ERROR $081940.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:04,987 ERROR $070540.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:05,268 ERROR $046000.KS: possibly delisted; no timezone found
+2026-07-18 15:34:05,270 ERROR $056500.KS: possibly delisted; no timezone found
+2026-07-18 15:34:05,280 ERROR $086830.KS: possibly delisted; no timezone found
+2026-07-18 15:34:05,281 ERROR $090980.KS: possibly delisted; no timezone found
+2026-07-18 15:34:05,597 ERROR $010730.KS: possibly delisted; no timezone found
+2026-07-18 15:34:05,751 ERROR $036060.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:06,391 ERROR $050640.KS: possibly delisted; no timezone found
+2026-07-18 15:34:06,392 ERROR $039390.KS: possibly delisted; no timezone found
+2026-07-18 15:34:06,405 ERROR $042950.KS: possibly delisted; no timezone found
+2026-07-18 15:34:06,406 ERROR $032610.KS: possibly delisted; no timezone found
+2026-07-18 15:34:06,407 ERROR $037650.KS: possibly delisted; no timezone found
+2026-07-18 15:34:06,904 ERROR $092630.KS: possibly delisted; no timezone found
+2026-07-18 15:34:06,905 ERROR $063840.KS: possibly delisted; no timezone found
+2026-07-18 15:34:07,185 ERROR $009940.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:07,224 ERROR $065270.KS: possibly delisted; no timezone found
+2026-07-18 15:34:07,300 ERROR $039850.KS: possibly delisted; no timezone found
+2026-07-18 15:34:07,301 ERROR $000380.KS: possibly delisted; no timezone found
+2026-07-18 15:34:07,379 ERROR $083600.KS: possibly delisted; no timezone found
+2026-07-18 15:34:07,380 ERROR $034750.KS: possibly delisted; no timezone found
+2026-07-18 15:34:07,947 ERROR $090990.KS: possibly delisted; no timezone found
+2026-07-18 15:34:07,950 ERROR $144630.KS: possibly delisted; no timezone found
+2026-07-18 15:34:07,951 ERROR $074130.KS: possibly delisted; no timezone found
+2026-07-18 15:34:07,983 ERROR $082390.KS: possibly delisted; no timezone found
+2026-07-18 15:34:07,985 ERROR $045920.KS: possibly delisted; no timezone found
+2026-07-18 15:34:07,985 ERROR $950010.KS: possibly delisted; no timezone found
+2026-07-18 15:34:08,103 ERROR $001580.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:08,548 ERROR $037010.KS: possibly delisted; no timezone found
+2026-07-18 15:34:08,549 ERROR $222520.KS: possibly delisted; no timezone found
+2026-07-18 15:34:08,555 ERROR $031970.KS: possibly delisted; no timezone found
+2026-07-18 15:34:08,575 ERROR $090970.KS: possibly delisted; no timezone found
+2026-07-18 15:34:08,577 ERROR $058370.KS: possibly delisted; no timezone found
+2026-07-18 15:34:08,576 ERROR $048540.KS: possibly delisted; no timezone found
+2026-07-18 15:34:08,577 ERROR $114130.KS: possibly delisted; no timezone found
+2026-07-18 15:34:08,903 ERROR $002950.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:08,933 ERROR $000830.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:09,410 ERROR $194860.KS: possibly delisted; no timezone found
+2026-07-18 15:34:09,414 ERROR $083390.KS: possibly delisted; no timezone found
+2026-07-18 15:34:09,412 ERROR $083610.KS: possibly delisted; no timezone found
+2026-07-18 15:34:09,415 ERROR $038980.KS: possibly delisted; no timezone found
+2026-07-18 15:34:09,417 ERROR $023420.KS: possibly delisted; no timezone found
+2026-07-18 15:34:09,418 ERROR $078780.KS: possibly delisted; no timezone found
+2026-07-18 15:34:09,601 ERROR $007190.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:09,706 ERROR $006150.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:09,996 ERROR $045050.KS: possibly delisted; no timezone found
+2026-07-18 15:34:09,998 ERROR $049370.KS: possibly delisted; no timezone found
+2026-07-18 15:34:09,999 ERROR $037620.KS: possibly delisted; no timezone found
+2026-07-18 15:34:10,012 ERROR $036880.KS: possibly delisted; no timezone found
+2026-07-18 15:34:10,014 ERROR $003590.KS: possibly delisted; no timezone found
+2026-07-18 15:34:10,013 ERROR $048150.KS: possibly delisted; no timezone found
+2026-07-18 15:34:10,366 ERROR $006750.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:11,065 ERROR $160350.KS: possibly delisted; no timezone found
+2026-07-18 15:34:11,088 ERROR $204760.KS: possibly delisted; no timezone found
+2026-07-18 15:34:11,092 ERROR $001280.KS: possibly delisted; no timezone found
+2026-07-18 15:34:11,094 ERROR $036600.KS: possibly delisted; no timezone found
+2026-07-18 15:34:11,102 ERROR $037120.KS: possibly delisted; no timezone found
+2026-07-18 15:34:11,103 ERROR $117930.KS: possibly delisted; no timezone found
+2026-07-18 15:34:11,181 ERROR $025270.KS: possibly delisted; no timezone found
+2026-07-18 15:34:11,415 ERROR $015110.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:11,471 ERROR $009360.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:11,726 ERROR $047610.KS: possibly delisted; no timezone found
+2026-07-18 15:34:11,747 ERROR $019930.KS: possibly delisted; no timezone found
+2026-07-18 15:34:11,748 ERROR $074150.KS: possibly delisted; no timezone found
+2026-07-18 15:34:11,751 ERROR $035960.KS: possibly delisted; no timezone found
+2026-07-18 15:34:11,751 ERROR $002850.KS: possibly delisted; no timezone found
+2026-07-18 15:34:11,754 ERROR $035910.KS: possibly delisted; no timezone found
+2026-07-18 15:34:11,973 ERROR $011720.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:12,514 ERROR $083590.KS: possibly delisted; no timezone found
+2026-07-18 15:34:12,516 ERROR $050050.KS: possibly delisted; no timezone found
+2026-07-18 15:34:12,527 ERROR $027700.KS: possibly delisted; no timezone found
+2026-07-18 15:34:12,529 ERROR $071930.KS: possibly delisted; no timezone found
+2026-07-18 15:34:12,530 ERROR $083580.KS: possibly delisted; no timezone found
+2026-07-18 15:34:12,532 ERROR 
+100 Failed downloads:
+2026-07-18 15:34:12,533 ERROR ['025930.KS', '005890.KS', '002860.KS', '017170.KS', '081940.KS', '070540.KS', '036060.KS', '009940.KS', '001580.KS', '002950.KS', '000830.KS', '007190.KS', '006150.KS', '006750.KS', '015110.KS', '009360.KS', '011720.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:12,534 ERROR ['083570.KS', '002930.KS', '114140.KS', '068150.KS', '088700.KS', '004320.KS', '031150.KS', '108890.KS', '082930.KS', '001980.KS', '083360.KS', '053810.KS', '038100.KS', '036590.KS', '091000.KS', '066480.KS', '036910.KS', '039580.KS', '054370.KS', '027350.KS', '042960.KS', '037500.KS', '054080.KS', '046000.KS', '056500.KS', '086830.KS', '090980.KS', '010730.KS', '050640.KS', '039390.KS', '042950.KS', '032610.KS', '037650.KS', '092630.KS', '063840.KS', '065270.KS', '039850.KS', '000380.KS', '083600.KS', '034750.KS', '090990.KS', '144630.KS', '074130.KS', '082390.KS', '045920.KS', '950010.KS', '037010.KS', '222520.KS', '031970.KS', '090970.KS', '048540.KS', '058370.KS', '114130.KS', '194860.KS', '083610.KS', '083390.KS', '038980.KS', '023420.KS', '078780.KS', '045050.KS', '049370.KS', '037620.KS', '036880.KS', '048150.KS', '003590.KS', '160350.KS', '204760.KS', '001280.KS', '036600.KS', '037120.KS', '117930.KS', '025270.KS', '047610.KS', '019930.KS', '074150.KS', '035960.KS', '002850.KS', '035910.KS', '083590.KS', '050050.KS', '027700.KS', '071930.KS', '083580.KS']: possibly delisted; no timezone found
+2026-07-18 15:34:15,874 ERROR $010520.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:15,897 ERROR $003600.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:15,922 ERROR $016420.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:15,940 ERROR $082260.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:16,508 ERROR $217810.KS: possibly delisted; no timezone found
+2026-07-18 15:34:16,510 ERROR $207720.KS: possibly delisted; no timezone found
+2026-07-18 15:34:16,514 ERROR $192240.KS: possibly delisted; no timezone found
+2026-07-18 15:34:16,515 ERROR $218710.KS: possibly delisted; no timezone found
+2026-07-18 15:34:16,637 ERROR $082240.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:17,577 ERROR $207230.KS: possibly delisted; no timezone found
+2026-07-18 15:34:17,580 ERROR $044440.KS: possibly delisted; no timezone found
+2026-07-18 15:34:17,581 ERROR $226850.KS: possibly delisted; no timezone found
+2026-07-18 15:34:17,583 ERROR $052880.KS: possibly delisted; no timezone found
+2026-07-18 15:34:17,579 ERROR $043890.KS: possibly delisted; no timezone found
+2026-07-18 15:34:17,584 ERROR $208870.KS: possibly delisted; no timezone found
+2026-07-18 15:34:17,586 ERROR $221950.KS: possibly delisted; no timezone found
+2026-07-18 15:34:17,775 ERROR $000420.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:17,890 ERROR $008900.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:18,365 ERROR $026250.KS: possibly delisted; no timezone found
+2026-07-18 15:34:18,367 ERROR $040670.KS: possibly delisted; no timezone found
+2026-07-18 15:34:18,366 ERROR $072430.KS: possibly delisted; no timezone found
+2026-07-18 15:34:18,383 ERROR $158380.KS: possibly delisted; no timezone found
+2026-07-18 15:34:18,384 ERROR $204650.KS: possibly delisted; no timezone found
+2026-07-18 15:34:18,384 ERROR $067130.KS: possibly delisted; no timezone found
+2026-07-18 15:34:18,453 ERROR $232290.KS: possibly delisted; no timezone found
+2026-07-18 15:34:19,271 ERROR $013450.KS: possibly delisted; no timezone found
+2026-07-18 15:34:19,273 ERROR $900050.KS: possibly delisted; no timezone found
+2026-07-18 15:34:19,276 ERROR $204440.KS: possibly delisted; no timezone found
+2026-07-18 15:34:19,279 ERROR $104110.KS: possibly delisted; no timezone found
+2026-07-18 15:34:19,287 ERROR $950100.KS: possibly delisted; no timezone found
+2026-07-18 15:34:19,288 ERROR $038320.KS: possibly delisted; no timezone found
+2026-07-18 15:34:19,290 ERROR $083620.KS: possibly delisted; no timezone found
+2026-07-18 15:34:19,290 ERROR $900130.KS: possibly delisted; no timezone found
+2026-07-18 15:34:19,676 ERROR $002530.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:20,334 ERROR $232360.KS: possibly delisted; no timezone found
+2026-07-18 15:34:20,335 ERROR $085980.KS: possibly delisted; no timezone found
+2026-07-18 15:34:20,336 ERROR $139200.KS: possibly delisted; no timezone found
+2026-07-18 15:34:20,336 ERROR $095300.KS: possibly delisted; no timezone found
+2026-07-18 15:34:20,337 ERROR $110500.KS: possibly delisted; no timezone found
+2026-07-18 15:34:20,338 ERROR $110570.KS: possibly delisted; no timezone found
+2026-07-18 15:34:20,419 ERROR $219580.KS: possibly delisted; no timezone found
+2026-07-18 15:34:20,634 ERROR $051170.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:20,703 ERROR $090730.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:20,735 ERROR $082250.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:21,170 ERROR $235090.KS: possibly delisted; no timezone found
+2026-07-18 15:34:21,174 ERROR $215750.KS: possibly delisted; no timezone found
+2026-07-18 15:34:21,186 ERROR $222390.KS: possibly delisted; no timezone found
+2026-07-18 15:34:21,187 ERROR $207930.KS: possibly delisted; no timezone found
+2026-07-18 15:34:21,296 ERROR $036500.KS: possibly delisted; no timezone found
+2026-07-18 15:34:21,358 ERROR $005620.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:21,747 ERROR $051710.KS: possibly delisted; no timezone found
+2026-07-18 15:34:21,748 ERROR $035210.KS: possibly delisted; no timezone found
+2026-07-18 15:34:21,757 ERROR $026230.KS: possibly delisted; no timezone found
+2026-07-18 15:34:21,760 ERROR $138440.KS: possibly delisted; no timezone found
+2026-07-18 15:34:21,762 ERROR $256090.KS: possibly delisted; no timezone found
+2026-07-18 15:34:21,761 ERROR $103650.KS: possibly delisted; no timezone found
+2026-07-18 15:34:21,763 ERROR $104120.KS: possibly delisted; no timezone found
+2026-07-18 15:34:22,110 ERROR $014350.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:22,111 ERROR $001300.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:22,146 ERROR $016560.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:22,522 ERROR $134000.KS: possibly delisted; no timezone found
+2026-07-18 15:34:22,523 ERROR $010150.KS: possibly delisted; no timezone found
+2026-07-18 15:34:22,535 ERROR $092970.KS: possibly delisted; no timezone found
+2026-07-18 15:34:22,536 ERROR $187770.KS: possibly delisted; no timezone found
+2026-07-18 15:34:22,535 ERROR $099210.KS: possibly delisted; no timezone found
+2026-07-18 15:34:23,572 ERROR $052350.KS: possibly delisted; no timezone found
+2026-07-18 15:34:23,575 ERROR $181980.KS: possibly delisted; no timezone found
+2026-07-18 15:34:23,576 ERROR $053870.KS: possibly delisted; no timezone found
+2026-07-18 15:34:23,588 ERROR $215580.KS: possibly delisted; no timezone found
+2026-07-18 15:34:23,590 ERROR $246830.KS: possibly delisted; no timezone found
+2026-07-18 15:34:23,593 ERROR $252940.KS: possibly delisted; no timezone found
+2026-07-18 15:34:23,600 ERROR $139170.KS: possibly delisted; no timezone found
+2026-07-18 15:34:23,603 ERROR $179280.KS: possibly delisted; no timezone found
+2026-07-18 15:34:23,943 ERROR $237720.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:23,946 ERROR $008000.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:24,503 ERROR $221200.KS: possibly delisted; no timezone found
+2026-07-18 15:34:24,520 ERROR $037630.KS: possibly delisted; no timezone found
+2026-07-18 15:34:24,521 ERROR $083350.KS: possibly delisted; no timezone found
+2026-07-18 15:34:24,522 ERROR $223040.KS: possibly delisted; no timezone found
+2026-07-18 15:34:24,527 ERROR $230490.KS: possibly delisted; no timezone found
+2026-07-18 15:34:24,528 ERROR $224090.KS: possibly delisted; no timezone found
+2026-07-18 15:34:24,707 ERROR $016170.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:24,857 ERROR $081210.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:25,155 ERROR $206660.KS: possibly delisted; no timezone found
+2026-07-18 15:34:25,156 ERROR $061460.KS: possibly delisted; no timezone found
+2026-07-18 15:34:25,158 ERROR $031950.KS: possibly delisted; no timezone found
+2026-07-18 15:34:25,162 ERROR $219860.KS: possibly delisted; no timezone found
+2026-07-18 15:34:25,171 ERROR $156170.KS: possibly delisted; no timezone found
+2026-07-18 15:34:25,250 ERROR $219960.KS: possibly delisted; no timezone found
+2026-07-18 15:34:25,599 ERROR $010460.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:26,641 ERROR $033030.KS: possibly delisted; no timezone found
+2026-07-18 15:34:26,642 ERROR $102000.KS: possibly delisted; no timezone found
+2026-07-18 15:34:26,644 ERROR $121550.KS: possibly delisted; no timezone found
+2026-07-18 15:34:26,656 ERROR $056340.KS: possibly delisted; no timezone found
+2026-07-18 15:34:26,657 ERROR $119250.KS: possibly delisted; no timezone found
+2026-07-18 15:34:26,658 ERROR $033280.KS: possibly delisted; no timezone found
+2026-07-18 15:34:26,663 ERROR $189700.KS: possibly delisted; no timezone found
+2026-07-18 15:34:27,043 ERROR $025850.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:27,383 ERROR $101380.KS: possibly delisted; no timezone found
+2026-07-18 15:34:27,384 ERROR $086200.KS: possibly delisted; no timezone found
+2026-07-18 15:34:27,384 ERROR 
+100 Failed downloads:
+2026-07-18 15:34:27,387 ERROR ['010520.KS', '003600.KS', '016420.KS', '082260.KS', '082240.KS', '000420.KS', '008900.KS', '002530.KS', '051170.KS', '090730.KS', '082250.KS', '005620.KS', '014350.KS', '001300.KS', '016560.KS', '237720.KS', '008000.KS', '016170.KS', '081210.KS', '010460.KS', '025850.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:27,388 ERROR ['217810.KS', '207720.KS', '192240.KS', '218710.KS', '207230.KS', '043890.KS', '044440.KS', '226850.KS', '052880.KS', '208870.KS', '221950.KS', '026250.KS', '072430.KS', '040670.KS', '158380.KS', '204650.KS', '067130.KS', '232290.KS', '013450.KS', '900050.KS', '204440.KS', '104110.KS', '950100.KS', '038320.KS', '083620.KS', '900130.KS', '232360.KS', '085980.KS', '139200.KS', '095300.KS', '110500.KS', '110570.KS', '219580.KS', '235090.KS', '215750.KS', '222390.KS', '207930.KS', '036500.KS', '051710.KS', '035210.KS', '026230.KS', '138440.KS', '103650.KS', '256090.KS', '104120.KS', '134000.KS', '010150.KS', '092970.KS', '099210.KS', '187770.KS', '052350.KS', '181980.KS', '053870.KS', '215580.KS', '246830.KS', '252940.KS', '139170.KS', '179280.KS', '221200.KS', '037630.KS', '083350.KS', '223040.KS', '230490.KS', '224090.KS', '206660.KS', '061460.KS', '031950.KS', '219860.KS', '156170.KS', '219960.KS', '033030.KS', '102000.KS', '121550.KS', '056340.KS', '119250.KS', '033280.KS', '189700.KS', '101380.KS', '086200.KS']: possibly delisted; no timezone found
+2026-07-18 15:34:30,808 ERROR $099350.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:31,481 ERROR $077280.KS: possibly delisted; no timezone found
+2026-07-18 15:34:31,483 ERROR $262830.KS: possibly delisted; no timezone found
+2026-07-18 15:34:31,486 ERROR $264290.KS: possibly delisted; no timezone found
+2026-07-18 15:34:31,485 ERROR $023430.KS: possibly delisted; no timezone found
+2026-07-18 15:34:31,496 ERROR $900080.KS: possibly delisted; no timezone found
+2026-07-18 15:34:31,497 ERROR $122050.KS: possibly delisted; no timezone found
+2026-07-18 15:34:31,900 ERROR $004130.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:31,901 ERROR $035480.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:32,122 ERROR $007150.KS: possibly delisted; no timezone found
+2026-07-18 15:34:32,123 ERROR $197210.KS: possibly delisted; no timezone found
+2026-07-18 15:34:32,135 ERROR $271400.KS: possibly delisted; no timezone found
+2026-07-18 15:34:32,136 ERROR $082220.KS: possibly delisted; no timezone found
+2026-07-18 15:34:32,137 ERROR $220110.KS: possibly delisted; no timezone found
+2026-07-18 15:34:32,326 ERROR $130960.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:32,484 ERROR $099830.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:32,965 ERROR $159650.KS: possibly delisted; no timezone found
+2026-07-18 15:34:32,966 ERROR $247300.KS: possibly delisted; no timezone found
+2026-07-18 15:34:32,979 ERROR $311270.KS: possibly delisted; no timezone found
+2026-07-18 15:34:32,979 ERROR $189540.KS: possibly delisted; no timezone found
+2026-07-18 15:34:32,982 ERROR $152330.KS: possibly delisted; no timezone found
+2026-07-18 15:34:32,983 ERROR $329050.KS: possibly delisted; no timezone found
+2026-07-18 15:34:33,313 ERROR $123260.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:33,354 ERROR $140890.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:33,542 ERROR $030270.KS: possibly delisted; no timezone found
+2026-07-18 15:34:33,543 ERROR $135270.KS: possibly delisted; no timezone found
+2026-07-18 15:34:33,559 ERROR $043580.KS: possibly delisted; no timezone found
+2026-07-18 15:34:33,560 ERROR $265480.KS: possibly delisted; no timezone found
+2026-07-18 15:34:33,564 ERROR $900040.KS: possibly delisted; no timezone found
+2026-07-18 15:34:33,564 ERROR $026180.KS: possibly delisted; no timezone found
+2026-07-18 15:34:33,822 ERROR $900090.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:34,001 ERROR $004740.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:34,800 ERROR $291210.KS: possibly delisted; no timezone found
+2026-07-18 15:34:34,801 ERROR $030950.KS: possibly delisted; no timezone found
+2026-07-18 15:34:34,802 ERROR $185280.KS: possibly delisted; no timezone found
+2026-07-18 15:34:34,814 ERROR $004200.KS: possibly delisted; no timezone found
+2026-07-18 15:34:34,815 ERROR $167380.KS: possibly delisted; no timezone found
+2026-07-18 15:34:34,911 ERROR $210610.KS: possibly delisted; no timezone found
+2026-07-18 15:34:35,062 ERROR $039790.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:35,163 ERROR $099660.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:35,210 ERROR $900180.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:35,456 ERROR $310840.KS: possibly delisted; no timezone found
+2026-07-18 15:34:35,457 ERROR $277480.KS: possibly delisted; no timezone found
+2026-07-18 15:34:35,459 ERROR $103130.KS: possibly delisted; no timezone found
+2026-07-18 15:34:35,472 ERROR $122800.KS: possibly delisted; no timezone found
+2026-07-18 15:34:35,574 ERROR $251540.KS: possibly delisted; no timezone found
+2026-07-18 15:34:35,705 ERROR $007910.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:35,859 ERROR $047440.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:36,363 ERROR $229480.KS: possibly delisted; no timezone found
+2026-07-18 15:34:36,366 ERROR $005190.KS: possibly delisted; no timezone found
+2026-07-18 15:34:36,365 ERROR $230400.KS: possibly delisted; no timezone found
+2026-07-18 15:34:36,368 ERROR $242850.KS: possibly delisted; no timezone found
+2026-07-18 15:34:36,380 ERROR $279410.KS: possibly delisted; no timezone found
+2026-07-18 15:34:36,677 ERROR $024660.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:36,679 ERROR $087220.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:36,727 ERROR $099340.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:36,969 ERROR $111610.KS: possibly delisted; no timezone found
+2026-07-18 15:34:36,971 ERROR $001590.KS: possibly delisted; no timezone found
+2026-07-18 15:34:36,998 ERROR $240540.KS: possibly delisted; no timezone found
+2026-07-18 15:34:36,999 ERROR $252370.KS: possibly delisted; no timezone found
+2026-07-18 15:34:37,000 ERROR $276920.KS: possibly delisted; no timezone found
+2026-07-18 15:34:37,333 ERROR $052290.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:37,882 ERROR $284610.KS: possibly delisted; no timezone found
+2026-07-18 15:34:37,883 ERROR $108790.KS: possibly delisted; no timezone found
+2026-07-18 15:34:37,883 ERROR $272420.KS: possibly delisted; no timezone found
+2026-07-18 15:34:37,889 ERROR $235010.KS: possibly delisted; no timezone found
+2026-07-18 15:34:37,890 ERROR $023890.KS: possibly delisted; no timezone found
+2026-07-18 15:34:37,897 ERROR $232270.KS: possibly delisted; no timezone found
+2026-07-18 15:34:39,042 ERROR $065180.KS: possibly delisted; no timezone found
+2026-07-18 15:34:39,043 ERROR $144740.KS: possibly delisted; no timezone found
+2026-07-18 15:34:39,046 ERROR $083380.KS: possibly delisted; no timezone found
+2026-07-18 15:34:39,044 ERROR $015170.KS: possibly delisted; no timezone found
+2026-07-18 15:34:39,049 ERROR $205290.KS: possibly delisted; no timezone found
+2026-07-18 15:34:39,061 ERROR $250300.KS: possibly delisted; no timezone found
+2026-07-18 15:34:39,062 ERROR $038990.KS: possibly delisted; no timezone found
+2026-07-18 15:34:39,063 ERROR $176560.KS: possibly delisted; no timezone found
+2026-07-18 15:34:39,371 ERROR $123100.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:39,470 ERROR $257730.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:40,084 ERROR $220250.KS: possibly delisted; no timezone found
+2026-07-18 15:34:40,086 ERROR $047060.KS: possibly delisted; no timezone found
+2026-07-18 15:34:40,109 ERROR $251960.KS: possibly delisted; no timezone found
+2026-07-18 15:34:40,110 ERROR $225440.KS: possibly delisted; no timezone found
+2026-07-18 15:34:40,110 ERROR $271740.KS: possibly delisted; no timezone found
+2026-07-18 15:34:40,250 ERROR $026260.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:40,418 ERROR $226610.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:40,847 ERROR $232330.KS: possibly delisted; no timezone found
+2026-07-18 15:34:40,850 ERROR $094700.KS: possibly delisted; no timezone found
+2026-07-18 15:34:40,849 ERROR $039530.KS: possibly delisted; no timezone found
+2026-07-18 15:34:40,854 ERROR $083370.KS: possibly delisted; no timezone found
+2026-07-18 15:34:40,857 ERROR $265920.KS: possibly delisted; no timezone found
+2026-07-18 15:34:40,858 ERROR $281410.KS: possibly delisted; no timezone found
+2026-07-18 15:34:40,860 ERROR $242420.KS: possibly delisted; no timezone found
+2026-07-18 15:34:41,915 ERROR $036260.KS: possibly delisted; no timezone found
+2026-07-18 15:34:41,942 ERROR $204690.KS: possibly delisted; no timezone found
+2026-07-18 15:34:41,950 ERROR 
+94 Failed downloads:
+2026-07-18 15:34:41,952 ERROR ['099350.KS', '004130.KS', '035480.KS', '130960.KS', '099830.KS', '123260.KS', '140890.KS', '900090.KS', '004740.KS', '039790.KS', '099660.KS', '900180.KS', '007910.KS', '047440.KS', '024660.KS', '087220.KS', '099340.KS', '052290.KS', '123100.KS', '257730.KS', '026260.KS', '226610.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:41,953 ERROR ['077280.KS', '262830.KS', '023430.KS', '264290.KS', '900080.KS', '122050.KS', '007150.KS', '197210.KS', '271400.KS', '082220.KS', '220110.KS', '159650.KS', '247300.KS', '311270.KS', '189540.KS', '152330.KS', '329050.KS', '030270.KS', '135270.KS', '043580.KS', '265480.KS', '900040.KS', '026180.KS', '291210.KS', '030950.KS', '185280.KS', '004200.KS', '167380.KS', '210610.KS', '310840.KS', '277480.KS', '103130.KS', '122800.KS', '251540.KS', '229480.KS', '230400.KS', '005190.KS', '242850.KS', '279410.KS', '111610.KS', '001590.KS', '240540.KS', '252370.KS', '276920.KS', '284610.KS', '272420.KS', '108790.KS', '235010.KS', '023890.KS', '232270.KS', '065180.KS', '144740.KS', '015170.KS', '083380.KS', '205290.KS', '250300.KS', '038990.KS', '176560.KS', '220250.KS', '047060.KS', '251960.KS', '225440.KS', '271740.KS', '232330.KS', '039530.KS', '094700.KS', '083370.KS', '265920.KS', '281410.KS', '242420.KS', '036260.KS', '204690.KS']: possibly delisted; no timezone found
+2026-07-18 15:34:45,894 ERROR $015350.KS: possibly delisted; no timezone found
+2026-07-18 15:34:45,895 ERROR $317320.KS: possibly delisted; no timezone found
+2026-07-18 15:34:45,966 ERROR $045890.KS: possibly delisted; no timezone found
+2026-07-18 15:34:46,826 ERROR $098400.KS: possibly delisted; no timezone found
+2026-07-18 15:34:46,843 ERROR $307070.KS: possibly delisted; no timezone found
+2026-07-18 15:34:46,990 ERROR $032040.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:47,455 ERROR $172580.KS: possibly delisted; no timezone found
+2026-07-18 15:34:47,485 ERROR $053740.KS: possibly delisted; no timezone found
+2026-07-18 15:34:48,307 ERROR $317030.KS: possibly delisted; no timezone found
+2026-07-18 15:34:48,308 ERROR $340350.KS: possibly delisted; no timezone found
+2026-07-18 15:34:48,309 ERROR $053320.KS: possibly delisted; no timezone found
+2026-07-18 15:34:48,336 ERROR $032290.KS: possibly delisted; no timezone found
+2026-07-18 15:34:49,069 ERROR $033110.KS: possibly delisted; no timezone found
+2026-07-18 15:34:49,070 ERROR $091270.KS: possibly delisted; no timezone found
+2026-07-18 15:34:49,071 ERROR $080440.KS: possibly delisted; no timezone found
+2026-07-18 15:34:49,088 ERROR $165270.KS: possibly delisted; no timezone found
+2026-07-18 15:34:49,088 ERROR $323940.KS: possibly delisted; no timezone found
+2026-07-18 15:34:50,247 ERROR $332710.KS: possibly delisted; no timezone found
+2026-07-18 15:34:50,259 ERROR $225330.KS: possibly delisted; no timezone found
+2026-07-18 15:34:50,278 ERROR $224880.KS: possibly delisted; no timezone found
+2026-07-18 15:34:50,359 ERROR $086080.KS: possibly delisted; no timezone found
+2026-07-18 15:34:51,045 ERROR $337450.KS: possibly delisted; no timezone found
+2026-07-18 15:34:51,046 ERROR $094190.KS: possibly delisted; no timezone found
+2026-07-18 15:34:51,219 ERROR $006440.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:51,303 ERROR $090120.KS: possibly delisted; no timezone found
+2026-07-18 15:34:51,825 ERROR $073710.KS: possibly delisted; no timezone found
+2026-07-18 15:34:51,826 ERROR $313750.KS: possibly delisted; no timezone found
+2026-07-18 15:34:51,838 ERROR $101060.KS: possibly delisted; no timezone found
+2026-07-18 15:34:52,036 ERROR $028150.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:52,190 ERROR $005980.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:52,648 ERROR $039110.KS: possibly delisted; no timezone found
+2026-07-18 15:34:52,662 ERROR $025340.KS: possibly delisted; no timezone found
+2026-07-18 15:34:52,663 ERROR $307160.KS: possibly delisted; no timezone found
+2026-07-18 15:34:52,664 ERROR $079440.KS: possibly delisted; no timezone found
+2026-07-18 15:34:53,624 ERROR $033220.KS: possibly delisted; no timezone found
+2026-07-18 15:34:53,649 ERROR $213090.KS: possibly delisted; no timezone found
+2026-07-18 15:34:53,650 ERROR $158300.KS: possibly delisted; no timezone found
+2026-07-18 15:34:53,651 ERROR $323210.KS: possibly delisted; no timezone found
+2026-07-18 15:34:53,652 ERROR $065160.KS: possibly delisted; no timezone found
+2026-07-18 15:34:54,040 ERROR $012250.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:54,266 ERROR $008340.KS: possibly delisted; no timezone found
+2026-07-18 15:34:54,555 ERROR 
+41 Failed downloads:
+2026-07-18 15:34:54,555 ERROR ['015350.KS', '317320.KS', '045890.KS', '098400.KS', '307070.KS', '172580.KS', '053740.KS', '317030.KS', '340350.KS', '053320.KS', '032290.KS', '033110.KS', '091270.KS', '080440.KS', '165270.KS', '323940.KS', '332710.KS', '225330.KS', '224880.KS', '086080.KS', '337450.KS', '094190.KS', '090120.KS', '073710.KS', '313750.KS', '101060.KS', '039110.KS', '025340.KS', '307160.KS', '079440.KS', '033220.KS', '213090.KS', '158300.KS', '323210.KS', '065160.KS', '008340.KS']: possibly delisted; no timezone found
+2026-07-18 15:34:54,557 ERROR ['032040.KS', '006440.KS', '028150.KS', '005980.KS', '012250.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:58,713 ERROR $039670.KS: possibly delisted; no timezone found
+2026-07-18 15:34:58,793 ERROR $330990.KS: possibly delisted; no timezone found
+2026-07-18 15:34:59,054 ERROR $009720.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:34:59,496 ERROR $182690.KS: possibly delisted; no timezone found
+2026-07-18 15:34:59,512 ERROR $329560.KS: possibly delisted; no timezone found
+2026-07-18 15:34:59,513 ERROR $153360.KS: possibly delisted; no timezone found
+2026-07-18 15:35:00,740 ERROR $028040.KS: possibly delisted; no timezone found
+2026-07-18 15:35:00,742 ERROR $041140.KS: possibly delisted; no timezone found
+2026-07-18 15:35:00,744 ERROR $270020.KS: possibly delisted; no timezone found
+2026-07-18 15:35:00,744 ERROR $065940.KS: possibly delisted; no timezone found
+2026-07-18 15:35:01,441 ERROR $052190.KS: possibly delisted; no timezone found
+2026-07-18 15:35:01,443 ERROR $240340.KS: possibly delisted; no timezone found
+2026-07-18 15:35:02,446 ERROR $179440.KS: possibly delisted; no timezone found
+2026-07-18 15:35:02,475 ERROR $141070.KS: possibly delisted; no timezone found
+2026-07-18 15:35:03,161 ERROR $221610.KS: possibly delisted; no timezone found
+2026-07-18 15:35:03,402 ERROR $340120.KS: possibly delisted; no timezone found
+2026-07-18 15:35:03,976 ERROR $151750.KS: possibly delisted; no timezone found
+2026-07-18 15:35:04,140 ERROR $309900.KS: possibly delisted; no timezone found
+2026-07-18 15:35:05,022 ERROR $114570.KS: possibly delisted; no timezone found
+2026-07-18 15:35:05,023 ERROR $950180.KS: possibly delisted; no timezone found
+2026-07-18 15:35:05,045 ERROR $066110.KS: possibly delisted; no timezone found
+2026-07-18 15:35:05,888 ERROR $176440.KS: possibly delisted; no timezone found
+2026-07-18 15:35:06,446 ERROR $228180.KS: possibly delisted; no timezone found
+2026-07-18 15:35:06,448 ERROR $225860.KS: possibly delisted; no timezone found
+2026-07-18 15:35:06,471 ERROR $033600.KS: possibly delisted; no timezone found
+2026-07-18 15:35:06,642 ERROR $225850.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:35:06,765 ERROR 
+26 Failed downloads:
+2026-07-18 15:35:06,765 ERROR ['039670.KS', '330990.KS', '182690.KS', '329560.KS', '153360.KS', '028040.KS', '041140.KS', '270020.KS', '065940.KS', '052190.KS', '240340.KS', '179440.KS', '141070.KS', '221610.KS', '340120.KS', '151750.KS', '309900.KS', '114570.KS', '950180.KS', '066110.KS', '176440.KS', '228180.KS', '225860.KS', '033600.KS']: possibly delisted; no timezone found
+2026-07-18 15:35:06,767 ERROR ['009720.KS', '225850.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:35:10,565 ERROR $016830.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:35:12,858 ERROR $342550.KS: possibly delisted; no timezone found
+2026-07-18 15:35:13,138 ERROR $046840.KS: possibly delisted; no timezone found
+2026-07-18 15:35:13,243 ERROR $367460.KS: possibly delisted; no timezone found
+2026-07-18 15:35:13,808 ERROR $131390.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:35:14,977 ERROR $087730.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:35:15,817 ERROR $052510.KS: possibly delisted; no timezone found
+2026-07-18 15:35:15,961 ERROR $005030.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:35:16,449 ERROR $351340.KS: possibly delisted; no timezone found
+2026-07-18 15:35:16,756 ERROR $226350.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:35:18,764 ERROR $015200.KS: possibly delisted; no timezone found
+2026-07-18 15:35:19,760 ERROR $344050.KS: possibly delisted; no timezone found
+2026-07-18 15:35:21,610 ERROR $051810.KS: possibly delisted; no timezone found
+2026-07-18 15:35:21,610 ERROR 
+13 Failed downloads:
+2026-07-18 15:35:21,612 ERROR ['016830.KS', '131390.KS', '087730.KS', '005030.KS', '226350.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:35:21,613 ERROR ['342550.KS', '046840.KS', '367460.KS', '052510.KS', '351340.KS', '015200.KS', '344050.KS', '051810.KS']: possibly delisted; no timezone found
+2026-07-18 15:35:21,673 INFO   가격 다운로드: 10/40 청크 완료, 현재까지 유효 종목 226개
+2026-07-18 15:35:26,179 ERROR $096300.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:35:26,673 ERROR $058480.KS: possibly delisted; no timezone found
+2026-07-18 15:35:26,674 ERROR $341160.KS: possibly delisted; no timezone found
+2026-07-18 15:35:27,452 ERROR $054340.KS: possibly delisted; no timezone found
+2026-07-18 15:35:27,453 ERROR Could not get exchangeTimezoneName for ticker '113810.KS' reason: 'chart'
+2026-07-18 15:35:27,457 ERROR $113810.KS: possibly delisted; no timezone found
+2026-07-18 15:35:27,649 ERROR $008120.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:35:28,275 ERROR $221670.KS: possibly delisted; no timezone found
+2026-07-18 15:35:28,401 ERROR $004510.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:35:28,402 ERROR $217600.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:35:29,118 ERROR $007630.KS: possibly delisted; no timezone found
+2026-07-18 15:35:29,119 ERROR $016140.KS: possibly delisted; no timezone found
+2026-07-18 15:35:29,741 ERROR $005350.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:35:30,128 ERROR $327970.KS: possibly delisted; no timezone found
+2026-07-18 15:35:30,888 ERROR $349720.KS: possibly delisted; no timezone found
+2026-07-18 15:35:30,889 ERROR $290510.KS: possibly delisted; no timezone found
+2026-07-18 15:35:31,708 ERROR $195440.KS: possibly delisted; no timezone found
+2026-07-18 15:35:31,861 ERROR $001310.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:35:32,174 ERROR 
+17 Failed downloads:
+2026-07-18 15:35:32,175 ERROR ['096300.KS', '008120.KS', '004510.KS', '217600.KS', '005350.KS', '001310.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:35:32,176 ERROR ['058480.KS', '341160.KS', '054340.KS', '113810.KS', '221670.KS', '007630.KS', '016140.KS', '327970.KS', '349720.KS', '290510.KS', '195440.KS']: possibly delisted; no timezone found
+2026-07-18 15:35:35,743 ERROR $009280.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:35:36,772 ERROR $225650.KS: possibly delisted; no timezone found
+2026-07-18 15:35:37,286 ERROR $329020.KS: possibly delisted; no timezone found
+2026-07-18 15:35:38,143 ERROR $347140.KS: possibly delisted; no timezone found
+2026-07-18 15:35:39,428 ERROR $110660.KS: possibly delisted; no timezone found
+2026-07-18 15:35:40,334 ERROR $053110.KS: possibly delisted; no timezone found
+2026-07-18 15:35:40,962 ERROR $127160.KS: possibly delisted; no timezone found
+2026-07-18 15:35:40,970 ERROR $074000.KS: possibly delisted; no timezone found
+2026-07-18 15:35:41,828 ERROR $053660.KS: possibly delisted; no timezone found
+2026-07-18 15:35:41,866 ERROR $065620.KS: possibly delisted; no timezone found
+2026-07-18 15:35:43,135 ERROR $354230.KS: possibly delisted; no timezone found
+2026-07-18 15:35:44,158 ERROR 
+11 Failed downloads:
+2026-07-18 15:35:44,159 ERROR ['009280.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:35:44,161 ERROR ['225650.KS', '329020.KS', '347140.KS', '110660.KS', '053110.KS', '127160.KS', '074000.KS', '053660.KS', '065620.KS', '354230.KS']: possibly delisted; no timezone found
+2026-07-18 15:35:48,226 ERROR $377630.KS: possibly delisted; no timezone found
+2026-07-18 15:35:48,228 ERROR $387310.KS: possibly delisted; no timezone found
+2026-07-18 15:35:48,276 ERROR $348840.KS: possibly delisted; no timezone found
+2026-07-18 15:35:48,461 ERROR $000010.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:35:48,963 ERROR $405350.KS: possibly delisted; no timezone found
+2026-07-18 15:35:49,641 ERROR $005560.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:35:50,270 ERROR $158310.KS: possibly delisted; no timezone found
+2026-07-18 15:35:50,272 ERROR $027390.KS: possibly delisted; no timezone found
+2026-07-18 15:35:50,274 ERROR $017680.KS: possibly delisted; no timezone found
+2026-07-18 15:35:51,081 ERROR $353060.KS: possibly delisted; no timezone found
+2026-07-18 15:35:51,894 ERROR $120780.KS: possibly delisted; no timezone found
+2026-07-18 15:35:51,895 ERROR $140290.KS: possibly delisted; no timezone found
+2026-07-18 15:35:51,908 ERROR $397500.KS: possibly delisted; no timezone found
+2026-07-18 15:35:52,662 ERROR $033430.KS: possibly delisted; no timezone found
+2026-07-18 15:35:52,676 ERROR $388220.KS: possibly delisted; no timezone found
+2026-07-18 15:35:53,879 ERROR $373340.KS: possibly delisted; no timezone found
+2026-07-18 15:35:53,919 ERROR $353070.KS: possibly delisted; no timezone found
+2026-07-18 15:35:54,672 ERROR $440200.KS: possibly delisted; no timezone found
+2026-07-18 15:35:54,673 ERROR $033020.KS: possibly delisted; no timezone found
+2026-07-18 15:35:55,439 ERROR $036840.KS: possibly delisted; no timezone found
+2026-07-18 15:35:56,232 ERROR $011160.KS: possibly delisted; no timezone found
+2026-07-18 15:35:56,233 ERROR $367480.KS: possibly delisted; no timezone found
+2026-07-18 15:35:56,247 ERROR $271850.KS: possibly delisted; no timezone found
+2026-07-18 15:35:56,248 ERROR $038160.KS: possibly delisted; no timezone found
+2026-07-18 15:35:56,251 ERROR 
+24 Failed downloads:
+2026-07-18 15:35:56,252 ERROR ['377630.KS', '387310.KS', '348840.KS', '405350.KS', '158310.KS', '027390.KS', '017680.KS', '353060.KS', '120780.KS', '140290.KS', '397500.KS', '033430.KS', '388220.KS', '373340.KS', '353070.KS', '440200.KS', '033020.KS', '036840.KS', '011160.KS', '367480.KS', '271850.KS', '038160.KS']: possibly delisted; no timezone found
+2026-07-18 15:35:56,253 ERROR ['000010.KS', '005560.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:00,010 ERROR $149940.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:00,643 ERROR $220630.KS: possibly delisted; no timezone found
+2026-07-18 15:36:00,659 ERROR $141020.KS: possibly delisted; no timezone found
+2026-07-18 15:36:00,834 ERROR $001970.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:01,266 ERROR $427950.KS: possibly delisted; no timezone found
+2026-07-18 15:36:01,268 ERROR $138690.KS: possibly delisted; no timezone found
+2026-07-18 15:36:01,282 ERROR $380440.KS: possibly delisted; no timezone found
+2026-07-18 15:36:02,189 ERROR $377400.KS: possibly delisted; no timezone found
+2026-07-18 15:36:02,836 ERROR $155900.KS: possibly delisted; no timezone found
+2026-07-18 15:36:02,837 ERROR $049130.KS: possibly delisted; no timezone found
+2026-07-18 15:36:03,441 ERROR $081970.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:04,199 ERROR $367360.KS: possibly delisted; no timezone found
+2026-07-18 15:36:04,202 ERROR $426670.KS: possibly delisted; no timezone found
+2026-07-18 15:36:04,203 ERROR $058420.KS: possibly delisted; no timezone found
+2026-07-18 15:36:04,878 ERROR $353490.KS: possibly delisted; no timezone found
+2026-07-18 15:36:06,250 ERROR $404950.KS: possibly delisted; no timezone found
+2026-07-18 15:36:07,000 ERROR $135160.KS: possibly delisted; no timezone found
+2026-07-18 15:36:07,018 ERROR $396770.KS: possibly delisted; no timezone found
+2026-07-18 15:36:07,019 ERROR $409570.KS: possibly delisted; no timezone found
+2026-07-18 15:36:07,196 ERROR 
+19 Failed downloads:
+2026-07-18 15:36:07,197 ERROR ['149940.KS', '001970.KS', '081970.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:07,199 ERROR ['220630.KS', '141020.KS', '427950.KS', '138690.KS', '380440.KS', '377400.KS', '155900.KS', '049130.KS', '367360.KS', '426670.KS', '058420.KS', '353490.KS', '404950.KS', '135160.KS', '396770.KS', '409570.KS']: possibly delisted; no timezone found
+2026-07-18 15:36:12,043 ERROR $000060.KS: possibly delisted; no timezone found
+2026-07-18 15:36:12,699 ERROR $426550.KS: possibly delisted; no timezone found
+2026-07-18 15:36:13,547 ERROR $242350.KS: possibly delisted; no timezone found
+2026-07-18 15:36:13,549 ERROR $367340.KS: possibly delisted; no timezone found
+2026-07-18 15:36:13,663 ERROR $138290.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:13,720 ERROR $002550.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:14,148 ERROR $343510.KS: possibly delisted; no timezone found
+2026-07-18 15:36:14,149 ERROR $245030.KS: possibly delisted; no timezone found
+2026-07-18 15:36:14,150 ERROR $114120.KS: possibly delisted; no timezone found
+2026-07-18 15:36:14,302 ERROR $043290.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:14,950 ERROR $366330.KS: possibly delisted; no timezone found
+2026-07-18 15:36:14,969 ERROR $115960.KS: possibly delisted; no timezone found
+2026-07-18 15:36:15,077 ERROR $271780.KS: possibly delisted; no timezone found
+2026-07-18 15:36:16,304 ERROR $112240.KS: possibly delisted; no timezone found
+2026-07-18 15:36:16,321 ERROR $450410.KS: possibly delisted; no timezone found
+2026-07-18 15:36:17,623 ERROR $007640.KS: possibly delisted; no timezone found
+2026-07-18 15:36:17,647 ERROR $372290.KS: possibly delisted; no timezone found
+2026-07-18 15:36:17,648 ERROR $111820.KS: possibly delisted; no timezone found
+2026-07-18 15:36:17,983 ERROR 
+18 Failed downloads:
+2026-07-18 15:36:17,984 ERROR ['000060.KS', '426550.KS', '242350.KS', '367340.KS', '343510.KS', '245030.KS', '114120.KS', '366330.KS', '115960.KS', '271780.KS', '112240.KS', '450410.KS', '007640.KS', '372290.KS', '111820.KS']: possibly delisted; no timezone found
+2026-07-18 15:36:17,985 ERROR ['138290.KS', '002550.KS', '043290.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:22,260 ERROR $056000.KS: possibly delisted; no timezone found
+2026-07-18 15:36:22,359 ERROR $400560.KS: possibly delisted; no timezone found
+2026-07-18 15:36:22,360 ERROR $215050.KS: possibly delisted; no timezone found
+2026-07-18 15:36:23,162 ERROR $091990.KS: possibly delisted; no timezone found
+2026-07-18 15:36:23,179 ERROR $284420.KS: possibly delisted; no timezone found
+2026-07-18 15:36:24,277 ERROR $066410.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:24,528 ERROR $066350.KS: possibly delisted; no timezone found
+2026-07-18 15:36:25,597 ERROR $216280.KS: possibly delisted; no timezone found
+2026-07-18 15:36:25,598 ERROR $285770.KS: possibly delisted; no timezone found
+2026-07-18 15:36:26,264 ERROR $039870.KS: possibly delisted; no timezone found
+2026-07-18 15:36:26,277 ERROR $267810.KS: possibly delisted; no timezone found
+2026-07-18 15:36:27,377 ERROR $017160.KS: possibly delisted; no timezone found
+2026-07-18 15:36:28,092 ERROR $048260.KS: possibly delisted; no timezone found
+2026-07-18 15:36:29,110 ERROR $380320.KS: possibly delisted; no timezone found
+2026-07-18 15:36:29,296 ERROR $179720.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:29,300 ERROR $002540.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:30,144 ERROR $267060.KS: possibly delisted; no timezone found
+2026-07-18 15:36:30,154 ERROR $013340.KS: possibly delisted; no timezone found
+2026-07-18 15:36:30,158 ERROR $281310.KS: possibly delisted; no timezone found
+2026-07-18 15:36:31,633 ERROR 
+19 Failed downloads:
+2026-07-18 15:36:31,634 ERROR ['056000.KS', '400560.KS', '215050.KS', '091990.KS', '284420.KS', '066350.KS', '216280.KS', '285770.KS', '039870.KS', '267810.KS', '017160.KS', '048260.KS', '380320.KS', '267060.KS', '013340.KS', '281310.KS']: possibly delisted; no timezone found
+2026-07-18 15:36:31,636 ERROR ['066410.KS', '179720.KS', '002540.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:35,105 ERROR $003940.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:35,694 ERROR $303810.KS: possibly delisted; no timezone found
+2026-07-18 15:36:35,695 ERROR $031390.KS: possibly delisted; no timezone found
+2026-07-18 15:36:35,952 ERROR $430230.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:35,953 ERROR $014300.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:35,954 ERROR $004660.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:36,432 ERROR $138580.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:36,825 ERROR $046810.KS: possibly delisted; no timezone found
+2026-07-18 15:36:36,842 ERROR $041550.KS: possibly delisted; no timezone found
+2026-07-18 15:36:36,844 ERROR $028090.KS: possibly delisted; no timezone found
+2026-07-18 15:36:36,955 ERROR $009760.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:37,020 ERROR $004530.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:37,573 ERROR $003900.KS: possibly delisted; no timezone found
+2026-07-18 15:36:37,575 ERROR $053440.KS: possibly delisted; no timezone found
+2026-07-18 15:36:37,574 ERROR $351870.KS: possibly delisted; no timezone found
+2026-07-18 15:36:37,741 ERROR $001950.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:37,814 ERROR $008720.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:38,206 ERROR $002270.KS: possibly delisted; no timezone found
+2026-07-18 15:36:38,209 ERROR $262760.KS: possibly delisted; no timezone found
+2026-07-18 15:36:38,210 ERROR $044770.KS: possibly delisted; no timezone found
+2026-07-18 15:36:38,211 ERROR $035430.KS: possibly delisted; no timezone found
+2026-07-18 15:36:38,213 ERROR $036490.KS: possibly delisted; no timezone found
+2026-07-18 15:36:38,410 ERROR $005600.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:38,765 ERROR $299670.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:39,233 ERROR $021570.KS: possibly delisted; no timezone found
+2026-07-18 15:36:39,248 ERROR $008560.KS: possibly delisted; no timezone found
+2026-07-18 15:36:39,333 ERROR $054250.KS: possibly delisted; no timezone found
+2026-07-18 15:36:39,379 ERROR $006070.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:39,380 ERROR $011400.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:39,943 ERROR $039060.KS: possibly delisted; no timezone found
+2026-07-18 15:36:39,944 ERROR $054790.KS: possibly delisted; no timezone found
+2026-07-18 15:36:39,943 ERROR $037600.KS: possibly delisted; no timezone found
+2026-07-18 15:36:40,921 ERROR $482520.KS: possibly delisted; no timezone found
+2026-07-18 15:36:40,922 ERROR $298870.KS: possibly delisted; no timezone found
+2026-07-18 15:36:40,924 ERROR $260490.KS: possibly delisted; no timezone found
+2026-07-18 15:36:40,936 ERROR $016890.KS: possibly delisted; no timezone found
+2026-07-18 15:36:40,937 ERROR $233190.KS: possibly delisted; no timezone found
+2026-07-18 15:36:41,185 ERROR $003050.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:41,727 ERROR $248020.KS: possibly delisted; no timezone found
+2026-07-18 15:36:41,729 ERROR $204990.KS: possibly delisted; no timezone found
+2026-07-18 15:36:41,727 ERROR Could not get exchangeTimezoneName for ticker '065150.KS' reason: 'chart'
+2026-07-18 15:36:41,731 ERROR $002300.KS: possibly delisted; no timezone found
+2026-07-18 15:36:41,736 ERROR $065150.KS: possibly delisted; no timezone found
+2026-07-18 15:36:41,998 ERROR $009380.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:41,998 ERROR $241510.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:42,167 ERROR $016570.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:42,850 ERROR $079660.KS: possibly delisted; no timezone found
+2026-07-18 15:36:42,874 ERROR $464280.KS: possibly delisted; no timezone found
+2026-07-18 15:36:42,876 ERROR $475830.KS: possibly delisted; no timezone found
+2026-07-18 15:36:43,069 ERROR $003040.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:43,083 ERROR $006600.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:43,486 ERROR $436610.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:43,776 ERROR $278380.KS: possibly delisted; no timezone found
+2026-07-18 15:36:43,788 ERROR 
+52 Failed downloads:
+2026-07-18 15:36:43,789 ERROR ['003940.KS', '430230.KS', '014300.KS', '004660.KS', '138580.KS', '009760.KS', '004530.KS', '001950.KS', '008720.KS', '005600.KS', '299670.KS', '006070.KS', '011400.KS', '003050.KS', '009380.KS', '241510.KS', '016570.KS', '003040.KS', '006600.KS', '436610.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:43,790 ERROR ['303810.KS', '031390.KS', '046810.KS', '041550.KS', '028090.KS', '003900.KS', '351870.KS', '053440.KS', '002270.KS', '262760.KS', '044770.KS', '035430.KS', '036490.KS', '021570.KS', '008560.KS', '054250.KS', '039060.KS', '037600.KS', '054790.KS', '482520.KS', '298870.KS', '260490.KS', '016890.KS', '233190.KS', '248020.KS', '204990.KS', '002300.KS', '065150.KS', '079660.KS', '464280.KS', '475830.KS', '278380.KS']: possibly delisted; no timezone found
+2026-07-18 15:36:47,299 ERROR $424140.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:48,044 ERROR Could not get exchangeTimezoneName for ticker '079970.KS' reason: 'chart'
+2026-07-18 15:36:48,045 ERROR $079970.KS: possibly delisted; no timezone found
+2026-07-18 15:36:48,214 ERROR $433530.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:48,673 ERROR $060300.KS: possibly delisted; no timezone found
+2026-07-18 15:36:48,675 ERROR $039230.KS: possibly delisted; no timezone found
+2026-07-18 15:36:49,092 ERROR $413600.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:49,461 ERROR $481070.KS: possibly delisted; no timezone found
+2026-07-18 15:36:49,481 ERROR $487830.KS: possibly delisted; no timezone found
+2026-07-18 15:36:49,581 ERROR $421800.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:50,092 ERROR $484130.KS: possibly delisted; no timezone found
+2026-07-18 15:36:50,228 ERROR $096250.KS: possibly delisted; no timezone found
+2026-07-18 15:36:50,631 ERROR $032710.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:50,690 ERROR $148140.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:51,228 ERROR $163430.KS: possibly delisted; no timezone found
+2026-07-18 15:36:51,230 ERROR $475580.KS: possibly delisted; no timezone found
+2026-07-18 15:36:51,242 ERROR Could not get exchangeTimezoneName for ticker '030350.KS' reason: 'chart'
+2026-07-18 15:36:51,243 ERROR $030350.KS: possibly delisted; no timezone found
+2026-07-18 15:36:51,449 ERROR $164060.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:51,737 ERROR $089530.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:52,227 ERROR $466410.KS: possibly delisted; no timezone found
+2026-07-18 15:36:53,083 ERROR $386580.KS: possibly delisted; no timezone found
+2026-07-18 15:36:53,086 ERROR $489210.KS: possibly delisted; no timezone found
+2026-07-18 15:36:53,087 ERROR $405640.KS: possibly delisted; no timezone found
+2026-07-18 15:36:53,723 ERROR $015540.KS: possibly delisted; no timezone found
+2026-07-18 15:36:54,580 ERROR Could not get exchangeTimezoneName for ticker '073640.KS' reason: 'chart'
+2026-07-18 15:36:54,582 ERROR $073640.KS: possibly delisted; no timezone found
+2026-07-18 15:36:54,587 ERROR $460870.KS: possibly delisted; no timezone found
+2026-07-18 15:36:54,596 ERROR 
+25 Failed downloads:
+2026-07-18 15:36:54,596 ERROR ['424140.KS', '433530.KS', '413600.KS', '421800.KS', '032710.KS', '148140.KS', '164060.KS', '089530.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:54,597 ERROR ['079970.KS', '060300.KS', '039230.KS', '481070.KS', '487830.KS', '484130.KS', '096250.KS', '163430.KS', '475580.KS', '030350.KS', '466410.KS', '386580.KS', '489210.KS', '405640.KS', '015540.KS', '073640.KS', '460870.KS']: possibly delisted; no timezone found
+2026-07-18 15:36:58,284 ERROR $419700.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:58,470 ERROR $398120.KS: possibly delisted; no timezone found
+2026-07-18 15:36:58,733 ERROR $425290.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:36:59,209 ERROR $058220.KS: possibly delisted; no timezone found
+2026-07-18 15:37:00,147 ERROR $389650.KS: possibly delisted; no timezone found
+2026-07-18 15:37:01,125 ERROR $492220.KS: possibly delisted; no timezone found
+2026-07-18 15:37:01,153 ERROR $181340.KS: possibly delisted; no timezone found
+2026-07-18 15:37:01,833 ERROR $436530.KS: possibly delisted; no timezone found
+2026-07-18 15:37:01,835 ERROR $052270.KS: possibly delisted; no timezone found
+2026-07-18 15:37:02,276 ERROR $060000.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:37:02,357 ERROR $002000.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:37:02,882 ERROR $393360.KS: possibly delisted; no timezone found
+2026-07-18 15:37:02,897 ERROR $456070.KS: possibly delisted; no timezone found
+2026-07-18 15:37:03,513 ERROR $430460.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:37:03,989 ERROR $463480.KS: possibly delisted; no timezone found
+2026-07-18 15:37:04,921 ERROR $489730.KS: possibly delisted; no timezone found
+2026-07-18 15:37:04,946 ERROR Could not get exchangeTimezoneName for ticker '065570.KS' reason: 'chart'
+2026-07-18 15:37:04,971 ERROR $065570.KS: possibly delisted; no timezone found
+2026-07-18 15:37:05,103 ERROR $299910.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:37:05,559 ERROR $199480.KS: possibly delisted; no timezone found
+2026-07-18 15:37:05,565 ERROR $212710.KS: possibly delisted; no timezone found
+2026-07-18 15:37:06,561 ERROR $458320.KS: possibly delisted; no timezone found
+2026-07-18 15:37:06,568 ERROR $101970.KS: possibly delisted; no timezone found
+2026-07-18 15:37:06,574 ERROR 
+22 Failed downloads:
+2026-07-18 15:37:06,574 ERROR ['419700.KS', '425290.KS', '060000.KS', '002000.KS', '430460.KS', '299910.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:37:06,575 ERROR ['398120.KS', '058220.KS', '389650.KS', '492220.KS', '181340.KS', '436530.KS', '052270.KS', '393360.KS', '456070.KS', '463480.KS', '489730.KS', '065570.KS', '199480.KS', '212710.KS', '458320.KS', '101970.KS']: possibly delisted; no timezone found
+2026-07-18 15:37:09,930 ERROR $049180.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:37:10,573 ERROR $289930.KS: possibly delisted; no timezone found
+2026-07-18 15:37:11,312 ERROR $469750.KS: possibly delisted; no timezone found
+2026-07-18 15:37:11,318 ERROR $034300.KS: possibly delisted; no timezone found
+2026-07-18 15:37:11,326 ERROR $060910.KS: possibly delisted; no timezone found
+2026-07-18 15:37:11,939 ERROR $388800.KS: possibly delisted; no timezone found
+2026-07-18 15:37:11,945 ERROR $053200.KS: possibly delisted; no timezone found
+2026-07-18 15:37:11,951 ERROR $322190.KS: possibly delisted; no timezone found
+2026-07-18 15:37:12,236 ERROR $446600.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:37:12,423 ERROR $376190.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:37:12,928 ERROR $473950.KS: possibly delisted; no timezone found
+2026-07-18 15:37:13,485 ERROR $430700.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:37:14,218 ERROR $481890.KS: possibly delisted; no timezone found
+2026-07-18 15:37:15,168 ERROR $183410.KS: possibly delisted; no timezone found
+2026-07-18 15:37:15,327 ERROR $004940.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:37:15,480 ERROR $400840.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:37:15,567 ERROR $136510.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:37:15,792 ERROR $438220.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:38:42,315 ERROR Failed to get ticker '010090.KS' reason: Failed to perform, curl: (28) Connection timed out after 86402 milliseconds. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+2026-07-18 15:38:42,316 ERROR Failed to get ticker '224020.KS' reason: Failed to perform, curl: (28) Operation timed out after 86407 milliseconds with 0 bytes received. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+2026-07-18 15:38:42,316 ERROR $314130.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:38:42,317 ERROR Failed to get ticker '459100.KS' reason: Failed to perform, curl: (28) Connection timed out after 86402 milliseconds. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+2026-07-18 15:38:42,317 ERROR $340570.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:38:42,341 ERROR Failed to get ticker '489500.KS' reason: Failed to perform, curl: (28) Operation timed out after 86426 milliseconds with 0 bytes received. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+2026-07-18 15:38:42,364 ERROR $064550.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:38:42,364 ERROR Failed to get ticker '308430.KS' reason: Failed to perform, curl: (28) Operation timed out after 86455 milliseconds with 0 bytes received. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+2026-07-18 15:38:42,393 ERROR $010090.KS: possibly delisted; no timezone found
+2026-07-18 15:38:42,969 ERROR $224020.KS: possibly delisted; no timezone found
+2026-07-18 15:38:43,044 ERROR $459100.KS: possibly delisted; no timezone found
+2026-07-18 15:38:43,062 ERROR $489500.KS: possibly delisted; no timezone found
+2026-07-18 15:38:43,083 ERROR $308430.KS: possibly delisted; no timezone found
+2026-07-18 15:38:43,460 ERROR $008670.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:38:44,142 ERROR $389680.KS: possibly delisted; no timezone found
+2026-07-18 15:38:44,143 ERROR $047730.KS: possibly delisted; no timezone found
+2026-07-18 15:38:44,144 ERROR $487720.KS: possibly delisted; no timezone found
+2026-07-18 15:38:44,782 ERROR $482690.KS: possibly delisted; no timezone found
+2026-07-18 15:38:44,786 ERROR 
+31 Failed downloads:
+2026-07-18 15:38:44,786 ERROR ['049180.KS', '446600.KS', '376190.KS', '430700.KS', '004940.KS', '400840.KS', '136510.KS', '438220.KS', '314130.KS', '340570.KS', '064550.KS', '008670.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:38:44,786 ERROR ['289930.KS', '469750.KS', '034300.KS', '060910.KS', '388800.KS', '053200.KS', '322190.KS', '473950.KS', '481890.KS', '183410.KS', '010090.KS', '224020.KS', '459100.KS', '489500.KS', '308430.KS', '389680.KS', '047730.KS', '487720.KS', '482690.KS']: possibly delisted; no timezone found
+2026-07-18 15:38:44,825 INFO   가격 다운로드: 20/40 청크 완료, 현재까지 유효 종목 988개
+2026-07-18 15:38:48,884 ERROR $493790.KS: possibly delisted; no timezone found
+2026-07-18 15:38:48,885 ERROR $475460.KS: possibly delisted; no timezone found
+2026-07-18 15:38:48,979 ERROR $450950.KS: possibly delisted; no timezone found
+2026-07-18 15:38:49,435 ERROR $489480.KS: possibly delisted; no timezone found
+2026-07-18 15:38:50,270 ERROR $498390.KS: possibly delisted; no timezone found
+2026-07-18 15:38:50,933 ERROR $209640.KS: possibly delisted; no timezone found
+2026-07-18 15:38:50,942 ERROR $382150.KS: possibly delisted; no timezone found
+2026-07-18 15:38:51,240 ERROR $021960.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:38:51,763 ERROR $457600.KS: possibly delisted; no timezone found
+2026-07-18 15:38:51,966 ERROR $900280.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:38:52,393 ERROR $484810.KS: possibly delisted; no timezone found
+2026-07-18 15:38:53,392 ERROR $460470.KS: possibly delisted; no timezone found
+2026-07-18 15:38:53,392 ERROR $064510.KS: possibly delisted; no timezone found
+2026-07-18 15:38:53,553 ERROR $422040.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:38:54,335 ERROR $282690.KS: possibly delisted; no timezone found
+2026-07-18 15:38:54,338 ERROR $482630.KS: possibly delisted; no timezone found
+2026-07-18 15:38:55,586 ERROR $419270.KS: possibly delisted; no timezone found
+2026-07-18 15:38:55,589 ERROR $462980.KS: possibly delisted; no timezone found
+2026-07-18 15:38:55,591 ERROR $488060.KS: possibly delisted; no timezone found
+2026-07-18 15:38:55,612 ERROR $126870.KS: possibly delisted; no timezone found
+2026-07-18 15:38:55,909 ERROR $418210.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:38:56,437 ERROR $046110.KS: possibly delisted; no timezone found
+2026-07-18 15:38:56,438 ERROR $413390.KS: possibly delisted; no timezone found
+2026-07-18 15:38:57,340 ERROR Could not get exchangeTimezoneName for ticker '168490.KS' reason: 'chart'
+2026-07-18 15:38:57,342 ERROR $168490.KS: possibly delisted; no timezone found
+2026-07-18 15:38:57,351 ERROR 
+24 Failed downloads:
+2026-07-18 15:38:57,352 ERROR ['493790.KS', '475460.KS', '450950.KS', '489480.KS', '498390.KS', '209640.KS', '382150.KS', '457600.KS', '484810.KS', '460470.KS', '064510.KS', '282690.KS', '482630.KS', '419270.KS', '462980.KS', '488060.KS', '126870.KS', '046110.KS', '413390.KS', '168490.KS']: possibly delisted; no timezone found
+2026-07-18 15:38:57,352 ERROR ['021960.KS', '900280.KS', '422040.KS', '418210.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:02,097 ERROR $057330.KS: possibly delisted; no timezone found
+2026-07-18 15:39:02,098 ERROR $010050.KS: possibly delisted; no timezone found
+2026-07-18 15:39:03,116 ERROR $070480.KS: possibly delisted; no timezone found
+2026-07-18 15:39:03,928 ERROR $084450.KS: possibly delisted; no timezone found
+2026-07-18 15:39:03,941 ERROR $482680.KS: possibly delisted; no timezone found
+2026-07-18 15:39:04,112 ERROR $080000.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:04,791 ERROR $476060.KS: possibly delisted; no timezone found
+2026-07-18 15:39:04,802 ERROR $044070.KS: possibly delisted; no timezone found
+2026-07-18 15:39:06,263 ERROR $000030.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:06,531 ERROR $415580.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:06,586 ERROR $068870.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:06,794 ERROR $041500.KS: possibly delisted; no timezone found
+2026-07-18 15:39:07,002 ERROR $258250.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:08,277 ERROR $418170.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:08,625 ERROR $199870.KS: possibly delisted; no timezone found
+2026-07-18 15:39:08,636 ERROR $486630.KS: possibly delisted; no timezone found
+2026-07-18 15:39:09,339 ERROR $066930.KS: possibly delisted; no timezone found
+2026-07-18 15:39:09,340 ERROR 
+17 Failed downloads:
+2026-07-18 15:39:09,346 ERROR ['057330.KS', '010050.KS', '070480.KS', '084450.KS', '482680.KS', '476060.KS', '044070.KS', '041500.KS', '199870.KS', '486630.KS', '066930.KS']: possibly delisted; no timezone found
+2026-07-18 15:39:09,348 ERROR ['080000.KS', '000030.KS', '415580.KS', '068870.KS', '258250.KS', '418170.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:13,544 ERROR $047940.KS: possibly delisted; no timezone found
+2026-07-18 15:39:13,546 ERROR $397880.KS: possibly delisted; no timezone found
+2026-07-18 15:39:14,346 ERROR $054020.KS: possibly delisted; no timezone found
+2026-07-18 15:39:15,563 ERROR $412930.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:16,122 ERROR $163280.KS: possibly delisted; no timezone found
+2026-07-18 15:39:16,636 ERROR $067250.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:17,587 ERROR $431190.KS: possibly delisted; no timezone found
+2026-07-18 15:39:18,495 ERROR $050320.KS: possibly delisted; no timezone found
+2026-07-18 15:39:18,497 ERROR $064060.KS: possibly delisted; no timezone found
+2026-07-18 15:39:18,572 ERROR $053330.KS: possibly delisted; no timezone found
+2026-07-18 15:39:19,315 ERROR $391060.KS: possibly delisted; no timezone found
+2026-07-18 15:39:19,328 ERROR $050470.KS: possibly delisted; no timezone found
+2026-07-18 15:39:19,337 ERROR $464580.KS: possibly delisted; no timezone found
+2026-07-18 15:39:19,613 ERROR $085370.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:21,642 ERROR $086250.KS: possibly delisted; no timezone found
+2026-07-18 15:39:21,644 ERROR $038710.KS: possibly delisted; no timezone found
+2026-07-18 15:39:21,646 ERROR $036280.KS: possibly delisted; no timezone found
+2026-07-18 15:39:21,653 ERROR 
+17 Failed downloads:
+2026-07-18 15:39:21,655 ERROR ['047940.KS', '397880.KS', '054020.KS', '163280.KS', '431190.KS', '050320.KS', '064060.KS', '053330.KS', '391060.KS', '050470.KS', '464580.KS', '086250.KS', '038710.KS', '036280.KS']: possibly delisted; no timezone found
+2026-07-18 15:39:21,656 ERROR ['412930.KS', '067250.KS', '085370.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:25,708 ERROR $442770.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:25,790 ERROR $406760.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:26,346 ERROR $078650.KS: possibly delisted; no timezone found
+2026-07-18 15:39:26,363 ERROR $432980.KS: possibly delisted; no timezone found
+2026-07-18 15:39:26,365 ERROR $062580.KS: possibly delisted; no timezone found
+2026-07-18 15:39:26,602 ERROR $446190.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:27,213 ERROR $459550.KS: possibly delisted; no timezone found
+2026-07-18 15:39:27,225 ERROR $471820.KS: possibly delisted; no timezone found
+2026-07-18 15:39:27,838 ERROR $139050.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:27,869 ERROR $053590.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:28,050 ERROR $155960.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:28,184 ERROR $001490.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:28,680 ERROR $033550.KS: possibly delisted; no timezone found
+2026-07-18 15:39:28,682 ERROR $376900.KS: possibly delisted; no timezone found
+2026-07-18 15:39:28,904 ERROR $454750.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:29,635 ERROR $380550.KS: possibly delisted; no timezone found
+2026-07-18 15:39:30,064 ERROR $194610.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:30,962 ERROR $309710.KS: possibly delisted; no timezone found
+2026-07-18 15:39:30,987 ERROR $006390.KS: possibly delisted; no timezone found
+2026-07-18 15:39:31,214 ERROR $057880.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:32,280 ERROR $342870.KS: possibly delisted; no timezone found
+2026-07-18 15:39:32,415 ERROR $286000.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:33,111 ERROR $477850.KS: possibly delisted; no timezone found
+2026-07-18 15:39:33,907 ERROR $336680.KS: possibly delisted; no timezone found
+2026-07-18 15:39:33,914 ERROR Could not get exchangeTimezoneName for ticker '041590.KS' reason: 'chart'
+2026-07-18 15:39:33,915 ERROR $041590.KS: possibly delisted; no timezone found
+2026-07-18 15:39:33,923 ERROR $030790.KS: possibly delisted; no timezone found
+2026-07-18 15:39:33,928 ERROR 
+26 Failed downloads:
+2026-07-18 15:39:33,929 ERROR ['442770.KS', '406760.KS', '446190.KS', '139050.KS', '053590.KS', '155960.KS', '001490.KS', '454750.KS', '194610.KS', '057880.KS', '286000.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:33,931 ERROR ['078650.KS', '432980.KS', '062580.KS', '459550.KS', '471820.KS', '033550.KS', '376900.KS', '380550.KS', '309710.KS', '006390.KS', '342870.KS', '477850.KS', '336680.KS', '041590.KS', '030790.KS']: possibly delisted; no timezone found
+2026-07-18 15:39:38,111 ERROR Could not get exchangeTimezoneName for ticker '064090.KS' reason: 'chart'
+2026-07-18 15:39:38,113 ERROR $064090.KS: possibly delisted; no timezone found
+2026-07-18 15:39:38,120 ERROR Could not get exchangeTimezoneName for ticker '096610.KS' reason: 'chart'
+2026-07-18 15:39:38,122 ERROR $096610.KS: possibly delisted; no timezone found
+2026-07-18 15:39:39,156 ERROR $061090.KS: possibly delisted; no timezone found
+2026-07-18 15:39:39,401 ERROR $014200.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:40,303 ERROR $394800.KS: possibly delisted; no timezone found
+2026-07-18 15:39:40,547 ERROR $044060.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:41,259 ERROR $188040.KS: possibly delisted; no timezone found
+2026-07-18 15:39:42,126 ERROR $125490.KS: possibly delisted; no timezone found
+2026-07-18 15:39:42,957 ERROR Could not get exchangeTimezoneName for ticker '054180.KS' reason: 'chart'
+2026-07-18 15:39:42,959 ERROR $393970.KS: possibly delisted; no timezone found
+2026-07-18 15:39:42,961 ERROR $054180.KS: possibly delisted; no timezone found
+2026-07-18 15:39:43,751 ERROR $950110.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:44,098 ERROR $003560.KS: possibly delisted; no timezone found
+2026-07-18 15:39:44,328 ERROR $455250.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:45,226 ERROR Could not get exchangeTimezoneName for ticker '043100.KS' reason: 'chart'
+2026-07-18 15:39:45,228 ERROR $043100.KS: possibly delisted; no timezone found
+2026-07-18 15:39:45,459 ERROR $440790.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:45,951 ERROR $442310.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:46,077 ERROR $182400.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:46,650 ERROR Could not get exchangeTimezoneName for ticker '058400.KS' reason: 'chart'
+2026-07-18 15:39:46,659 ERROR $058400.KS: possibly delisted; no timezone found
+2026-07-18 15:39:46,885 ERROR $448740.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:47,484 ERROR $012760.KS: possibly delisted; no timezone found
+2026-07-18 15:39:47,485 ERROR 
+20 Failed downloads:
+2026-07-18 15:39:47,487 ERROR ['064090.KS', '096610.KS', '061090.KS', '394800.KS', '188040.KS', '125490.KS', '393970.KS', '054180.KS', '003560.KS', '043100.KS', '058400.KS', '012760.KS']: possibly delisted; no timezone found
+2026-07-18 15:39:47,488 ERROR ['014200.KS', '044060.KS', '950110.KS', '455250.KS', '440790.KS', '442310.KS', '182400.KS', '448740.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:52,343 ERROR $368030.KS: possibly delisted; no timezone found
+2026-07-18 15:39:53,216 ERROR $090740.KS: possibly delisted; no timezone found
+2026-07-18 15:39:53,233 ERROR $073070.KS: possibly delisted; no timezone found
+2026-07-18 15:39:54,120 ERROR $019560.KS: possibly delisted; no timezone found
+2026-07-18 15:39:54,950 ERROR $068400.KS: possibly delisted; no timezone found
+2026-07-18 15:39:56,355 ERROR Could not get exchangeTimezoneName for ticker '099520.KS' reason: 'chart'
+2026-07-18 15:39:56,356 ERROR $088340.KS: possibly delisted; no timezone found
+2026-07-18 15:39:56,358 ERROR $099520.KS: possibly delisted; no timezone found
+2026-07-18 15:39:57,190 ERROR $258540.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:58,077 ERROR $487580.KS: possibly delisted; no timezone found
+2026-07-18 15:39:58,321 ERROR $005270.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:58,323 ERROR $024810.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:39:59,233 ERROR $150440.KS: possibly delisted; no timezone found
+2026-07-18 15:40:00,205 ERROR $134780.KS: possibly delisted; no timezone found
+2026-07-18 15:40:00,213 ERROR 
+13 Failed downloads:
+2026-07-18 15:40:00,213 ERROR ['368030.KS', '090740.KS', '073070.KS', '019560.KS', '068400.KS', '088340.KS', '099520.KS', '487580.KS', '150440.KS', '134780.KS']: possibly delisted; no timezone found
+2026-07-18 15:40:00,214 ERROR ['258540.KS', '005270.KS', '024810.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:03,718 ERROR $263540.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:04,355 ERROR $381620.KS: possibly delisted; no timezone found
+2026-07-18 15:40:04,389 ERROR $475400.KS: possibly delisted; no timezone found
+2026-07-18 15:40:05,381 ERROR $397810.KS: possibly delisted; no timezone found
+2026-07-18 15:40:06,313 ERROR Could not get exchangeTimezoneName for ticker '068940.KS' reason: 'chart'
+2026-07-18 15:40:06,315 ERROR $068940.KS: possibly delisted; no timezone found
+2026-07-18 15:40:06,555 ERROR $226440.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:07,349 ERROR $464490.KS: possibly delisted; no timezone found
+2026-07-18 15:40:07,360 ERROR $457370.KS: possibly delisted; no timezone found
+2026-07-18 15:40:08,328 ERROR $387570.KS: possibly delisted; no timezone found
+2026-07-18 15:40:09,708 ERROR $174880.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:10,117 ERROR Could not get exchangeTimezoneName for ticker '183490.KS' reason: 'chart'
+2026-07-18 15:40:10,120 ERROR $183490.KS: possibly delisted; no timezone found
+2026-07-18 15:40:11,053 ERROR $058530.KS: possibly delisted; no timezone found
+2026-07-18 15:40:11,089 ERROR $183350.KS: possibly delisted; no timezone found
+2026-07-18 15:40:11,998 ERROR $459510.KS: possibly delisted; no timezone found
+2026-07-18 15:40:12,016 ERROR $450140.KS: possibly delisted; no timezone found
+2026-07-18 15:40:12,839 ERROR Could not get exchangeTimezoneName for ticker '019570.KS' reason: 'chart'
+2026-07-18 15:40:12,841 ERROR $019570.KS: possibly delisted; no timezone found
+2026-07-18 15:40:13,561 ERROR $115390.KS: possibly delisted; no timezone found
+2026-07-18 15:40:13,561 ERROR 
+17 Failed downloads:
+2026-07-18 15:40:13,564 ERROR ['263540.KS', '226440.KS', '174880.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:13,565 ERROR ['381620.KS', '475400.KS', '397810.KS', '068940.KS', '464490.KS', '457370.KS', '387570.KS', '183490.KS', '058530.KS', '183350.KS', '459510.KS', '450140.KS', '019570.KS', '115390.KS']: possibly delisted; no timezone found
+2026-07-18 15:40:17,027 ERROR $456440.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:17,519 ERROR $495900.KS: possibly delisted; no timezone found
+2026-07-18 15:40:17,521 ERROR $026970.KS: possibly delisted; no timezone found
+2026-07-18 15:40:17,652 ERROR $014590.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:17,682 ERROR $288490.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:17,854 ERROR $435870.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:18,612 ERROR $288180.KS: possibly delisted; no timezone found
+2026-07-18 15:40:18,749 ERROR $096040.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:19,309 ERROR $161570.KS: possibly delisted; no timezone found
+2026-07-18 15:40:20,267 ERROR $086460.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:21,356 ERROR $008110.KS: possibly delisted; no timezone found
+2026-07-18 15:40:22,084 ERROR $466690.KS: possibly delisted; no timezone found
+2026-07-18 15:40:22,270 ERROR $445360.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:22,988 ERROR $458650.KS: possibly delisted; no timezone found
+2026-07-18 15:40:22,989 ERROR $475230.KS: possibly delisted; no timezone found
+2026-07-18 15:40:23,665 ERROR $261520.KS: possibly delisted; no timezone found
+2026-07-18 15:40:25,075 ERROR $484120.KS: possibly delisted; no timezone found
+2026-07-18 15:40:25,078 ERROR $460940.KS: possibly delisted; no timezone found
+2026-07-18 15:40:25,077 ERROR $125020.KS: possibly delisted; no timezone found
+2026-07-18 15:40:25,774 ERROR $468530.KS: possibly delisted; no timezone found
+2026-07-18 15:40:25,776 ERROR $493280.KS: possibly delisted; no timezone found
+2026-07-18 15:40:25,778 ERROR $001140.KS: possibly delisted; no timezone found
+2026-07-18 15:40:26,244 ERROR 
+22 Failed downloads:
+2026-07-18 15:40:26,245 ERROR ['456440.KS', '014590.KS', '288490.KS', '435870.KS', '096040.KS', '086460.KS', '445360.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:26,247 ERROR ['495900.KS', '026970.KS', '288180.KS', '161570.KS', '008110.KS', '466690.KS', '458650.KS', '475230.KS', '261520.KS', '484120.KS', '125020.KS', '460940.KS', '468530.KS', '493280.KS', '001140.KS']: possibly delisted; no timezone found
+2026-07-18 15:40:30,581 ERROR $096640.KS: possibly delisted; no timezone found
+2026-07-18 15:40:30,802 ERROR $005280.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:31,196 ERROR $049770.KS: possibly delisted; no timezone found
+2026-07-18 15:40:31,328 ERROR $424870.KS: possibly delisted; no timezone found
+2026-07-18 15:40:32,108 ERROR $464500.KS: possibly delisted; no timezone found
+2026-07-18 15:40:32,110 ERROR $494120.KS: possibly delisted; no timezone found
+2026-07-18 15:40:32,113 ERROR $403850.KS: possibly delisted; no timezone found
+2026-07-18 15:40:32,115 ERROR $012600.KS: possibly delisted; no timezone found
+2026-07-18 15:40:32,488 ERROR $446750.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:32,678 ERROR $448370.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:32,776 ERROR $450050.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:33,371 ERROR $002480.KS: possibly delisted; no timezone found
+2026-07-18 15:40:34,552 ERROR $435380.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:34,554 ERROR $031990.KS: possibly delisted; no timezone found
+2026-07-18 15:40:34,556 ERROR $001890.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:34,592 ERROR $008800.KS: possibly delisted; no timezone found
+2026-07-18 15:40:36,115 ERROR $065310.KS: possibly delisted; no timezone found
+2026-07-18 15:40:37,475 ERROR $488900.KS: possibly delisted; no timezone found
+2026-07-18 15:40:37,482 ERROR Could not get exchangeTimezoneName for ticker '044480.KS' reason: 'chart'
+2026-07-18 15:40:37,548 ERROR $044480.KS: possibly delisted; no timezone found
+2026-07-18 15:40:38,522 ERROR $098070.KS: possibly delisted; no timezone found
+2026-07-18 15:40:38,522 ERROR 
+20 Failed downloads:
+2026-07-18 15:40:38,525 ERROR ['096640.KS', '049770.KS', '424870.KS', '464500.KS', '494120.KS', '403850.KS', '012600.KS', '002480.KS', '031990.KS', '008800.KS', '065310.KS', '488900.KS', '044480.KS', '098070.KS']: possibly delisted; no timezone found
+2026-07-18 15:40:38,526 ERROR ['005280.KS', '446750.KS', '448370.KS', '450050.KS', '435380.KS', '001890.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:42,055 ERROR $072520.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:42,657 ERROR $408470.KS: possibly delisted; no timezone found
+2026-07-18 15:40:42,672 ERROR $478780.KS: possibly delisted; no timezone found
+2026-07-18 15:40:42,851 ERROR $439730.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:43,238 ERROR $226360.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:44,557 ERROR $454640.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:46,060 ERROR $006250.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:46,060 ERROR Could not get exchangeTimezoneName for ticker '044180.KS' reason: 'chart'
+2026-07-18 15:40:46,065 ERROR $044180.KS: possibly delisted; no timezone found
+2026-07-18 15:40:47,493 ERROR $364950.KS: possibly delisted; no timezone found
+2026-07-18 15:40:47,505 ERROR $496070.KS: possibly delisted; no timezone found
+2026-07-18 15:40:47,829 ERROR $450940.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:47,845 ERROR $019590.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:47,915 ERROR $119860.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:48,011 ERROR $439250.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:48,260 ERROR $192530.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:48,335 ERROR $003450.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:48,763 ERROR $403810.KS: possibly delisted; no timezone found
+2026-07-18 15:40:48,765 ERROR $475960.KS: possibly delisted; no timezone found
+2026-07-18 15:40:49,612 ERROR $050540.KS: possibly delisted; no timezone found
+2026-07-18 15:40:49,736 ERROR $071460.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:49,737 ERROR Could not get exchangeTimezoneName for ticker '079190.KS' reason: 'chart'
+2026-07-18 15:40:49,743 ERROR $079190.KS: possibly delisted; no timezone found
+2026-07-18 15:40:50,306 ERROR 
+21 Failed downloads:
+2026-07-18 15:40:50,307 ERROR ['072520.KS', '439730.KS', '226360.KS', '454640.KS', '006250.KS', '450940.KS', '019590.KS', '119860.KS', '439250.KS', '192530.KS', '003450.KS', '071460.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:50,309 ERROR ['408470.KS', '478780.KS', '044180.KS', '364950.KS', '496070.KS', '403810.KS', '475960.KS', '050540.KS', '079190.KS']: possibly delisted; no timezone found
+2026-07-18 15:40:50,423 INFO   가격 다운로드: 30/40 청크 완료, 현재까지 유효 종목 1778개
+2026-07-18 15:40:54,618 ERROR $463020.KS: possibly delisted; no timezone found
+2026-07-18 15:40:54,657 ERROR $226590.KS: possibly delisted; no timezone found
+2026-07-18 15:40:55,921 ERROR $475430.KS: possibly delisted; no timezone found
+2026-07-18 15:40:55,968 ERROR $102210.KS: possibly delisted; no timezone found
+2026-07-18 15:40:56,764 ERROR $465480.KS: possibly delisted; no timezone found
+2026-07-18 15:40:56,771 ERROR $068060.KS: possibly delisted; no timezone found
+2026-07-18 15:40:56,790 ERROR $240550.KS: possibly delisted; no timezone found
+2026-07-18 15:40:56,829 ERROR $000110.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:57,593 ERROR $037340.KS: possibly delisted; no timezone found
+2026-07-18 15:40:57,612 ERROR $318060.KS: possibly delisted; no timezone found
+2026-07-18 15:40:58,210 ERROR $496320.KS: possibly delisted; no timezone found
+2026-07-18 15:40:59,528 ERROR $474170.KS: possibly delisted; no timezone found
+2026-07-18 15:40:59,602 ERROR $289860.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:40:59,923 ERROR $006350.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:00,460 ERROR $478560.KS: possibly delisted; no timezone found
+2026-07-18 15:41:00,480 ERROR $103160.KS: possibly delisted; no timezone found
+2026-07-18 15:41:00,482 ERROR $010600.KS: possibly delisted; no timezone found
+2026-07-18 15:41:01,014 ERROR $222810.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:01,088 ERROR $442130.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:01,901 ERROR $476470.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:02,639 ERROR $456160.KS: possibly delisted; no timezone found
+2026-07-18 15:41:03,934 ERROR $493330.KS: possibly delisted; no timezone found
+2026-07-18 15:41:04,009 ERROR $448830.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:05,178 ERROR $234030.KS: possibly delisted; no timezone found
+2026-07-18 15:41:05,185 ERROR $111870.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:05,192 ERROR 
+25 Failed downloads:
+2026-07-18 15:41:05,194 ERROR ['463020.KS', '226590.KS', '475430.KS', '102210.KS', '465480.KS', '068060.KS', '240550.KS', '037340.KS', '318060.KS', '496320.KS', '474170.KS', '478560.KS', '103160.KS', '010600.KS', '456160.KS', '493330.KS', '234030.KS']: possibly delisted; no timezone found
+2026-07-18 15:41:05,195 ERROR ['000110.KS', '289860.KS', '006350.KS', '222810.KS', '442130.KS', '476470.KS', '448830.KS', '111870.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:09,193 ERROR Could not get exchangeTimezoneName for ticker '083640.KS' reason: 'chart'
+2026-07-18 15:41:09,297 ERROR $083640.KS: possibly delisted; no timezone found
+2026-07-18 15:41:09,330 ERROR $476080.KS: possibly delisted; no timezone found
+2026-07-18 15:41:09,759 ERROR $323230.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:10,233 ERROR $435570.KS: possibly delisted; no timezone found
+2026-07-18 15:41:10,359 ERROR $005450.KS: possibly delisted; no timezone found
+2026-07-18 15:41:10,594 ERROR $440820.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:11,355 ERROR Could not get exchangeTimezoneName for ticker '083660.KS' reason: 'chart'
+2026-07-18 15:41:11,357 ERROR $083660.KS: possibly delisted; no timezone found
+2026-07-18 15:41:12,154 ERROR $026870.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:12,159 ERROR $491000.KS: possibly delisted; no timezone found
+2026-07-18 15:41:12,167 ERROR $476040.KS: possibly delisted; no timezone found
+2026-07-18 15:41:12,180 ERROR $023460.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:12,183 ERROR $079560.KS: possibly delisted; no timezone found
+2026-07-18 15:41:13,094 ERROR $479960.KS: possibly delisted; no timezone found
+2026-07-18 15:41:13,105 ERROR $002250.KS: possibly delisted; no timezone found
+2026-07-18 15:41:13,112 ERROR Could not get exchangeTimezoneName for ticker '043090.KS' reason: 'chart'
+2026-07-18 15:41:13,116 ERROR $043090.KS: possibly delisted; no timezone found
+2026-07-18 15:41:14,185 ERROR $081180.KS: possibly delisted; no timezone found
+2026-07-18 15:41:15,794 ERROR $474650.KS: possibly delisted; no timezone found
+2026-07-18 15:41:15,799 ERROR $144620.KS: possibly delisted; no timezone found
+2026-07-18 15:41:15,833 ERROR $136150.KS: possibly delisted; no timezone found
+2026-07-18 15:41:17,287 ERROR $008020.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:17,596 ERROR $477530.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:18,600 ERROR 
+21 Failed downloads:
+2026-07-18 15:41:18,601 ERROR ['083640.KS', '476080.KS', '435570.KS', '005450.KS', '083660.KS', '491000.KS', '476040.KS', '079560.KS', '479960.KS', '002250.KS', '043090.KS', '081180.KS', '474650.KS', '144620.KS', '136150.KS']: possibly delisted; no timezone found
+2026-07-18 15:41:18,604 ERROR ['323230.KS', '440820.KS', '026870.KS', '023460.KS', '008020.KS', '477530.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:22,136 ERROR $214870.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:24,253 ERROR $455180.KS: possibly delisted; no timezone found
+2026-07-18 15:41:24,831 ERROR $341310.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:24,983 ERROR $082660.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:26,782 ERROR $029960.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:26,944 ERROR $001880.KS: possibly delisted; no timezone found
+2026-07-18 15:41:26,946 ERROR $466100.KS: possibly delisted; no timezone found
+2026-07-18 15:41:27,174 ERROR $335890.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:27,831 ERROR $070080.KS: possibly delisted; no timezone found
+2026-07-18 15:41:27,959 ERROR $449020.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:29,246 ERROR $495810.KS: possibly delisted; no timezone found
+2026-07-18 15:41:30,281 ERROR $331740.KS: possibly delisted; no timezone found
+2026-07-18 15:41:30,289 ERROR 
+12 Failed downloads:
+2026-07-18 15:41:30,289 ERROR ['214870.KS', '341310.KS', '082660.KS', '029960.KS', '335890.KS', '449020.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:30,290 ERROR ['455180.KS', '001880.KS', '466100.KS', '070080.KS', '495810.KS', '331740.KS']: possibly delisted; no timezone found
+2026-07-18 15:41:35,096 ERROR $003410.KS: possibly delisted; no timezone found
+2026-07-18 15:41:35,115 ERROR $005390.KS: possibly delisted; no timezone found
+2026-07-18 15:41:35,174 ERROR $066270.KS: possibly delisted; no timezone found
+2026-07-18 15:41:36,975 ERROR $373160.KS: possibly delisted; no timezone found
+2026-07-18 15:41:36,984 ERROR $476710.KS: possibly delisted; no timezone found
+2026-07-18 15:41:37,252 ERROR $446150.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:37,897 ERROR $469610.KS: possibly delisted; no timezone found
+2026-07-18 15:41:37,899 ERROR $308700.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:37,924 ERROR $473980.KS: possibly delisted; no timezone found
+2026-07-18 15:41:40,196 ERROR $452450.KS: possibly delisted; no timezone found
+2026-07-18 15:41:40,220 ERROR $078940.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:40,477 ERROR $950250.KS: possibly delisted; no timezone found
+2026-07-18 15:41:41,301 ERROR $487360.KS: possibly delisted; no timezone found
+2026-07-18 15:41:41,591 ERROR $008270.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:42,352 ERROR $010420.KS: possibly delisted; no timezone found
+2026-07-18 15:41:45,454 ERROR $484590.KS: possibly delisted; no timezone found
+2026-07-18 15:41:45,455 ERROR $287840.KS: possibly delisted; no timezone found
+2026-07-18 15:41:45,893 ERROR 
+17 Failed downloads:
+2026-07-18 15:41:45,894 ERROR ['003410.KS', '005390.KS', '066270.KS', '373160.KS', '476710.KS', '469610.KS', '473980.KS', '452450.KS', '950250.KS', '487360.KS', '010420.KS', '484590.KS', '287840.KS']: possibly delisted; no timezone found
+2026-07-18 15:41:45,895 ERROR ['446150.KS', '308700.KS', '078940.KS', '008270.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:49,282 ERROR $054630.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:50,037 ERROR $475660.KS: possibly delisted; no timezone found
+2026-07-18 15:41:50,948 ERROR $002670.KS: possibly delisted; no timezone found
+2026-07-18 15:41:51,184 ERROR $457390.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:52,060 ERROR Could not get exchangeTimezoneName for ticker '036690.KS' reason: 'chart'
+2026-07-18 15:41:52,063 ERROR $036690.KS: possibly delisted; no timezone found
+2026-07-18 15:41:52,065 ERROR $068420.KS: possibly delisted; no timezone found
+2026-07-18 15:41:53,108 ERROR $290380.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:53,139 ERROR $138250.KS: possibly delisted; no timezone found
+2026-07-18 15:41:54,156 ERROR $062860.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:55,356 ERROR $014950.KS: possibly delisted; no timezone found
+2026-07-18 15:41:56,049 ERROR $476830.KS: possibly delisted; no timezone found
+2026-07-18 15:41:56,260 ERROR $266870.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:56,568 ERROR $005900.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:57,422 ERROR $456490.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:58,428 ERROR $490470.KS: possibly delisted; no timezone found
+2026-07-18 15:41:58,962 ERROR $448760.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:59,397 ERROR $012720.KS: possibly delisted; no timezone found
+2026-07-18 15:41:59,397 ERROR 
+17 Failed downloads:
+2026-07-18 15:41:59,402 ERROR ['054630.KS', '457390.KS', '290380.KS', '062860.KS', '266870.KS', '005900.KS', '456490.KS', '448760.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:41:59,403 ERROR ['475660.KS', '002670.KS', '036690.KS', '068420.KS', '138250.KS', '014950.KS', '476830.KS', '490470.KS', '012720.KS']: possibly delisted; no timezone found
+2026-07-18 15:42:03,585 ERROR $033660.KS: possibly delisted; no timezone found
+2026-07-18 15:42:04,624 ERROR Could not get exchangeTimezoneName for ticker '013720.KS' reason: 'chart'
+2026-07-18 15:42:04,626 ERROR $013720.KS: possibly delisted; no timezone found
+2026-07-18 15:42:04,683 ERROR $461300.KS: possibly delisted; no timezone found
+2026-07-18 15:42:06,424 ERROR $214310.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:06,524 ERROR $474610.KS: possibly delisted; no timezone found
+2026-07-18 15:42:07,203 ERROR Could not get exchangeTimezoneName for ticker '009730.KS' reason: 'chart'
+2026-07-18 15:42:07,233 ERROR $009730.KS: possibly delisted; no timezone found
+2026-07-18 15:42:08,482 ERROR $046140.KS: possibly delisted; no timezone found
+2026-07-18 15:42:08,684 ERROR $037640.KS: possibly delisted; no timezone found
+2026-07-18 15:42:09,944 ERROR $192520.KS: possibly delisted; no timezone found
+2026-07-18 15:42:11,669 ERROR $177900.KS: possibly delisted; no timezone found
+2026-07-18 15:42:12,009 ERROR $153890.KS: possibly delisted; no timezone found
+2026-07-18 15:42:12,014 ERROR $489460.KS: possibly delisted; no timezone found
+2026-07-18 15:42:13,115 ERROR $052670.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:13,989 ERROR $006580.KS: possibly delisted; no timezone found
+2026-07-18 15:42:14,175 ERROR $283100.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:14,521 ERROR 
+15 Failed downloads:
+2026-07-18 15:42:14,522 ERROR ['033660.KS', '013720.KS', '461300.KS', '474610.KS', '009730.KS', '046140.KS', '037640.KS', '192520.KS', '177900.KS', '153890.KS', '489460.KS', '006580.KS']: possibly delisted; no timezone found
+2026-07-18 15:42:14,523 ERROR ['214310.KS', '052670.KS', '283100.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:18,500 ERROR $019300.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:18,722 ERROR $462860.KS: possibly delisted; no timezone found
+2026-07-18 15:42:19,102 ERROR $268600.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:19,775 ERROR $488280.KS: possibly delisted; no timezone found
+2026-07-18 15:42:20,545 ERROR $438580.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:21,107 ERROR $151910.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:21,676 ERROR $069110.KS: possibly delisted; no timezone found
+2026-07-18 15:42:22,591 ERROR $437780.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:22,592 ERROR $138490.KS: possibly delisted; no timezone found
+2026-07-18 15:42:22,609 ERROR $051310.KS: possibly delisted; no timezone found
+2026-07-18 15:42:22,630 ERROR $394420.KS: possibly delisted; no timezone found
+2026-07-18 15:42:23,505 ERROR $435620.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:23,505 ERROR Could not get exchangeTimezoneName for ticker '038530.KS' reason: 'chart'
+2026-07-18 15:42:23,507 ERROR $038530.KS: possibly delisted; no timezone found
+2026-07-18 15:42:23,904 ERROR $000360.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:24,277 ERROR $042670.KS: possibly delisted; no timezone found
+2026-07-18 15:42:24,473 ERROR $442900.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:24,606 ERROR $000800.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:24,973 ERROR Could not get exchangeTimezoneName for ticker '439410.KS' reason: 'chart'
+2026-07-18 15:42:24,981 ERROR $439410.KS: possibly delisted; no timezone found
+2026-07-18 15:42:24,995 ERROR Could not get exchangeTimezoneName for ticker '068240.KS' reason: 'chart'
+2026-07-18 15:42:24,996 ERROR $068240.KS: possibly delisted; no timezone found
+2026-07-18 15:42:25,945 ERROR $388210.KS: possibly delisted; no timezone found
+2026-07-18 15:42:25,947 ERROR $102280.KS: possibly delisted; no timezone found
+2026-07-18 15:42:25,955 ERROR $343090.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:26,778 ERROR $046400.KS: possibly delisted; no timezone found
+2026-07-18 15:42:26,805 ERROR Could not get exchangeTimezoneName for ticker '023440.KS' reason: 'chart'
+2026-07-18 15:42:26,807 ERROR $023440.KS: possibly delisted; no timezone found
+2026-07-18 15:42:26,882 ERROR $033630.KS: possibly delisted; no timezone found
+2026-07-18 15:42:26,882 ERROR 
+25 Failed downloads:
+2026-07-18 15:42:26,885 ERROR ['019300.KS', '268600.KS', '438580.KS', '151910.KS', '437780.KS', '435620.KS', '000360.KS', '442900.KS', '000800.KS', '343090.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:26,887 ERROR ['462860.KS', '488280.KS', '069110.KS', '138490.KS', '051310.KS', '394420.KS', '038530.KS', '042670.KS', '439410.KS', '068240.KS', '388210.KS', '102280.KS', '046400.KS', '023440.KS', '033630.KS']: possibly delisted; no timezone found
+2026-07-18 15:42:30,900 ERROR $332190.KS: possibly delisted; no timezone found
+2026-07-18 15:42:30,901 ERROR $445970.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:30,950 ERROR $458350.KS: possibly delisted; no timezone found
+2026-07-18 15:42:31,260 ERROR $150840.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:31,337 ERROR $287410.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:31,911 ERROR $462310.KS: possibly delisted; no timezone found
+2026-07-18 15:42:32,428 ERROR $012580.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:32,600 ERROR $038340.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:33,232 ERROR Could not get exchangeTimezoneName for ticker '046070.KS' reason: 'chart'
+2026-07-18 15:42:33,249 ERROR $046070.KS: possibly delisted; no timezone found
+2026-07-18 15:42:33,945 ERROR $031920.KS: possibly delisted; no timezone found
+2026-07-18 15:42:33,962 ERROR $486990.KS: possibly delisted; no timezone found
+2026-07-18 15:42:34,438 ERROR $456700.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:34,714 ERROR $208340.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:35,521 ERROR $311840.KS: possibly delisted; no timezone found
+2026-07-18 15:42:35,521 ERROR $340450.KS: possibly delisted; no timezone found
+2026-07-18 15:42:35,529 ERROR $376270.KS: possibly delisted; no timezone found
+2026-07-18 15:42:35,535 ERROR $091090.KS: possibly delisted; no timezone found
+2026-07-18 15:42:35,993 ERROR $003190.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:36,351 ERROR $019440.KS: possibly delisted; no timezone found
+2026-07-18 15:42:36,582 ERROR $468510.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:37,929 ERROR $194510.KS: possibly delisted; no timezone found
+2026-07-18 15:42:37,930 ERROR $026220.KS: possibly delisted; no timezone found
+2026-07-18 15:42:37,940 ERROR $093230.KS: possibly delisted; no timezone found
+2026-07-18 15:42:38,747 ERROR $444530.KS: possibly delisted; no timezone found
+2026-07-18 15:42:39,454 ERROR $430220.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:39,780 ERROR 
+25 Failed downloads:
+2026-07-18 15:42:39,780 ERROR ['332190.KS', '458350.KS', '462310.KS', '046070.KS', '031920.KS', '486990.KS', '311840.KS', '340450.KS', '376270.KS', '091090.KS', '019440.KS', '194510.KS', '026220.KS', '093230.KS', '444530.KS']: possibly delisted; no timezone found
+2026-07-18 15:42:39,784 ERROR ['445970.KS', '150840.KS', '287410.KS', '012580.KS', '038340.KS', '456700.KS', '208340.KS', '003190.KS', '468510.KS', '430220.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:43,132 ERROR $160600.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:44,097 ERROR $059180.KS: possibly delisted; no timezone found
+2026-07-18 15:42:45,018 ERROR Could not get exchangeTimezoneName for ticker '031860.KS' reason: 'chart'
+2026-07-18 15:42:45,034 ERROR $031860.KS: possibly delisted; no timezone found
+2026-07-18 15:42:45,129 ERROR $033180.KS: possibly delisted; no timezone found
+2026-07-18 15:42:45,824 ERROR $439960.KS: possibly delisted; no timezone found
+2026-07-18 15:42:45,828 ERROR $010620.KS: possibly delisted; no timezone found
+2026-07-18 15:42:47,453 ERROR Could not get exchangeTimezoneName for ticker '001840.KS' reason: 'chart'
+2026-07-18 15:42:47,455 ERROR $001840.KS: possibly delisted; no timezone found
+2026-07-18 15:42:48,475 ERROR $387690.KS: possibly delisted; no timezone found
+2026-07-18 15:42:49,185 ERROR $475040.KS: possibly delisted; no timezone found
+2026-07-18 15:42:49,677 ERROR $101390.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:51,355 ERROR $012650.KS: possibly delisted; no timezone found
+2026-07-18 15:42:52,398 ERROR $365660.KS: possibly delisted; no timezone found
+2026-07-18 15:42:52,430 ERROR $057500.KS: possibly delisted; no timezone found
+2026-07-18 15:42:52,708 ERROR $065560.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:53,372 ERROR Could not get exchangeTimezoneName for ticker '121800.KS' reason: 'chart'
+2026-07-18 15:42:53,373 ERROR $121800.KS: possibly delisted; no timezone found
+2026-07-18 15:42:53,388 ERROR $478340.KS: possibly delisted; no timezone found
+2026-07-18 15:42:53,790 ERROR Could not get exchangeTimezoneName for ticker '051360.KS' reason: 'chart'
+2026-07-18 15:42:53,792 ERROR $051360.KS: possibly delisted; no timezone found
+2026-07-18 15:42:53,794 ERROR 
+17 Failed downloads:
+2026-07-18 15:42:53,795 ERROR ['160600.KS', '101390.KS', '065560.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:53,796 ERROR ['059180.KS', '031860.KS', '033180.KS', '439960.KS', '010620.KS', '001840.KS', '387690.KS', '475040.KS', '012650.KS', '365660.KS', '057500.KS', '121800.KS', '478340.KS', '051360.KS']: possibly delisted; no timezone found
+2026-07-18 15:42:57,348 ERROR $222160.KS: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:58,827 ERROR Could not get exchangeTimezoneName for ticker '106080.KS' reason: 'chart'
+2026-07-18 15:42:58,829 ERROR $106080.KS: possibly delisted; no timezone found
+2026-07-18 15:42:58,836 ERROR Could not get exchangeTimezoneName for ticker '066790.KS' reason: 'chart'
+2026-07-18 15:42:58,838 ERROR $066790.KS: possibly delisted; no timezone found
+2026-07-18 15:42:58,845 ERROR 
+3 Failed downloads:
+2026-07-18 15:42:58,846 ERROR ['222160.KS']: possibly delisted; no price data found  (1d 2026-03-09 -> 2026-07-18)
+2026-07-18 15:42:58,847 ERROR ['106080.KS', '066790.KS']: possibly delisted; no timezone found
+2026-07-18 15:42:58,891 INFO   가격 다운로드: 40/40 청크 완료, 현재까지 유효 종목 2507개
+2026-07-18 15:42:59,390 INFO 유효 종목: 2507개 (DART 3924개 중 Yahoo Finance 데이터 보유)
+2026-07-18 15:42:59,394 INFO [단계 2] Yahoo Finance 유효 종목: 2507개
+2026-07-18 15:42:59,394 INFO rate limit 해소 대기 (30초)...
+2026-07-18 15:43:29,396 INFO 시가총액 조회 중 (2507종목)...
+2026-07-18 15:43:42,658 INFO   시가총액 진행: 100/2507
+2026-07-18 15:43:46,594 ERROR $348950.KS: possibly delisted; no price data found  (period=5d)
+2026-07-18 15:43:48,544 ERROR $011810.KS: possibly delisted; no price data found  (period=5d)
+2026-07-18 15:43:53,562 INFO   시가총액 진행: 200/2507
+2026-07-18 15:43:58,427 INFO   시가총액 진행: 300/2507
+2026-07-18 15:44:03,035 INFO   시가총액 진행: 400/2507
+2026-07-18 15:44:07,730 INFO   시가총액 진행: 500/2507
+2026-07-18 15:44:12,097 INFO   시가총액 진행: 600/2507
+2026-07-18 15:44:16,596 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-18 15:44:17,227 INFO   시가총액 진행: 700/2507
+2026-07-18 15:44:22,066 INFO   시가총액 진행: 800/2507
+2026-07-18 15:44:23,121 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-18 15:44:23,384 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"User is unable to access this feature - https://bit.ly/yahoo-finance-api-feedback"}}}
+2026-07-18 15:44:27,126 INFO   시가총액 진행: 900/2507
+2026-07-18 15:44:31,559 INFO   시가총액 진행: 1000/2507
+2026-07-18 15:44:35,572 INFO   시가총액 진행: 1100/2507
+2026-07-18 15:44:40,200 INFO   시가총액 진행: 1200/2507
+2026-07-18 15:44:45,020 INFO   시가총액 진행: 1300/2507
+2026-07-18 15:44:50,019 INFO   시가총액 진행: 1400/2507
+2026-07-18 15:44:54,820 INFO   시가총액 진행: 1500/2507
+2026-07-18 15:44:55,478 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-18 15:44:59,493 INFO   시가총액 진행: 1600/2507
+2026-07-18 15:45:04,088 INFO   시가총액 진행: 1700/2507
+2026-07-18 15:45:08,450 INFO   시가총액 진행: 1800/2507
+2026-07-18 15:45:12,771 INFO   시가총액 진행: 1900/2507
+2026-07-18 15:45:16,945 INFO   시가총액 진행: 2000/2507
+2026-07-18 15:45:21,443 INFO   시가총액 진행: 2100/2507
+2026-07-18 15:45:25,725 INFO   시가총액 진행: 2200/2507
+2026-07-18 15:45:30,174 INFO   시가총액 진행: 2300/2507
+2026-07-18 15:45:34,627 INFO   시가총액 진행: 2400/2507
+2026-07-18 15:45:39,182 INFO   시가총액 진행: 2500/2507
+2026-07-18 15:45:39,447 INFO 시가총액 1차: 성공 69종목, rate limit 2305종목
+2026-07-18 15:45:39,448 WARNING rate limit 과다 (2305종목) — 60초 대기 후 재시도
+2026-07-18 15:46:45,569 INFO   시가총액 진행: 100/2305
+2026-07-18 15:46:50,346 INFO   시가총액 진행: 200/2305
+2026-07-18 15:46:55,338 INFO   시가총액 진행: 300/2305
+2026-07-18 15:46:55,743 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-18 15:46:56,010 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"User is unable to access this feature - https://bit.ly/yahoo-finance-api-feedback"}}}
+2026-07-18 15:46:56,501 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-18 15:47:00,503 INFO   시가총액 진행: 400/2305
+2026-07-18 15:47:05,023 INFO   시가총액 진행: 500/2305
+2026-07-18 15:47:06,994 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-18 15:47:07,361 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-18 15:47:07,410 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-18 15:47:07,427 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-18 15:47:07,666 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"User is unable to access this feature - https://bit.ly/yahoo-finance-api-feedback"}}}
+2026-07-18 15:47:10,145 INFO   시가총액 진행: 600/2305
+2026-07-18 15:47:16,386 INFO   시가총액 진행: 700/2305
+2026-07-18 15:47:22,533 INFO   시가총액 진행: 800/2305
+2026-07-18 15:47:22,625 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-18 15:47:22,924 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"User is unable to access this feature - https://bit.ly/yahoo-finance-api-feedback"}}}
+2026-07-18 15:47:24,530 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-18 15:47:29,656 INFO   시가총액 진행: 900/2305
+2026-07-18 15:47:29,723 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-18 15:47:35,393 INFO   시가총액 진행: 1000/2305
+2026-07-18 15:47:40,892 INFO   시가총액 진행: 1100/2305
+2026-07-18 15:47:45,589 INFO   시가총액 진행: 1200/2305
+2026-07-18 15:47:47,041 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-18 15:47:47,309 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"User is unable to access this feature - https://bit.ly/yahoo-finance-api-feedback"}}}
+2026-07-18 15:47:50,498 INFO   시가총액 진행: 1300/2305
+2026-07-18 15:47:55,485 INFO   시가총액 진행: 1400/2305
+2026-07-18 15:47:56,864 ERROR HTTP Error 401: {"finance":{"result":null,"error":{"code":"Unauthorized","description":"Invalid Crumb"}}}
+2026-07-18 15:48:01,851 INFO   시가총액 진행: 1500/2305
+2026-07-18 15:48:08,275 INFO   시가총액 진행: 1600/2305
+2026-07-18 15:48:14,059 INFO   시가총액 진행: 1700/2305
+2026-07-18 15:48:20,100 INFO   시가총액 진행: 1800/2305
+2026-07-18 15:48:26,857 INFO   시가총액 진행: 1900/2305
+2026-07-18 15:48:34,288 INFO   시가총액 진행: 2000/2305
+2026-07-18 15:48:40,567 INFO   시가총액 진행: 2100/2305
+2026-07-18 15:48:47,413 INFO   시가총액 진행: 2200/2305
+2026-07-18 15:48:53,550 INFO   시가총액 진행: 2300/2305
+2026-07-18 15:48:53,833 INFO 재시도 추가 수집: 5종목
+2026-07-18 15:48:53,834 INFO 시가총액 수집 완료: 74종목
+2026-07-18 15:48:53,837 INFO [단계 3] 시가총액 수집 종목: 74개
+2026-07-18 15:48:53,843 INFO [단계 4] 시가총액 필터 후 활성 종목: 73개 (기준: 100억 이상)
+2026-07-18 15:48:53,852 INFO 모멘텀 계산 완료: 73종목
+2026-07-18 15:48:53,853 INFO [단계 5] 모멘텀 계산: 73종목
+2026-07-18 15:48:53,853 INFO Supabase 재무 데이터 조회 (year=2025, 73종목)...
+2026-07-18 15:48:55,579 INFO HTTP Request: GET https://zyiqxmasmnvspjzvpeaa.supabase.co/rest/v1/kr_financials?select=stock_code%2Cnet_income%2Ctotal_equity%2Ctotal_assets%2Ctotal_debt%2Cgross_profit%2Crevenue&year=eq.2025&stock_code=in.%28001820%2C105840%2C002620%2C004700%2C005820%2C006200%2C008870%2C011420%2C013520%2C014530%2C015860%2C019180%2C049800%2C192400%2C200880%2C334890%2C000050%2C000950%2C001390%2C002310%2C002760%2C002920%2C003010%2C003200%2C003300%2C003610%2C004910%2C005740%2C006890%2C007540%2C007810%2C009070%2C009270%2C014160%2C021820%2C025820%2C032560%2C037710%2C064960%2C123690%2C194370%2C284740%2C348950%2C357250%2C378850%2C001550%2C003350%2C004060%2C004100%2C004430%2C004830%2C004980%2C006260%2C006370%2C008770%2C009140%2C009150%2C010400%2C010820%2C011810%2C012320%2C025540%2C072130%2C077500%2C084690%2C093050%2C138040%2C183190%2C077970%2C101140%2C005010%2C483650%2C011300%29 "HTTP/2 200 OK"
+2026-07-18 15:48:55,591 WARNING 2025년 재무 데이터 없음 → 2024년으로 재시도
+2026-07-18 15:48:55,591 INFO Supabase 재무 데이터 조회 (year=2024, 73종목)...
+2026-07-18 15:48:55,871 INFO HTTP Request: GET https://zyiqxmasmnvspjzvpeaa.supabase.co/rest/v1/kr_financials?select=stock_code%2Cnet_income%2Ctotal_equity%2Ctotal_assets%2Ctotal_debt%2Cgross_profit%2Crevenue&year=eq.2024&stock_code=in.%28001820%2C105840%2C002620%2C004700%2C005820%2C006200%2C008870%2C011420%2C013520%2C014530%2C015860%2C019180%2C049800%2C192400%2C200880%2C334890%2C000050%2C000950%2C001390%2C002310%2C002760%2C002920%2C003010%2C003200%2C003300%2C003610%2C004910%2C005740%2C006890%2C007540%2C007810%2C009070%2C009270%2C014160%2C021820%2C025820%2C032560%2C037710%2C064960%2C123690%2C194370%2C284740%2C348950%2C357250%2C378850%2C001550%2C003350%2C004060%2C004100%2C004430%2C004830%2C004980%2C006260%2C006370%2C008770%2C009140%2C009150%2C010400%2C010820%2C011810%2C012320%2C025540%2C072130%2C077500%2C084690%2C093050%2C138040%2C183190%2C077970%2C101140%2C005010%2C483650%2C011300%29 "HTTP/2 200 OK"
+2026-07-18 15:48:55,885 INFO 재무 데이터 로드 완료: 2종목
+2026-07-18 15:48:55,886 INFO [단계 6] 재무 데이터: 2종목
+2026-07-18 15:48:55,894 INFO [단계 7] 팩터 계산 완료: 73종목
+2026-07-18 15:48:55,899 INFO Supabase upsert 시작: 73종목 / 2026-07-17
+2026-07-18 15:48:56,280 INFO HTTP Request: POST https://zyiqxmasmnvspjzvpeaa.supabase.co/rest/v1/factor_scores?on_conflict=ticker%2Cdate&columns=%22per%22%2C%22ticker%22%2C%22roe%22%2C%22pbr%22%2C%22momentum_1m%22%2C%22gpa%22%2C%22market_cap%22%2C%22momentum_3m%22%2C%22debt_ratio%22%2C%22psr%22%2C%22date%22 "HTTP/2 201 Created"
+2026-07-18 15:48:56,289 INFO upsert 완료: 성공 73 / 실패 0
+2026-07-18 15:48:56,289 INFO === precompute_factors 완료 ===

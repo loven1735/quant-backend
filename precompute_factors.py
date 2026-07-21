@@ -7,7 +7,7 @@ Railway Cron Job으로 매일 새벽 3시 KST 자동 실행.
 데이터 소스:
   · 종목 리스트  : DART corpCode.xml  (stock_code 있는 전체 상장 종목)
   · 유효 종목 필터: yfinance bulk download (Yahoo Finance에 데이터 있는 종목만)
-  · 시가총액     : yfinance fast_info.market_cap (ThreadPoolExecutor 병렬)
+  · 시가총액     : pykrx get_market_cap_by_ticker (KOSPI+KOSDAQ 단일 호출)
   · 모멘텀 1M/3M: yfinance bulk download (유효 종목 필터와 동일 데이터 재사용)
   · PER, PBR    : 시가총액(yfinance) / 재무(Supabase kr_financials)
   · ROE, GPA, 부채비율, PSR : Supabase kr_financials (전년도 재무)
@@ -38,7 +38,6 @@ import os
 import time
 import xml.etree.ElementTree as ET
 import zipfile
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date, datetime, timedelta, timezone
 
 import numpy as np
@@ -46,6 +45,7 @@ import pandas as pd
 import requests
 import yfinance as yf
 from dotenv import load_dotenv
+from pykrx import stock as pykrx
 from supabase import create_client
 
 load_dotenv()
@@ -70,7 +70,6 @@ KST = timezone(timedelta(hours=9))
 
 MIN_MARKET_CAP   = 10_000_000_000   # 100억 원 미만 제외
 BATCH_SIZE       = 300              # Supabase upsert 배치 크기
-YF_WORKERS       = 5               # fast_info 병렬 스레드 수 (rate limit 방지)
 YF_PRICE_CHUNK   = 100              # yfinance bulk download 청크 크기 (소형 유지)
 YF_CHUNK_SLEEP   = 3               # 청크 간 대기 시간(초) — rate limit 방지
 MOMENTUM_DAYS    = 100              # 다운로드할 과거 거래일 (3M + 여유)
@@ -205,92 +204,22 @@ def screen_valid_tickers(
     return valid_codes, close_all
 
 
-# ── 3. 시가총액: fast_info 병렬 조회 (yf.download 가격 재사용) ─────────────
+# ── 3. 시가총액: pykrx (KOSPI+KOSDAQ 단일 호출) ───────────────────────────
 
-def fetch_market_caps(
-    stock_codes: list[str],
-    close_df: pd.DataFrame,
-) -> pd.Series:
-    """
-    각 종목 시가총액을 세 단계 fallback으로 조회.
-
-    1순위: fast_info.market_cap          — Yahoo Finance 직접 계산값 (fastest)
-    2순위: close_df 종가 × fast_info.shares — 이미 다운받은 가격 재사용, 추가 호출 최소화
-    3순위: .info["marketCap"]            — quoteSummary 풀 조회 (slowest, most complete)
-
-    rate limit(401/429) 감지 시 60초 대기 후 한 번 재시도.
-    KRW 단위. 모든 fallback 실패 종목은 결과에서 제외됨.
-    """
-    logger.info("시가총액 조회 중 (%d종목)...", len(stock_codes))
-
-    def _get_price_from_close(code: str) -> float:
-        """close_df에서 해당 종목의 최신 종가 반환."""
-        col = f"{code}.KS"
-        if col in close_df.columns:
-            series = close_df[col].dropna()
-            if not series.empty:
-                return float(series.iloc[-1])
-        return 0.0
-
-    def _try(code: str) -> tuple[str, float, bool]:
-        """(code, market_cap_krw, is_rate_limited) 반환."""
-        try:
-            t = yf.Ticker(f"{code}.KS")
-
-            # 1순위: fast_info.market_cap
-            mc = t.fast_info.market_cap
-            if mc and mc > 0:
-                return code, float(mc), False
-
-            # 2순위: yf.download 종가 × fast_info.shares
-            shares = t.fast_info.shares
-            if shares and shares > 0:
-                price = _get_price_from_close(code)
-                if price > 0:
-                    return code, price * float(shares), False
-
-            # 3순위: .info["marketCap"]
-            mc = t.info.get("marketCap")
-            return code, float(mc) if mc and mc > 0 else 0.0, False
-
-        except Exception as exc:
-            err = str(exc).lower()
-            is_rl = any(k in err for k in ("401", "429", "rate", "crumb", "too many"))
-            return code, 0.0, is_rl
-
-    def _run_batch(codes: list[str]) -> tuple[dict[str, float], list[str]]:
-        caps: dict[str, float] = {}
-        rate_limited_codes: list[str] = []
-        with ThreadPoolExecutor(max_workers=YF_WORKERS) as ex:
-            futures = {ex.submit(_try, c): c for c in codes}
-            done = 0
-            for f in as_completed(futures):
-                code, mc, rl = f.result()
-                if mc > 0:
-                    caps[code] = mc
-                elif rl:
-                    rate_limited_codes.append(code)
-                done += 1
-                if done % 100 == 0:
-                    logger.info("  시가총액 진행: %d/%d", done, len(codes))
-        return caps, rate_limited_codes
-
-    # 1차 시도
-    caps, rate_limited = _run_batch(stock_codes)
-    logger.info(
-        "시가총액 1차: 성공 %d종목, rate limit %d종목", len(caps), len(rate_limited)
-    )
-
-    # rate limit 종목이 30% 초과면 60초 대기 후 재시도
-    if len(rate_limited) > len(stock_codes) * 0.3:
-        logger.warning("rate limit 과다 (%d종목) — 60초 대기 후 재시도", len(rate_limited))
-        time.sleep(60)
-        retry_caps, _ = _run_batch(rate_limited)
-        caps.update(retry_caps)
-        logger.info("재시도 추가 수집: %d종목", len(retry_caps))
-
-    logger.info("시가총액 수집 완료: %d종목", len(caps))
-    return pd.Series(caps, dtype=float)
+def fetch_market_caps(target: date) -> pd.Series:
+    """pykrx로 KOSPI+KOSDAQ 전체 종목 시가총액을 한 번에 조회. KRW 단위."""
+    date_str = target.strftime("%Y%m%d")
+    logger.info("pykrx 시가총액 조회 중 (%s)...", date_str)
+    try:
+        df = pykrx.get_market_cap_by_ticker(date_str, market="ALL")
+        if df.empty:
+            logger.warning("pykrx 시가총액 없음 (%s)", date_str)
+            return pd.Series(dtype=float)
+        logger.info("pykrx 시가총액 수집 완료: %d종목", len(df))
+        return df["시가총액"].rename(None)
+    except Exception as exc:
+        logger.error("pykrx 시가총액 조회 실패: %s", exc)
+        return pd.Series(dtype=float)
 
 
 # ── 4. 모멘텀: screen_valid_tickers 에서 받은 가격 데이터 재사용 ──────────
@@ -472,12 +401,8 @@ def main() -> None:
         return
     logger.info("[단계 2] Yahoo Finance 유효 종목: %d개", len(valid_codes))
 
-    # 대규모 다운로드 후 Yahoo Finance rate limit 해소 대기
-    logger.info("rate limit 해소 대기 (30초)...")
-    time.sleep(30)
-
-    # 3. 시가총액 (유효 종목에만 fast_info 호출, close_df 가격 재사용)
-    market_caps = fetch_market_caps(valid_codes, close_df)
+    # 3. 시가총액 (pykrx 단일 호출)
+    market_caps = fetch_market_caps(target)
     logger.info("[단계 3] 시가총액 수집 종목: %d개", len(market_caps))
 
     # 4. 시가총액 필터 (100억 이상)
