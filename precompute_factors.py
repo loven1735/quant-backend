@@ -7,7 +7,7 @@ Railway Cron Job으로 매일 새벽 3시 KST 자동 실행.
 데이터 소스:
   · 종목 리스트  : DART corpCode.xml  (stock_code 있는 전체 상장 종목)
   · 유효 종목 필터: yfinance bulk download (Yahoo Finance에 데이터 있는 종목만)
-  · 시가총액     : pykrx get_market_cap_by_ticker (KOSPI+KOSDAQ 단일 호출)
+  · 시가총액     : 최신 종가(yfinance) × 발행주식수(DART stockTotqySttus API)
   · 모멘텀 1M/3M: yfinance bulk download (유효 종목 필터와 동일 데이터 재사용)
   · PER, PBR    : 시가총액(yfinance) / 재무(Supabase kr_financials)
   · ROE, GPA, 부채비율, PSR : Supabase kr_financials (전년도 재무)
@@ -38,6 +38,7 @@ import os
 import time
 import xml.etree.ElementTree as ET
 import zipfile
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import date, datetime, timedelta, timezone
 
 import numpy as np
@@ -45,7 +46,6 @@ import pandas as pd
 import requests
 import yfinance as yf
 from dotenv import load_dotenv
-from pykrx import stock as pykrx
 from supabase import create_client
 
 load_dotenv()
@@ -73,6 +73,9 @@ BATCH_SIZE       = 300              # Supabase upsert 배치 크기
 YF_PRICE_CHUNK   = 100              # yfinance bulk download 청크 크기 (소형 유지)
 YF_CHUNK_SLEEP   = 3               # 청크 간 대기 시간(초) — rate limit 방지
 MOMENTUM_DAYS    = 100              # 다운로드할 과거 거래일 (3M + 여유)
+DART_WORKERS     = 8               # DART API 병렬 스레드 수
+DART_SHARE_CHUNK = 500             # 발행주식수 조회 청크 크기
+DART_CHUNK_SLEEP = 1               # 청크 간 대기 시간(초)
 
 
 # ── 유틸 ──────────────────────────────────────────────────────────────────
@@ -87,10 +90,15 @@ def last_trading_day(base: date) -> date:
 
 # ── 1. 종목 리스트: DART corpCode.xml ─────────────────────────────────────
 
-def fetch_tickers_from_dart() -> list[str]:
+def fetch_tickers_from_dart() -> tuple[list[str], dict[str, str]]:
     """
     DART corpCode.xml 파싱 → 6자리 stock_code 보유한 전체 상장 종목 코드 반환.
     KOSPI + KOSDAQ + KONEX 포함. 이후 yfinance 유효성 검증으로 필터링.
+
+    Returns
+    -------
+    tickers      : list[str]        6자리 종목 코드 목록
+    corp_code_map: dict[str, str]   {stock_code: corp_code} (발행주식수 조회에 사용)
     """
     logger.info("DART corpCode.xml 에서 종목 리스트 조회 중...")
     url = f"https://opendart.fss.or.kr/api/corpCode.xml?crtfc_key={DART_API_KEY}"
@@ -99,7 +107,7 @@ def fetch_tickers_from_dart() -> list[str]:
         resp.raise_for_status()
     except Exception as exc:
         logger.error("DART corpCode.xml 다운로드 실패: %s", exc)
-        return []
+        return [], {}
 
     try:
         with zipfile.ZipFile(io.BytesIO(resp.content)) as z:
@@ -107,16 +115,19 @@ def fetch_tickers_from_dart() -> list[str]:
         root = ET.fromstring(xml_bytes)
     except Exception as exc:
         logger.error("corpCode.xml 파싱 실패: %s", exc)
-        return []
+        return [], {}
 
     tickers: list[str] = []
+    corp_code_map: dict[str, str] = {}
     for item in root.findall("list"):
-        code = (item.findtext("stock_code") or "").strip()
+        code      = (item.findtext("stock_code") or "").strip()
+        corp_code = (item.findtext("corp_code")  or "").strip()
         if len(code) == 6 and code.isdigit():
             tickers.append(code)
+            corp_code_map[code] = corp_code
 
     logger.info("DART 상장 종목: %d개", len(tickers))
-    return tickers
+    return tickers, corp_code_map
 
 
 # ── 2. 유효 종목 확인 + 가격 데이터 (yfinance bulk download) ──────────────
@@ -204,22 +215,100 @@ def screen_valid_tickers(
     return valid_codes, close_all
 
 
-# ── 3. 시가총액: pykrx (KOSPI+KOSDAQ 단일 호출) ───────────────────────────
+# ── 3-a. 발행주식수: DART stockTotqySttus API ─────────────────────────────
 
-def fetch_market_caps(target: date) -> pd.Series:
-    """pykrx로 KOSPI+KOSDAQ 전체 종목 시가총액을 한 번에 조회. KRW 단위."""
-    date_str = target.strftime("%Y%m%d")
-    logger.info("pykrx 시가총액 조회 중 (%s)...", date_str)
-    try:
-        df = pykrx.get_market_cap_by_ticker(date_str, market="ALL")
-        if df.empty:
-            logger.warning("pykrx 시가총액 없음 (%s)", date_str)
-            return pd.Series(dtype=float)
-        logger.info("pykrx 시가총액 수집 완료: %d종목", len(df))
-        return df["시가총액"].rename(None)
-    except Exception as exc:
-        logger.error("pykrx 시가총액 조회 실패: %s", exc)
-        return pd.Series(dtype=float)
+def fetch_shares_from_dart(
+    corp_code_map: dict[str, str],
+    valid_codes: list[str],
+    bsns_year: int,
+) -> pd.Series:
+    """
+    DART 주식총수 현황 API → 종목별 보통주 발행주식총수 반환.
+
+    bsns_year 연도 사업보고서(reprt_code=11011) 우선, 없으면 전년도로 fallback.
+    DART_WORKERS 스레드로 병렬 호출, DART_SHARE_CHUNK 단위로 끊어서 처리.
+    """
+    logger.info("DART 발행주식수 조회 중 (%d종목, %d년 기준)...", len(valid_codes), bsns_year)
+    base_url = "https://opendart.fss.or.kr/api/stockTotqySttus.json"
+
+    def _fetch_one(stock_code: str) -> tuple[str, int]:
+        corp_code = corp_code_map.get(stock_code)
+        if not corp_code:
+            return stock_code, 0
+        for year in (bsns_year, bsns_year - 1):
+            try:
+                resp = requests.get(
+                    base_url,
+                    params={
+                        "crtfc_key": DART_API_KEY,
+                        "corp_code": corp_code,
+                        "bsns_year": str(year),
+                        "reprt_code": "11011",
+                    },
+                    timeout=10,
+                )
+                data = resp.json()
+                if data.get("status") != "000":
+                    continue
+                items = data.get("list", [])
+                # 보통주만 추출, 없으면 전체 합산
+                common = [it for it in items if "보통주" in (it.get("stock_knd") or "")]
+                targets = common if common else items
+                total = sum(
+                    int(it["istc_totqy"].replace(",", ""))
+                    for it in targets
+                    if it.get("istc_totqy")
+                )
+                if total > 0:
+                    return stock_code, total
+            except Exception:
+                pass
+        return stock_code, 0
+
+    shares: dict[str, int] = {}
+    for i in range(0, len(valid_codes), DART_SHARE_CHUNK):
+        chunk = valid_codes[i : i + DART_SHARE_CHUNK]
+        if i > 0:
+            time.sleep(DART_CHUNK_SLEEP)
+        with ThreadPoolExecutor(max_workers=DART_WORKERS) as ex:
+            futures = {ex.submit(_fetch_one, c): c for c in chunk}
+            for f in as_completed(futures):
+                code, count = f.result()
+                if count > 0:
+                    shares[code] = count
+        logger.info(
+            "  발행주식수 진행: %d/%d종목 완료, 수집 성공 %d종목",
+            min(i + DART_SHARE_CHUNK, len(valid_codes)),
+            len(valid_codes),
+            len(shares),
+        )
+
+    logger.info("발행주식수 수집 완료: %d종목", len(shares))
+    return pd.Series(shares, dtype=float)
+
+
+# ── 3-b. 시가총액 계산: 종가 × 발행주식수 ────────────────────────────────
+
+def compute_market_caps(
+    valid_codes: list[str],
+    close_df: pd.DataFrame,
+    shares: pd.Series,
+) -> pd.Series:
+    """최신 종가(yfinance close_df) × 발행주식수(DART) = 시가총액(KRW)."""
+    caps: dict[str, float] = {}
+    for code in valid_codes:
+        col = f"{code}.KS"
+        if col not in close_df.columns:
+            continue
+        price_series = close_df[col].dropna()
+        if price_series.empty:
+            continue
+        price = float(price_series.iloc[-1])
+        s = shares.get(code, 0)
+        if price > 0 and s > 0:
+            caps[code] = price * float(s)
+    logger.info("시가총액 계산 완료: %d종목", len(caps))
+    return pd.Series(caps, dtype=float)
 
 
 # ── 4. 모멘텀: screen_valid_tickers 에서 받은 가격 데이터 재사용 ──────────
@@ -385,8 +474,8 @@ def main() -> None:
 
     sb = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-    # 1. 종목 리스트 (DART)
-    stock_codes = fetch_tickers_from_dart()
+    # 1. 종목 리스트 (DART) + corp_code 맵
+    stock_codes, corp_code_map = fetch_tickers_from_dart()
     if not stock_codes:
         logger.error("종목 리스트 없음 — 종료")
         return
@@ -394,16 +483,18 @@ def main() -> None:
 
     # 2. 유효 종목 확인 + 가격 데이터 (yfinance bulk download)
     #    DART 3924개 중 Yahoo Finance에 데이터 있는 종목만 추림 (KONEX/상폐 자동 제거)
-    #    → 동시에 130일 종가 수집 (모멘텀 계산에 재사용)
+    #    → 동시에 130일 종가 수집 (모멘텀 계산 + 시가총액 계산에 재사용)
     valid_codes, close_df = screen_valid_tickers(stock_codes, target)
     if not valid_codes:
         logger.error("유효 종목 없음 — 종료")
         return
     logger.info("[단계 2] Yahoo Finance 유효 종목: %d개", len(valid_codes))
 
-    # 3. 시가총액 (pykrx 단일 호출)
-    market_caps = fetch_market_caps(target)
-    logger.info("[단계 3] 시가총액 수집 종목: %d개", len(market_caps))
+    # 3. 시가총액 = 최신 종가(yfinance) × 발행주식수(DART)
+    shares = fetch_shares_from_dart(corp_code_map, valid_codes, fin_year)
+    logger.info("[단계 3-a] 발행주식수 수집: %d종목", len(shares))
+    market_caps = compute_market_caps(valid_codes, close_df, shares)
+    logger.info("[단계 3-b] 시가총액 계산: %d종목", len(market_caps))
 
     # 4. 시가총액 필터 (100억 이상)
     active_codes = [
