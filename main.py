@@ -37,11 +37,7 @@ app = FastAPI(title="Quant Backtest API", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "*",
-        "https://www.privicalab.com",
-        "https://privicalab.com",
-    ],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
