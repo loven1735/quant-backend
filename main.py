@@ -423,11 +423,10 @@ DART_API_KEY: str = os.environ.get(
     "DART_API_KEY", "50b787d351a2bdb6e499293a663069be9047d462"
 )
 
-# KR 팩터 캐시 / DART 캐시 / 유니버스 캐시
+# KR 팩터 캐시 / DART 캐시
 _kr_factor_cache: dict[str, pd.DataFrame] = {}
 _kr_names_cache: dict[str, str] = {}   # "005930.KS" → "삼성전자"
 _kr_corp_codes: dict[str, str] = {}    # "005930" → DART corp_code
-_kospi_universe_cache: list[str] = []  # 시가총액 상위 200 .KS 티커 목록
 
 # Supabase 클라이언트 캐시
 _supabase_client: SupabaseClient | None = None
@@ -544,112 +543,6 @@ def _fetch_dart_financials(corp_code: str) -> dict[str, float]:
     return {}
 
 
-def _load_kr_dart_factors(
-    tickers: list[str],
-    market_caps: dict[str, float] | None = None,
-) -> pd.DataFrame:
-    """DART 재무 + 시가총액으로 PER/PBR/ROE 계산 (병렬)
-
-    market_caps: {ticker: KRW} — 사전 로드된 시가총액 (없으면 yfinance에서 재조회)
-    DART 금액 단위: 원 / yfinance marketCap 단위: 원 → 동일 단위이므로 변환 없음
-    """
-    _load_dart_kr_names()   # _kr_corp_codes 보장
-
-    def _fetch_one(ticker: str) -> dict | None:
-        base = ticker.split(".")[0]          # "005930.KS" → "005930"
-        cc = _kr_corp_codes.get(base)
-        if not cc:
-            return None
-
-        fin = _fetch_dart_financials(cc)
-        if not fin:
-            return None
-
-        # 시가총액: 사전 제공값 우선, 없으면 yfinance 재조회
-        if market_caps and ticker in market_caps:
-            mc = market_caps[ticker]
-        else:
-            try:
-                mc = float(yf.Ticker(ticker).info.get("marketCap") or 0)
-            except Exception:
-                mc = 0.0
-        if not (np.isfinite(mc) and mc > 0):
-            return None
-
-        ni = fin.get("net_income")    # 원
-        eq = fin.get("total_equity")  # 원
-        row: dict = {"ticker": ticker}
-
-        # PER: 당기순이익이 양수인 종목만 (적자 종목 제외)
-        if ni is not None and ni > 0:
-            per = mc / ni              # 둘 다 원 단위
-            if np.isfinite(per) and 0 < per < 1000:
-                row["per"] = round(per, 2)
-
-        # PBR/ROE: 자기자본 양수인 종목만 (자본잠식 제외)
-        if eq is not None and eq > 0:
-            pbr = mc / eq              # 둘 다 원 단위
-            if np.isfinite(pbr) and 0 < pbr < 100:
-                row["pbr"] = round(pbr, 2)
-
-            if ni is not None:
-                roe = ni / eq          # 동일 단위 → 변환 불필요
-                if np.isfinite(roe):
-                    row["roe"] = round(roe, 4)
-
-        return row if len(row) > 1 else None
-
-    rows: list[dict] = []
-    with ThreadPoolExecutor(max_workers=10) as executor:
-        futures = {executor.submit(_fetch_one, t): t for t in tickers}
-        for future in as_completed(futures):
-            try:
-                r = future.result()
-                if r:
-                    rows.append(r)
-            except Exception as e:
-                logger.debug("DART factor fetch 예외: %s", e)
-
-    if not rows:
-        return pd.DataFrame()
-
-    rows.sort(key=lambda r: r["ticker"])
-    df = pd.DataFrame(rows).set_index("ticker")
-    logger.info("DART PER/PBR/ROE 로드 완료: %d종목", len(df))
-    return df
-
-
-def _load_kospi_universe(n: int = 200) -> list[str]:
-    """KOSPI 종목 .KS 리스트를 반환 (1회 캐시).
-
-    1단계 DART corpCode (앱 시작 시 이미 로드됨, 추가 의존성 없음)
-    2단계 하드코딩 fallback
-
-    DART에는 KOSPI·KOSDAQ 혼재하지만 .KS 티커로 yfinance 조회 시
-    KOSDAQ 종목은 데이터 없음 → 자연 탈락.
-    """
-    global _kospi_universe_cache
-    if _kospi_universe_cache:
-        return _kospi_universe_cache
-
-    # ── 1단계: DART corpCode (이미 캐시됨, 외부 호출 불필요) ──────────
-    _load_dart_kr_names()
-    if _kr_corp_codes:
-        # 하드코딩 108종목(검증된 KOSPI)을 앞에 배치, DART 추가 종목으로 채움
-        known_codes = [t.split(".")[0] for t in KOSPI200_TICKERS]
-        known_set   = set(known_codes)
-        extra_codes = sorted(_kr_corp_codes.keys() - known_set)
-        combined    = known_codes + extra_codes
-        _kospi_universe_cache = [f"{c.zfill(6)}.KS" for c in combined[:n]]
-        logger.info("DART+하드코딩 %d종목 (DART 추가 %d종목)",
-                    len(_kospi_universe_cache),
-                    max(0, len(_kospi_universe_cache) - len(known_codes)))
-        return _kospi_universe_cache
-
-    # ── 2단계: 하드코딩 최후 fallback ────────────────────────────────
-    logger.warning("DART 로드 실패, 하드코딩 %d종목으로 fallback", len(KOSPI200_TICKERS))
-    _kospi_universe_cache = list(KOSPI200_TICKERS)
-    return _kospi_universe_cache
 
 
 # ── Pydantic 모델 ─────────────────────────────────────────────────
@@ -912,125 +805,114 @@ def load_factor_universe(theme: str = "all") -> pd.DataFrame:
     return df
 
 
-def _fill_kr_sector_median(df: pd.DataFrame, cols: list[str]) -> pd.DataFrame:
-    """NaN 팩터값을 섹터 중위값 → 전체 중위값 순서로 채운다.
-
-    yfinance sector 컬럼이 있으면 섹터별로 그룹화하고,
-    섹터 정보 없거나 섹터 내에도 모두 NaN이면 전체 중위값 사용.
-    """
-    for col in cols:
-        if col not in df.columns:
-            continue
-        if "sector" in df.columns:
-            sector_med = df.groupby("sector", observed=True)[col].transform("median")
-            df[col] = df[col].fillna(sector_med)
-        overall_med = df[col].median()
-        if pd.notna(overall_med):
-            df[col] = df[col].fillna(overall_med)
-    return df
-
-
-# ── KR 팩터 데이터 로딩 ───────────────────────────────────────────
+# ── KR 팩터 데이터 로딩 (Supabase factor_scores) ────────────────────────
 def load_kr_factor_universe(theme: str = "all") -> pd.DataFrame:
+    """
+    Supabase factor_scores 테이블에서 최신 날짜 팩터 데이터를 로드.
+
+    precompute_factors.py가 매일 새벽 저장한 데이터를 그대로 사용하므로
+    DART / yfinance 실시간 호출 없이 즉시 반환.
+
+    테마 필터링은 KR_THEME_TICKERS 기준으로 적용.
+    """
     global _kr_factor_cache
     cache_key = f"kr_{theme}"
     if cache_key in _kr_factor_cache:
         return _kr_factor_cache[cache_key]
 
-    # "all" 테마: pykrx 시가총액 상위 200종목 동적 로드
-    if theme == "all":
-        tickers = _load_kospi_universe(n=200)
-    else:
-        tickers = list(KR_THEME_TICKERS.get(theme, _load_kospi_universe(n=200)))
-
-    rows: list[dict[str, float | str]] = []
-
-    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        futures = {executor.submit(_fetch_info_factors, t): t for t in tickers}
-        for future in as_completed(futures):
-            ticker = futures[future]
-            try:
-                factors = future.result()
-                if factors:
-                    rows.append({"ticker": ticker, **factors})
-            except Exception as e:
-                logger.debug("KR 팩터 조회 예외 (%s): %s", ticker, e)
-
-    rows.sort(key=lambda r: r["ticker"])
-    idx = pd.Index(tickers, name="ticker")
-    # 병목 1 수정: idx(전체 tickers)를 기준으로 DataFrame 초기화 후 데이터 합치기
-    # 기존 코드는 rows가 비어있을 때만 idx 사용 → yfinance 무응답 종목이 통째로 탈락했음
-    df = pd.DataFrame(index=idx)
-    if rows:
-        data_df = pd.DataFrame(rows).set_index("ticker")
-        df = df.join(data_df)
-
-    # DART 종목명 (실패 시 KR_TICKER_NAMES fallback → 티커 코드)
-    dart_names = _load_dart_kr_names()
-    df["longName"] = df.index.map(lambda t: dart_names.get(t) or KR_TICKER_NAMES.get(t, t))
-
-    # _fetch_info_factors에서 수집한 시가총액 재활용 → DART 계산 시 yfinance 재호출 방지
-    market_caps: dict[str, float] = {}
-    if "market_cap" in df.columns:
-        market_caps = {
-            t: float(df.at[t, "market_cap"])
-            for t in df.index
-            if pd.notna(df.at[t, "market_cap"])
-        }
-        df.drop(columns=["market_cap"], inplace=True)
-
-    # DART PER/PBR/ROE (우선) → yfinance fallback 보존 → 섹터 중위값 imputation
-    dart_fund = _load_kr_dart_factors(tickers, market_caps=market_caps)
-    for col in ("per", "pbr", "roe"):
-        dart_col = (
-            dart_fund[col].reindex(df.index)
-            if col in dart_fund.columns
-            else pd.Series(dtype=float, index=df.index)
+    sb = _get_supabase()
+    if sb is None:
+        raise HTTPException(
+            status_code=503,
+            detail="Supabase 연결 불가 — SUPABASE_URL / SUPABASE_KEY 환경변수를 확인하세요.",
         )
-        yf_col = df[col] if col in df.columns else pd.Series(dtype=float, index=df.index)
-        # DART 값 우선 적용, DART 없는 종목은 yfinance 값 유지
-        df[col] = dart_col.combine_first(yf_col)
 
-    dart_count = {
-        c: int(dart_fund[c].notna().sum())
-        for c in ("per", "pbr", "roe") if c in dart_fund.columns
-    }
-    after_merge = {c: int(df[c].notna().sum()) for c in ("per", "pbr", "roe") if c in df.columns}
-    logger.info("PER/PBR/ROE — DART: %s / DART+yfinance 합산: %s", dart_count, after_merge)
+    # ── 1. 최신 날짜 확인 ────────────────────────────────────────
+    try:
+        date_resp = (
+            sb.table("factor_scores")
+            .select("date")
+            .order("date", desc=True)
+            .limit(1)
+            .execute()
+        )
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail=f"factor_scores 날짜 조회 실패: {exc}")
 
-    # 여전히 NaN인 종목: 섹터 중위값 → 전체 중위값 순서로 보완
-    _fill_kr_sector_median(df, ["per", "pbr", "roe"])
+    if not date_resp.data:
+        raise HTTPException(status_code=503, detail="factor_scores 테이블에 데이터가 없습니다.")
 
-    after_impute = {c: int(df[c].notna().sum()) for c in ("per", "pbr", "roe") if c in df.columns}
-    logger.info("섹터 imputation 후 유효 종목 수: %s / 전체 %d종목", after_impute, len(df))
+    latest_date: str = date_resp.data[0]["date"]
+    logger.info("factor_scores 기준 날짜: %s", latest_date)
 
-    # ── 병목 3 수정: momentum — 가격 데이터 없는 종목 제거 + 섹터 imputation ──
-    mom_1m = _load_momentum(tickers, period="1mo", name="momentum_1m")
-    mom_3m = _load_momentum(tickers, period="3mo", name="momentum_3m")
+    # ── 2. 해당 날짜 전체 데이터 조회 (1000행 단위 페이지네이션) ─
+    COLS = "ticker, per, pbr, roe, gpa, momentum_1m, momentum_3m, psr, debt_ratio, market_cap"
+    PAGE = 1000
+    all_rows: list[dict] = []
+    offset = 0
 
-    # 두 기간 모두 가격 데이터가 없는 종목 제거
-    # (백테스트에서도 수익률 계산 불가 → top_tickers에 포함돼도 의미 없음)
-    tickers_with_price: set[str] = set(mom_1m.dropna().index) | set(mom_3m.dropna().index)
-    no_price = [t for t in df.index if t not in tickers_with_price]
-    if no_price:
-        logger.info("가격 데이터 없어 %d종목 제외 (예: %s%s)",
-                    len(no_price), no_price[:3],
-                    " ..." if len(no_price) > 3 else "")
-        df = df.drop(index=no_price)
+    try:
+        while True:
+            resp = (
+                sb.table("factor_scores")
+                .select(COLS)
+                .eq("date", latest_date)
+                .range(offset, offset + PAGE - 1)
+                .execute()
+            )
+            if not resp.data:
+                break
+            all_rows.extend(resp.data)
+            if len(resp.data) < PAGE:
+                break
+            offset += PAGE
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail=f"factor_scores 조회 실패: {exc}")
 
-    # 살아남은 종목에 momentum 값 할당
-    df["momentum_1m"] = mom_1m.reindex(df.index)
-    df["momentum_3m"] = mom_3m.reindex(df.index)
+    if not all_rows:
+        raise HTTPException(
+            status_code=503,
+            detail=f"factor_scores에 {latest_date} 날짜 데이터가 없습니다.",
+        )
 
-    # 한 기간은 데이터가 있는데 다른 기간이 NaN인 종목 → 섹터 중위값으로 보완
-    # (예: 신규 상장 종목이 3m 데이터는 없지만 1m은 있는 경우)
-    _fill_kr_sector_median(df, ["momentum_1m", "momentum_3m"])
+    logger.info("factor_scores 로드: %d종목 (%s 기준)", len(all_rows), latest_date)
 
-    mom_valid = {c: int(df[c].notna().sum()) for c in ("momentum_1m", "momentum_3m") if c in df.columns}
-    logger.info("momentum 유효 종목: %s / 전체 %d종목", mom_valid, len(df))
+    # ── 3. DataFrame 구성 (6자리 코드 → .KS suffix 변환) ─────────
+    NUM_COLS = (
+        "per", "pbr", "roe", "gpa",
+        "momentum_1m", "momentum_3m",
+        "psr", "debt_ratio", "market_cap",
+    )
+    rows = [
+        {"ticker": f"{row['ticker']}.KS", **{c: row.get(c) for c in NUM_COLS}}
+        for row in all_rows
+    ]
+    df = pd.DataFrame(rows).set_index("ticker")
+    df = df.apply(pd.to_numeric, errors="coerce")
+
+    # ── 4. 테마 필터링 ───────────────────────────────────────────
+    if theme != "all" and theme in KR_THEME_TICKERS:
+        theme_set = set(KR_THEME_TICKERS[theme])
+        df = df[df.index.isin(theme_set)]
+        logger.info("테마 필터 '%s' 적용: %d종목", theme, len(df))
+
+    if df.empty:
+        raise HTTPException(
+            status_code=503,
+            detail=f"theme='{theme}'에 해당하는 factor_scores 데이터가 없습니다.",
+        )
+
+    # ── 5. 종목명 (DART corpCode.xml, 1회 캐시) ──────────────────
+    dart_names = _load_dart_kr_names()
+    df["longName"] = df.index.map(
+        lambda t: dart_names.get(t) or KR_TICKER_NAMES.get(t, t)
+    )
 
     _kr_factor_cache[cache_key] = df
-    logger.info("KR 팩터 유니버스 로드 완료 (theme='%s'): %d종목", theme, len(df))
+    logger.info(
+        "KR 팩터 유니버스 로드 완료 (Supabase factor_scores, theme='%s'): %d종목",
+        theme, len(df),
+    )
     return df
 
 
